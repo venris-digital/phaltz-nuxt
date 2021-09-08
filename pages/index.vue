@@ -1,14 +1,17 @@
 <template>
   <div>
     <Navigation />
-    <Test />
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
+import MetaInfo from "vue-meta";
 
 @Component<Home>({
+  head(): MetaInfo {
+    return { title: "Phaltz" };
+  },
   components: {
     //
   }

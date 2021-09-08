@@ -23,13 +23,32 @@ import { Vue, Component } from "vue-property-decorator";
   }
 })
 export default class Navigation extends Vue {
+  protected test: any = {};
   protected mounted(): void {
     //
   }
 
   protected onClickItem(): void {
-    console.log("WORKING!");
+    console.log(this.test.something?.somethingElse);
   }
+
+  protected get navigationItems(): NavigationItem[] {
+    return [
+      {
+        text: "Home"
+      },
+      {
+        text: "Games"
+      },
+      {
+        text: "Contact"
+      }
+    ];
+  }
+}
+
+interface NavigationItem {
+  text: string;
 }
 </script>
 
