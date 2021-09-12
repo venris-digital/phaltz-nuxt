@@ -44,5 +44,18 @@ export default {
 
   styleResources: {
     scss: ["@/assets/scss/mixins.scss", "@/assets/scss/variables.scss"]
+  },
+
+  // publicRuntimeConfig: {
+  //   // myPublicVariable: process.env.PUBLIC_VARIABLE,
+  //   apiServerPublic: process.env.API_SERVER
+  // },
+  // privateRuntimeConfig: {
+  //   // Might need to go in the above.
+  //   apiServer: process.env.API_SERVER
+  // }
+
+  env: {
+    apiServer: process.env.API_SERVER
   }
 };

@@ -4,6 +4,8 @@ import Class from "@/models/Class";
 import BuildTag from "./BuildTag";
 
 export default class Game extends Model {
+  protected endpoint = "/games";
+
   public game_title!: string;
 
   public characters?: Character[];

@@ -40,8 +40,10 @@
 import { Vue, Component } from "vue-property-decorator";
 import MetaInfo from "vue-meta";
 import Game from "@/models/Game";
+import Model from "@/models/Model";
+import Class from "@/models/Class";
 
-@Component<GameOverview>({
+@Component<PathfinderWOTR>({
   head(): MetaInfo {
     return { title: `Phaltz: ${this.game?.game_title || ""}` };
   },
@@ -49,9 +51,11 @@ import Game from "@/models/Game";
     //
   }
 })
-export default class GameOverview extends Vue {
+export default class PathfinderWOTR extends Vue {
   // Class properties
   protected isLoading = true;
+
+  protected gameId = 1;
 
   protected game: Game | null | any = {
     game_title: "Pathfinder: Wrath of the Righteous",
@@ -113,6 +117,9 @@ export default class GameOverview extends Vue {
 
   protected async initialize(): Promise<void> {
     this.isLoading = true;
+    console.log(process.env.apiServer);
+    console.log(await new Game().all());
+    console.log(await new Game().find(this.gameId));
     await this.fetchGame();
     this.isLoading = false;
   }
