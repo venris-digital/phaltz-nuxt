@@ -4,11 +4,13 @@
     <!-- lazy-src="https://picsum.photos/id/11/10/6" -->
     <v-img
       class="character-select-icon__image"
-      max-height="120"
-      max-width="120"
-      :src="character.icon"
+      max-height="100"
+      max-width="100"
+      :src="character.image"
     ></v-img>
-    {{ character.name }}
+    <p class="text-center">
+      {{ character.name }}
+    </p>
   </div>
 </template>
 
@@ -61,6 +63,7 @@ export default class CharacterSelectIcon extends Vue {
   @apply items-center;
   @apply cursor-pointer;
   @apply mx-2;
+  @apply justify-center;
 
   .character-select-icon__image {
     // border-radius: 50%;

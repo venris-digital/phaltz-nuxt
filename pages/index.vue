@@ -16,5 +16,9 @@ import MetaInfo from "vue-meta";
     //
   }
 })
-export default class Home extends Vue {}
+export default class Home extends Vue {
+  protected mounted(): void {
+    this.$router.push({ name: "pathfinder-wotr" });
+  }
+}
 </script>

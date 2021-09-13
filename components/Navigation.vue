@@ -29,7 +29,7 @@ export default class Navigation extends Vue {
   }
 
   protected onClickItem(): void {
-    console.log(this.test.something?.somethingElse);
+    // console.log(this.test.something?.somethingElse);
   }
 
   protected get navigationItems(): NavigationItem[] {
