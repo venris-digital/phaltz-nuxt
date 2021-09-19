@@ -183,6 +183,18 @@
             outlined
           ></v-text-field>
 
+          <v-combobox
+            v-model="build.levels[index].spells"
+            :search-input.sync="search"
+            hide-selected
+            hint="Type and hit enter"
+            label="Add spells"
+            multiple
+            persistent-hint
+            small-chips
+            deletable-chips
+          />
+
           <v-textarea
             class="mx-2"
             v-model="build.levels[index].summary"
