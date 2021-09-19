@@ -1,67 +1,103 @@
 <template>
   <NavigationLayout>
     <Loader v-if="isLoading" :size="50" />
-
-    <ContentPanel v-else>
-      <CharacterSelection
-        ref="characterSelect"
-        :characters="characters"
-        @characterSelected="filterByCharacter"
-      />
-
-      <div class="pathfinder-wotr-builds__build-filters">
-        <div class="build-filters__row">
-          <AutoComplete
-            v-model="filters.classes"
-            :items="classes"
-            :item-text="'name'"
-            :item-value="'id'"
-            :label="'Classes'"
-          />
-
-          <AutoComplete
-            v-model="filters.subclasses"
-            :items="subclasses"
-            :item-text="'name'"
-            :item-value="'id'"
-            :disabled="!areClassesSelected"
-            :label="'Subclasses'"
-          />
-
-          <AutoComplete
-            v-model="filters.mythic"
-            :items="mythicPaths"
-            :item-text="'name'"
-            :item-value="'id'"
-            :label="'Mythic Path'"
-          />
-
-          <AutoComplete
-            v-model="filters.tags"
-            :items="buildTags"
-            :item-text="'name'"
-            :item-value="'id'"
-            :label="'Tags'"
-          />
-        </div>
-      </div>
-      <div class="w-full flex justify-between px-4">
-        <Button :secondary="true" @click="onClickResetFilters">
-          Reset Filters
-        </Button>
-
-        <Button @click="onClickApplyFilters">
-          Apply Filters
-        </Button>
-      </div>
-    </ContentPanel>
-
-    <ContentPanel>
-      <h1 class="text-2xl font-theme  my-4">
+    <div v-else>
+      <PageHeading class="ml-4 mb-8">
         Pathfinder: Wrath of the Righteous - Character Builds
-      </h1>
-      <BuildCard v-for="(card, index) in test" :key="`build-card-${index}`" />
-    </ContentPanel>
+      </PageHeading>
+
+      <ContentPanel>
+        <Subtitle class="mb-8">
+          Search Filters
+        </Subtitle>
+
+        <CharacterSelection
+          ref="characterSelect"
+          :characters="characters"
+          @characterSelected="filterByCharacter"
+        />
+
+        <div class="pathfinder-wotr-builds__build-filters">
+          <div class="build-filters__row">
+            <AutoComplete
+              v-model="filters.classes"
+              :items="classes"
+              :item-text="'name'"
+              :item-value="'id'"
+              :label="'Classes'"
+              multiple
+              chips
+              small-chips
+              deletable-chips
+            />
+
+            <AutoComplete
+              v-model="filters.subclasses"
+              :items="subclasses"
+              :item-text="'name'"
+              :item-value="'id'"
+              :disabled="!areClassesSelected"
+              :label="'Subclasses'"
+              multiple
+              chips
+              small-chips
+              deletable-chips
+            />
+
+            <AutoComplete
+              v-model="filters.mythic"
+              :items="mythicPaths"
+              :item-text="'name'"
+              :item-value="'id'"
+              :label="'Mythic Path'"
+              multiple
+              chips
+              small-chips
+              deletable-chips
+            />
+
+            <AutoComplete
+              v-model="filters.tags"
+              :items="buildTags"
+              :item-text="'name'"
+              :item-value="'id'"
+              :label="'Tags'"
+              multiple
+              chips
+              small-chips
+              deletable-chips
+            />
+          </div>
+        </div>
+        <div class="w-full flex justify-between px-4">
+          <Button :secondary="true" @click="onClickResetFilters">
+            Reset Filters
+          </Button>
+
+          <Button @click="onClickApplyFilters">
+            Apply Filters
+          </Button>
+        </div>
+      </ContentPanel>
+
+      <ContentPanel class="mt-16">
+        <div class="flex justify-between items-center px-4 mb-8">
+          <Subtitle>
+            Builds
+          </Subtitle>
+          <div>
+            <Button :disabled="false" @click="onClickCreateBuild"
+              >Create Build</Button
+            >
+            <span v-if="false" class="block text-xs ml-2 mt-1"
+              >You must be logged in to create a build.</span
+            >
+          </div>
+        </div>
+
+        <BuildCard v-for="(card, index) in test" :key="`build-card-${index}`" />
+      </ContentPanel>
+    </div>
   </NavigationLayout>
 </template>
 
@@ -139,8 +175,11 @@ export default class PathfinderWOTR extends Vue {
     console.log("onClickApplyFilters");
   }
 
+  protected onClickCreateBuild(): void {
+    this.$router.push({ path: "pathfinder-wotr/create-build" });
+  }
+
   protected onClickResetFilters(): void {
-    console.log("onClickResetFilters");
     this.filters = {
       game: this.gameId,
       character: 0,

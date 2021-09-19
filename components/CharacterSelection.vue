@@ -1,8 +1,12 @@
 <template>
-  <v-sheet class="m-1 ml-auto mr-auto" elevation="0" max-width="800">
+  <v-sheet
+    class="m-1 ml-auto mr-auto bg-transparent character-select-container"
+    color="transparent"
+    max-width="800"
+  >
     <v-slide-group
       v-model="selectedCharacter"
-      class="p-1 bg-theme-gray"
+      class="p-1 bg-transparent"
       show-arrows
     >
       <v-slide-item
@@ -16,7 +20,7 @@
               <div
                 @click="onClickCharacter(index)"
                 class="character-select-icon"
-                :class="active ? 'bg-theme-gray' : 'opacity-25'"
+                :class="active ? 'bg-transparent' : 'opacity-25'"
               >
                 <!-- TODO: Fill lazy -->
                 <!-- lazy-src="https://picsum.photos/id/11/10/6" -->
@@ -91,6 +95,20 @@ export interface ICharacterSelection extends Vue {
   .character-select-icon__image {
     // border-radius: 50%;
     @apply rounded-full;
+  }
+}
+
+.character-select-container {
+  ::v-deep .theme--dark.v-sheet {
+    @apply bg-transparent;
+  }
+
+  ::v-deep .v-sheet {
+    @apply bg-transparent;
+  }
+
+  ::v-deep .theme--dark.v-application {
+    @apply bg-transparent;
   }
 }
 </style>

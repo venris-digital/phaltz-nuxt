@@ -6,10 +6,6 @@
     class="phaltz-autocomplete-input mx-2"
     dense
     clearable
-    chips
-    small-chips
-    multiple
-    deletable-chips
   ></v-autocomplete>
 </template>
 

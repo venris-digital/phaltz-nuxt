@@ -1,7 +1,7 @@
 <template>
   <NuxtLink :to="{ path: `/pathfinder-wotr/builds/${123}` }">
     <div
-      class="my-8 rounded-md p-8 bg-theme-gray-variant flex justify-start items-center cursor cursor-pointer hover:bg-theme-gray-variant-lighter"
+      class="my-8 rounded-md p-8 bg-gradient-to-r from-theme-gray to-theme-gray-variant flex justify-start items-center cursor cursor-pointer"
     >
       <div
         class="h-full flex justify-center items-center w-1/12 mr-4 cursor-default"
