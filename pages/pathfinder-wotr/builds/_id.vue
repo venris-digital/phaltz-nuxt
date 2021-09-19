@@ -1,14 +1,13 @@
 <template>
-  <v-app>
-    <!-- TODO: v-app here is questionable -->
-    <v-progress-circular v-if="isLoading" :value="100"></v-progress-circular>
+  <NavigationLayout>
+    <Loader v-if="isLoading" :size="50" />
 
     <div v-else class="game-builds__build-filters">
       <div class="build-filters__row">
         A Build Page
       </div>
     </div>
-  </v-app>
+  </NavigationLayout>
 </template>
 
 <script lang="ts">

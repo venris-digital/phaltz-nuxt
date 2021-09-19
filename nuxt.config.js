@@ -14,7 +14,14 @@ export default {
       { hid: "description", name: "description", content: "" },
       { name: "format-detection", content: "telephone=no" }
     ],
-    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
+    link: [
+      { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
+      {
+        rel: "stylesheet",
+        href:
+          "https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap"
+      }
+    ]
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
@@ -35,6 +42,25 @@ export default {
     "@nuxtjs/vuetify",
     "@nuxtjs/style-resources"
   ],
+
+  vuetify: {
+    treeShake: true,
+    theme: {
+      options: { customProperties: true },
+      dark: true,
+      themes: {
+        dark: {
+          primary: "#0076ed",
+          secondary: "#ffffff",
+          accent: "#383838",
+          info: "#0076ed",
+          warning: "#0076ed",
+          error: "#0076ed",
+          success: "#0076ed"
+        }
+      }
+    }
+  },
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [],

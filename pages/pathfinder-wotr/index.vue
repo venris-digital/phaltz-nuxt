@@ -1,91 +1,80 @@
 <template>
-  <v-app>
-    <!-- TODO: v-app here is questionable -->
-    <v-progress-circular v-if="isLoading" :value="100"></v-progress-circular>
+  <NavigationLayout>
+    <Loader v-if="isLoading" :size="50" />
 
-    <div v-else class="game-builds__build-filters">
-      <v-sheet class="mx-auto" elevation="8" max-width="800">
-        <!-- Need active class, and others. See API for group and item -->
-        <v-slide-group
-          v-model="slideGroup"
-          class="py-4 justify-center"
-          center-active
-          show-arrows
-          dark
-        >
-          <v-slide-item
-            v-for="character in characters"
-            :key="`character-${character.id}`"
-            v-slot="{ active, toggle }"
-          >
-            <CharacterSelectIcon
-              :character="character"
-              :active="active"
-              @click="toggle"
-              @characterSelected="filterByCharacter"
-            />
-            <!-- <v-card
-          :color="active ? 'primary' : 'grey lighten-1'"
-          class="ma-4"
-          height="200"
-          width="100"
-          @click="toggle"
-        >
-          <v-row
-            class="fill-height"
-            align="center"
-            justify="center"
-          >
-            <v-scale-transition>
-              <v-icon
-                v-if="active"
-                color="white"
-                size="48"
-                v-text="'mdi-close-circle-outline'"
-              ></v-icon>
-            </v-scale-transition>
-          </v-row>
-        </v-card> -->
-          </v-slide-item>
-        </v-slide-group>
-      </v-sheet>
+    <ContentPanel v-else>
+      <CharacterSelection
+        ref="characterSelect"
+        :characters="characters"
+        @characterSelected="filterByCharacter"
+      />
 
-      <div class="build-filters__row build-filters__row--inputs">
-        <v-select
-          v-model="filters.class"
-          :items="classes"
-          item-text="name"
-          item-value="id"
-          label="Classes"
-          class="w-1/6"
-          dense
-          clearable
-          outlined
-        ></v-select>
+      <div class="pathfinder-wotr-builds__build-filters">
+        <div class="build-filters__row">
+          <AutoComplete
+            v-model="filters.classes"
+            :items="classes"
+            :item-text="'name'"
+            :item-value="'id'"
+            :label="'Classes'"
+          />
 
-        <v-select
-          v-model="filters.tags"
-          :items="buildTags"
-          item-text="name"
-          item-value="id"
-          class="w-1/6"
-          label="Tags"
-          dense
-          clearable
-          outlined
-        ></v-select>
+          <AutoComplete
+            v-model="filters.subclasses"
+            :items="subclasses"
+            :item-text="'name'"
+            :item-value="'id'"
+            :disabled="!areClassesSelected"
+            :label="'Subclasses'"
+          />
+
+          <AutoComplete
+            v-model="filters.mythic"
+            :items="mythicPaths"
+            :item-text="'name'"
+            :item-value="'id'"
+            :label="'Mythic Path'"
+          />
+
+          <AutoComplete
+            v-model="filters.tags"
+            :items="buildTags"
+            :item-text="'name'"
+            :item-value="'id'"
+            :label="'Tags'"
+          />
+        </div>
       </div>
-    </div>
-  </v-app>
+      <div class="w-full flex justify-between px-4">
+        <Button :secondary="true" @click="onClickResetFilters">
+          Reset Filters
+        </Button>
+
+        <Button @click="onClickApplyFilters">
+          Apply Filters
+        </Button>
+      </div>
+    </ContentPanel>
+
+    <ContentPanel>
+      <h1 class="text-2xl font-theme  my-4">
+        Pathfinder: Wrath of the Righteous - Character Builds
+      </h1>
+      <BuildCard v-for="(card, index) in test" :key="`build-card-${index}`" />
+    </ContentPanel>
+  </NavigationLayout>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Vue, Component, Watch, Ref } from "vue-property-decorator";
 import MetaInfo from "vue-meta";
 import Game from "@/models/Game";
 import Class from "@/models/Class";
 import Character from "@/models/Character";
 import BuildTag from "@/models/BuildTag";
+import Subclass from "@/models/Subclass";
+import MythicPath from "@/models/MythicPath";
+import { ICharacterSelection } from "@/components/CharacterSelection.vue";
 
 @Component<PathfinderWOTR>({
   head(): MetaInfo {
@@ -96,6 +85,10 @@ import BuildTag from "@/models/BuildTag";
   }
 })
 export default class PathfinderWOTR extends Vue {
+  // Refs
+  @Ref("characterSelect")
+  protected characterSelect!: ICharacterSelection;
+
   // Class properties
   protected isLoading = true;
 
@@ -107,15 +100,22 @@ export default class PathfinderWOTR extends Vue {
 
   protected classes: Class[] = [];
 
+  protected mythicPaths: MythicPath[] = [];
+
   protected buildTags: BuildTag[] = [];
 
+  protected subclasses: Subclass[] = [];
+
   protected filters: BuildFiltersPayload = {
-    character: "",
-    class: "",
-    tags: ""
+    game: this.gameId,
+    character: 0,
+    classes: [],
+    subclasses: [],
+    tags: [],
+    mythic: null
   };
 
-  protected slideGroup: any = null;
+  protected test = [1, 2, 3, 4, 5, 6];
 
   // Lifecycle & Init
   protected mounted(): void {
@@ -128,17 +128,33 @@ export default class PathfinderWOTR extends Vue {
       this.fetchGame(),
       this.fetchCharacters(),
       this.fetchClasses(),
-      this.fetchBuildTags()
+      this.fetchBuildTags(),
+      this.fetchMythicPaths()
     ]);
     this.isLoading = false;
+  }
+
+  // Click Handlers
+  protected onClickApplyFilters(): void {
+    console.log("onClickApplyFilters");
+  }
+
+  protected onClickResetFilters(): void {
+    console.log("onClickResetFilters");
+    this.filters = {
+      game: this.gameId,
+      character: 0,
+      classes: [],
+      subclasses: [],
+      tags: [],
+      mythic: null
+    };
+    (this.$refs.characterSelect as ICharacterSelection).selectedCharacter = 0;
   }
 
   // Class Methods
   protected filterByCharacter(characterId: string): void {
     this.filters.character = characterId;
-
-    console.log(characterId);
-    console.log(this.filters.character);
   }
 
   // Async Methods
@@ -173,30 +189,56 @@ export default class PathfinderWOTR extends Vue {
       //
     }
   }
+
+  protected async fetchSubclasses(): Promise<void> {
+    try {
+      this.subclasses = await new Subclass().all();
+    } catch (error) {
+      //
+    }
+  }
+
+  protected async fetchMythicPaths(): Promise<void> {
+    try {
+      this.mythicPaths = await new MythicPath().all();
+    } catch (error) {
+      //
+    }
+  }
+
+  // Getters
+  protected get areClassesSelected(): boolean {
+    return !!this.filters.classes.length;
+  }
+
+  // Watchers
+  @Watch("filters.classes", { immediate: true, deep: true })
+  onFiltersChange(value: BuildFiltersPayload, oldValue: BuildFiltersPayload) {
+    this.fetchSubclasses();
+  }
 }
 
 interface BuildFiltersPayload {
-  character: string;
-  class: string;
-  tags: string;
+  game: number | string;
+  character: string | number;
+  classes: string[];
+  subclasses: string[];
+  tags: string[];
+  mythic: number | string | null;
 }
 </script>
 
 <style lang="scss" scoped>
-.game-builds__build-filters {
+.pathfinder-wotr-builds__build-filters {
+  @apply flex;
+  @apply flex-col;
+  @apply items-center;
+  @apply mt-8;
+
   .build-filters__row {
     @apply flex;
-    @apply w-full;
-    @apply justify-center;
-    @apply items-baseline;
-    @apply my-4;
-    @apply p-2;
-    @apply justify-evenly;
     @apply flex-wrap;
-
-    ::v-deep .v-input__slot {
-      @apply max-w-xs;
-    }
+    @apply px-1;
   }
 }
 </style>
