@@ -1,14 +1,12 @@
 <template>
-  <v-autocomplete
+  <v-text-field
     v-bind="$attrs"
     v-on="$listeners"
     outlined
-    class="phaltz-autocomplete-input mx-2"
+    class="phaltz-text-input mx-2"
     dense
     clearable
-    :allow-overflow="false"
-    eager
-  ></v-autocomplete>
+  ></v-text-field>
 </template>
 
 <script lang="ts">
@@ -23,7 +21,7 @@ export default class AutoComplete extends Vue {}
 </script>
 
 <style lang="scss" scoped>
-.phaltz-autocomplete-input {
+.phaltz-text-input {
   ::v-deep .v-input__slot {
     min-width: 300px;
   }

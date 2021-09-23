@@ -28,13 +28,33 @@ module.exports = {
       pink: colors.pink,
 
       theme: {
-        black: "#242426",
+        black: "#111827",
+        "test-black-variant-1": "#151d2e",
+        "test-black-variant-2": "#131c2e",
         "black-variant": "#19191c",
         white: "#ffffff",
         blue: "#0076ed",
         gray: "#2a2a2a",
         "gray-variant": "#363636",
         "gray-variant-lighter": "#424242"
+      },
+
+      test: {
+        black: {
+          dark: "#0a0a0c",
+          medium: "#111111",
+          light: "#111"
+        },
+        blue: {
+          darkest: "#0f0f0f",
+          variant: "#0e1114",
+          dark: "#131315",
+          medium: "#16171b",
+          light: "#14181d"
+        },
+        white: "#f9f9f9",
+        grey: "#7e7e7e",
+        cream: "#d3c7aa"
       }
     },
     spacing: {

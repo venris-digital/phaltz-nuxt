@@ -1,10 +1,13 @@
 <template>
   <NuxtLink :to="{ path: `/pathfinder-wotr/builds/${123}` }">
-    <div
+    <!-- <div
       class="my-8 rounded-md p-8 bg-gradient-to-r from-theme-gray to-theme-gray-variant flex justify-start items-center cursor cursor-pointer"
+    > -->
+    <ContentPanel
+      class="border border-white border-opacity-10 bg-gradient-to-tl from-test-black-medium to-test-blue-light shadow-lg flex justify-start items-center cursor cursor-pointer"
     >
       <div
-        class="h-full flex justify-center items-center w-1/12 mr-4 cursor-default"
+        class="h-full flex justify-center items-center mr-8 w-1/12 cursor-default"
       >
         <div class="flex flex-shrink flex-col items-center self-start">
           <v-icon class="block ">mdi-arrow-up-thick</v-icon>
@@ -80,7 +83,8 @@
           </div>
         </div>
       </div>
-    </div>
+    </ContentPanel>
+    <!-- </div> -->
   </NuxtLink>
 </template>
 

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Navigation />
+    <NavigationLayout />
   </div>
 </template>
 

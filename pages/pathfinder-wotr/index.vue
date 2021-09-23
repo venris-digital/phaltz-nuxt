@@ -6,7 +6,9 @@
         Pathfinder: Wrath of the Righteous - Character Builds
       </PageHeading>
 
-      <ContentPanel>
+      <ContentPanel
+        class="border border-white border-opacity-10 bg-gradient-to-tl from-test-black-medium to-test-blue-light shadow-lg"
+      >
         <Subtitle class="mb-8">
           Search Filters
         </Subtitle>
@@ -80,13 +82,13 @@
         </div>
       </ContentPanel>
 
-      <ContentPanel class="mt-16">
+      <ContentPanel class="mt-16 bg-transparent">
         <div class="flex justify-between items-center px-4 mb-8">
           <Subtitle>
             Builds
           </Subtitle>
-          <div>
-            <Button :disabled="false" @click="onClickCreateBuild"
+          <div class="text-right">
+            <Button :disabled="false" to="/pathfinder-wotr/create-build"
               >Create Build</Button
             >
             <span v-if="false" class="block text-xs ml-2 mt-1"

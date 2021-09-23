@@ -1,5 +1,5 @@
 import Model from "@/models/Model";
-import Build from "./Build";
+import WOTRBuild from "./WOTRBuild";
 
 export default class User extends Model {
   protected endpoint = "/users";
@@ -8,7 +8,7 @@ export default class User extends Model {
 
   public email!: string;
 
-  public builds?: Build;
+  public builds?: WOTRBuild;
 }
 
 export enum UserIncludes {

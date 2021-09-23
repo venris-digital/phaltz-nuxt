@@ -18,4 +18,9 @@ export default class Model {
     const response = await Http.get(`${this.endpoint}/${id}`);
     return response.data;
   }
+
+  public async create(payload: Record<string, any>): Promise<this> {
+    const response = await Http.post(this.endpoint, payload);
+    return response.data;
+  }
 }

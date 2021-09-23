@@ -1,6 +1,8 @@
 <template>
   <NavigationLayout>
-    <ContentPanel>
+    <ContentPanel
+      class="border border-white border-opacity-10 bg-gradient-to-tl from-test-black-medium to-test-blue-light shadow-lg"
+    >
       <PageHeading>
         Pathfinder: Wrath of the Righteous - Create A New Build
       </PageHeading>
@@ -16,7 +18,9 @@
       </p>
     </ContentPanel>
 
-    <ContentPanel>
+    <ContentPanel
+      class="border border-white border-opacity-10 bg-gradient-to-tl from-test-black-medium to-test-blue-light shadow-lg"
+    >
       <Subtitle>
         Base Ability Scores
       </Subtitle>
@@ -62,16 +66,16 @@
 
     <Loader v-if="isLoading" :size="50" />
     <div v-else>
-      <ContentPanel>
+      <ContentPanel
+        class="border border-white border-opacity-10 bg-gradient-to-tl from-test-black-medium to-test-blue-light shadow-lg"
+      >
         <Subtitle>
           Overview
         </Subtitle>
 
-        <!-- <p class="text-sm mt-2">
-          All classes that will be used in this build.
-        </p> -->
-
         <div class="flex flex-wrap mt-8">
+          <TextInput v-model="build.build_name" />
+
           <AutoComplete
             v-model="build.final_classes"
             :items="classes"
@@ -101,7 +105,7 @@
           />
 
           <AutoComplete
-            v-model="build.diety"
+            v-model="build.diety_id"
             :items="classes"
             :item-text="'name'"
             label="Diety"
@@ -109,11 +113,11 @@
           />
 
           <AutoComplete
-            v-model="build.alignment"
+            v-model="build.alignment_id"
             :items="classes"
             :item-text="'name'"
+            :item-value="'id'"
             label="Alignment"
-            :return-object="true"
           />
 
           <AutoComplete
@@ -127,25 +131,25 @@
             small-chips
             deletable-chips
           />
-
-          <v-textarea
-            class="mx-2"
-            v-model="build.summary"
-            outlined
-            dense
-            label="Build Summary"
-          >
-          </v-textarea>
         </div>
+        <v-textarea
+          class="mx-2"
+          v-model="build.summary"
+          outlined
+          dense
+          label="Build Summary"
+        >
+        </v-textarea>
       </ContentPanel>
 
       <ContentPanel
+        class="border border-white border-opacity-10 bg-gradient-to-tl from-test-black-medium to-test-blue-light shadow-lg"
         v-for="(number, index) in levelRange"
         :key="`level-container-level${number}`"
       >
         <Subtitle> Level {{ number }} </Subtitle>
 
-        <div class="flex flex-wrap mt-8">
+        <div class="flex flex-wrap justify-start mt-8">
           <AutoComplete
             v-model="build.levels[index].class"
             :items="classes"
@@ -169,41 +173,30 @@
             label="Ability Score Increase"
           />
 
-          <v-text-field
+          <AutoComplete
             v-model="build.levels[index].feats"
+            :items="abilityScores"
             label="Feats"
-            dense
-            outlined
-          ></v-text-field>
-
-          <v-text-field
-            v-model="build.levels[index].spells"
-            label="Spells"
-            dense
-            outlined
-          ></v-text-field>
-
-          <v-combobox
-            v-model="build.levels[index].spells"
-            :search-input.sync="search"
-            hide-selected
-            hint="Type and hit enter"
-            label="Add spells"
-            multiple
-            persistent-hint
-            small-chips
-            deletable-chips
           />
 
-          <v-textarea
-            class="mx-2"
-            v-model="build.levels[index].summary"
-            outlined
-            dense
-            label="Context/Clarification (displayed as introductory text for the level)"
-          >
-          </v-textarea>
+          <AutoComplete
+            v-model="build.levels[index].spells"
+            :items="abilityScores"
+            label="Spells"
+          />
         </div>
+        <TextInput
+          class="mx-2"
+          v-model="build.levels[index].summary"
+          outlined
+          dense
+          label="Notes..."
+        >
+        </TextInput>
+      </ContentPanel>
+
+      <ContentPanel class="flex justify-center">
+        <Button :disabled="!isBuildValid" @click="onClickSubmit">Submit</Button>
       </ContentPanel>
     </div>
   </NavigationLayout>
@@ -219,6 +212,7 @@ import BuildTag from "@/models/BuildTag";
 import Subclass from "@/models/Subclass";
 import MythicPath from "@/models/MythicPath";
 import { ICharacterSelection } from "@/components/CharacterSelection.vue";
+import WOTRBuild from "@/models/WOTRBuild";
 
 @Component<CreateBuild>({
   head(): MetaInfo {
@@ -304,7 +298,11 @@ export default class CreateBuild extends Vue {
   ];
 
   protected build: Record<string, any> = {
+    game_id: 1,
+    alignment_id: null,
     base_ability_scores: {},
+    build_name: "",
+    diety_id: null,
     levels: []
   };
 
@@ -326,12 +324,25 @@ export default class CreateBuild extends Vue {
   }
 
   // Click Handlers
+  protected onClickSubmit(): void {
+    if (!this.isBuildValid) {
+      return;
+    }
+    this.createBuild();
+  }
 
   // Class Methods
   protected fillLevelsArray(): void {
     this.build.levels = [];
     for (let i = 0; i < this.levelRange; i++) {
-      const level = { level: i + 1, somethingElse: [] };
+      const level = {
+        level: i + 1,
+        spells: null,
+        feats: null,
+        ability_increase: null,
+        class: null,
+        subclass: null
+      };
       this.build.levels.push(level);
     }
   }
@@ -369,9 +380,37 @@ export default class CreateBuild extends Vue {
     }
   }
 
+  protected async createBuild(): Promise<void> {
+    try {
+      const response = await new WOTRBuild().create(this.build);
+
+      this.$router.push({
+        path: "pathfinder-wotr/builds/",
+        params: { id: response.id }
+      });
+    } catch (error) {
+      //
+    }
+  }
+
   // Getters
   protected get levelRange(): number {
+    // TODO: Legend to 40.
     return 20;
+  }
+
+  protected get isBuildValid(): boolean {
+    let valid = true;
+    this.build.levels.forEach(level => {
+      if (
+        !level.class ||
+        !level.subclass ||
+        !!!(level.ability_increase || level.feats || level.spells)
+      ) {
+        valid = false;
+      }
+    });
+    return valid;
   }
 
   // Watchers

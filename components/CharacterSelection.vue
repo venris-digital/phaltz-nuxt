@@ -6,7 +6,7 @@
   >
     <v-slide-group
       v-model="selectedCharacter"
-      class="p-1 bg-transparent"
+      class="p-1 bg-transparent border border-white border-opacity-10 rounded-md shadow-lg"
       show-arrows
     >
       <v-slide-item

@@ -1,9 +1,5 @@
 <template>
-  <div
-    v-bind="$attrs"
-    v-on="$listeners"
-    class="m-4 p-4 rounded-md bg-theme-gray"
-  >
+  <div v-bind="$attrs" v-on="$listeners" class="m-4 p-4 rounded-md">
     <slot />
   </div>
 </template>
