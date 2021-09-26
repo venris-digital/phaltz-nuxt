@@ -3,7 +3,6 @@
     v-bind="$attrs"
     v-on="$listeners"
     outlined
-    class="phaltz-autocomplete-input mx-2"
     dense
     clearable
     :allow-overflow="false"

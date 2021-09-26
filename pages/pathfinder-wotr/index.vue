@@ -88,9 +88,9 @@
             Builds
           </Subtitle>
           <div class="text-right">
-            <Button :disabled="false" to="/pathfinder-wotr/create-build"
-              >Create Build</Button
-            >
+            <Button :disabled="false" to="/pathfinder-wotr/create-build">
+              Create Build
+            </Button>
             <span v-if="false" class="block text-xs ml-2 mt-1"
               >You must be logged in to create a build.</span
             >

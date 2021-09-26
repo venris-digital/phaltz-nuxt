@@ -3,7 +3,6 @@
     v-bind="$attrs"
     v-on="$listeners"
     outlined
-    class="phaltz-text-input mx-2"
     dense
     clearable
   ></v-text-field>

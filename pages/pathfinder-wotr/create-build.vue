@@ -1,5 +1,6 @@
 <template>
   <NavigationLayout>
+    <!-- Intro -->
     <ContentPanel
       class="border border-white border-opacity-10 bg-gradient-to-tl from-test-black-medium to-test-blue-light shadow-lg"
     >
@@ -18,192 +19,227 @@
       </p>
     </ContentPanel>
 
-    <ContentPanel
-      class="border border-white border-opacity-10 bg-gradient-to-tl from-test-black-medium to-test-blue-light shadow-lg"
-    >
-      <Subtitle>
-        Base Ability Scores
-      </Subtitle>
-
-      <div class="flex flex-wrap mt-8">
-        <AutoComplete
-          v-model="build.base_ability_scores.strength"
-          :items="numbers"
-          label="Strength"
-        />
-
-        <AutoComplete
-          v-model="build.base_ability_scores.dexterity"
-          :items="numbers"
-          label="Dexterity"
-        />
-
-        <AutoComplete
-          v-model="build.base_ability_scores.constitution"
-          :items="numbers"
-          label="Constitution"
-        />
-
-        <AutoComplete
-          v-model="build.base_ability_scores.intelligence"
-          :items="numbers"
-          label="Intelligence"
-        />
-
-        <AutoComplete
-          v-model="build.base_ability_scores.wisdom"
-          :items="numbers"
-          label="Wisdom"
-        />
-
-        <AutoComplete
-          v-model="build.base_ability_scores.charisma"
-          :items="numbers"
-          label="Charisma"
-        />
-      </div>
-    </ContentPanel>
-
     <Loader v-if="isLoading" :size="50" />
     <div v-else>
-      <ContentPanel
-        class="border border-white border-opacity-10 bg-gradient-to-tl from-test-black-medium to-test-blue-light shadow-lg"
-      >
-        <Subtitle>
-          Overview
-        </Subtitle>
-
-        <div class="flex flex-wrap mt-8">
-          <TextInput v-model="build.build_name" />
-
-          <AutoComplete
-            v-model="build.final_classes"
-            :items="classes"
-            :item-text="'name'"
-            label="All Clases Used"
-            :return-object="true"
-            multiple
-            chips
-            small-chips
-            deletable-chips
-          />
-
-          <AutoComplete
-            v-model="build.mythic"
-            :items="mythicPaths"
-            :item-text="'name'"
-            label="Mythic Path"
-            :return-object="true"
-          />
-
-          <AutoComplete
-            v-model="build.race"
-            :items="classes"
-            :item-text="'name'"
-            label="Race"
-            :return-object="true"
-          />
-
-          <AutoComplete
-            v-model="build.diety_id"
-            :items="classes"
-            :item-text="'name'"
-            label="Diety"
-            :return-object="true"
-          />
-
-          <AutoComplete
-            v-model="build.alignment_id"
-            :items="classes"
-            :item-text="'name'"
-            :item-value="'id'"
-            label="Alignment"
-          />
-
-          <AutoComplete
-            v-model="build.tags"
-            :items="buildTags"
-            :item-text="'name'"
-            :item-value="'id'"
-            label="Tags"
-            multiple
-            chips
-            small-chips
-            deletable-chips
-          />
-        </div>
-        <v-textarea
-          class="mx-2"
-          v-model="build.summary"
-          outlined
-          dense
-          label="Build Summary"
+      <v-form ref="buildForm" v-model="isValid">
+        <!-- Overview -->
+        <ContentPanel
+          class="border border-white border-opacity-10 bg-gradient-to-tl from-test-black-medium to-test-blue-light shadow-lg"
         >
-        </v-textarea>
+          <Subtitle>
+            Overview
+          </Subtitle>
+
+          <div class="flex flex-wrap mt-8">
+            <TextInput
+              v-model="build.build_name"
+              label="Build Name"
+              required
+              class="w-1/2 pr-1"
+              :rules="textFieldRules"
+            />
+
+            <AutoComplete
+              v-model="build.mythic_path"
+              :items="mythicPaths"
+              :item-text="'name'"
+              label="Mythic Path"
+              :return-object="true"
+              :rules="selectRules"
+              class="w-1/2 pl-1"
+              required
+            />
+
+            <AutoComplete
+              v-model="build.race"
+              :items="classes"
+              :item-text="'name'"
+              label="Race"
+              class="w-1/2 pr-1"
+              :return-object="true"
+              :rules="selectRules"
+              required
+            />
+
+            <AutoComplete
+              v-model="build.diety_id"
+              :items="classes"
+              :item-text="'name'"
+              label="Diety"
+              class="w-1/2 pl-1"
+              :return-object="true"
+              :rules="selectRules"
+              required
+            />
+
+            <AutoComplete
+              v-model="build.alignment_id"
+              :items="classes"
+              :item-text="'name'"
+              :item-value="'id'"
+              label="Alignment"
+              class="w-1/2 pr-1"
+              :rules="selectRules"
+              required
+            />
+
+            <AutoComplete
+              v-model="build.tags"
+              :items="buildTags"
+              :item-text="'name'"
+              :item-value="'id'"
+              :rules="tagsSelectRules"
+              required
+              class="w-1/2 pl-1"
+              label="Tags"
+              multiple
+              chips
+              small-chips
+              deletable-chips
+            />
+          </div>
+          <v-textarea
+            class="w-full"
+            v-model="build.summary"
+            outlined
+            dense
+            placeholder="(Optional) an overview of the build; how it plays, or any context you'd like to give to potential players that isn't well described level by level."
+            label="Build Summary"
+          >
+          </v-textarea>
+        </ContentPanel>
+
+        <!-- Ability Scores -->
+        <ContentPanel
+          class="border border-white border-opacity-10 bg-gradient-to-tl from-test-black-medium to-test-blue-light shadow-lg"
+        >
+          <Subtitle>
+            Base Ability Scores
+          </Subtitle>
+
+          <div class="flex flex-wrap mt-8">
+            <AutoComplete
+              v-model="build.base_ability_scores.strength"
+              :items="numbers"
+              label="Strength"
+              :rules="selectRules"
+              required
+              class="w-1/3 pr-1"
+            />
+
+            <AutoComplete
+              v-model="build.base_ability_scores.dexterity"
+              :items="numbers"
+              label="Dexterity"
+              :rules="selectRules"
+              required
+              class="w-1/3 px-1"
+            />
+
+            <AutoComplete
+              v-model="build.base_ability_scores.constitution"
+              :items="numbers"
+              label="Constitution"
+              :rules="selectRules"
+              required
+              class="w-1/3 pl-1"
+            />
+
+            <AutoComplete
+              v-model="build.base_ability_scores.intelligence"
+              :items="numbers"
+              label="Intelligence"
+              :rules="selectRules"
+              required
+              class="w-1/3 pr-1"
+            />
+
+            <AutoComplete
+              v-model="build.base_ability_scores.wisdom"
+              :items="numbers"
+              label="Wisdom"
+              :rules="selectRules"
+              required
+              class="w-1/3 px-1"
+            />
+
+            <AutoComplete
+              v-model="build.base_ability_scores.charisma"
+              :items="numbers"
+              label="Charisma"
+              :rules="selectRules"
+              required
+              class="w-1/3 pl-1"
+            />
+          </div>
+        </ContentPanel>
+      </v-form>
+
+      <!-- Tabs -->
+      <ContentPanel>
+        <v-tabs class="tabs">
+          <v-tab @click="tabs = 0">Lvs: 1 - 20</v-tab>
+          <v-tab :disabled="!isLegendMythicPath" @click="tabs = 1"
+            >Lvs: 21 - 40</v-tab
+          >
+          <v-tab v-if="hasPet" @click="tabs = 2">Pet</v-tab>
+          <v-tooltip top>
+            <template v-if="!hasPet" v-slot:activator="{ on, attrs }">
+              <v-icon small v-bind="attrs" v-on="on" @click="addPet"
+                >mdi-paw</v-icon
+              >
+            </template>
+            <span>Add Pet</span>
+          </v-tooltip>
+        </v-tabs>
       </ContentPanel>
 
-      <ContentPanel
-        class="border border-white border-opacity-10 bg-gradient-to-tl from-test-black-medium to-test-blue-light shadow-lg"
-        v-for="(number, index) in levelRange"
-        :key="`level-container-level${number}`"
-      >
-        <Subtitle> Level {{ number }} </Subtitle>
+      <!-- Levels - 20 -->
+      <WOTRLevel
+        v-show="tabs === 0"
+        ref="levelsToTwenty"
+        :classes="classes"
+        :startingLevel="1"
+        :subclasses="subclasses"
+        :buildTags="buildTags"
+      />
 
-        <div class="flex flex-wrap justify-start mt-8">
-          <AutoComplete
-            v-model="build.levels[index].class"
-            :items="classes"
-            :item-text="'name'"
-            label="Class"
-            :return-object="true"
-          />
+      <!-- Levels - 40 -->
+      <WOTRLevel
+        v-show="tabs === 1"
+        ref="levelsTwentyToForty"
+        :classes="classes"
+        :startingLevel="21"
+        :subclasses="subclasses"
+        :buildTags="buildTags"
+      />
 
-          <AutoComplete
-            v-model="build.levels[index].subclass"
-            :disabled="!build.levels[index].class"
-            :items="subclasses"
-            :item-text="'name'"
-            label="Subclass"
-            :return-object="true"
-          />
+      <!-- Pet Levels -->
+      <WOTRLevel
+        v-show="tabs === 2"
+        ref="petLevels"
+        :classes="classes"
+        :startingLevel="1"
+        :subclasses="subclasses"
+        :buildTags="buildTags"
+      />
 
-          <AutoComplete
-            v-model="build.levels[index].ability_increase"
-            :items="abilityScores"
-            label="Ability Score Increase"
-          />
-
-          <AutoComplete
-            v-model="build.levels[index].feats"
-            :items="abilityScores"
-            label="Feats"
-          />
-
-          <AutoComplete
-            v-model="build.levels[index].spells"
-            :items="abilityScores"
-            label="Spells"
-          />
-        </div>
-        <TextInput
-          class="mx-2"
-          v-model="build.levels[index].summary"
-          outlined
-          dense
-          label="Notes..."
-        >
-        </TextInput>
-      </ContentPanel>
-
+      <!-- Submission -->
       <ContentPanel class="flex justify-center">
-        <Button :disabled="!isBuildValid" @click="onClickSubmit">Submit</Button>
+        <div class="flex flex-col items-center">
+          <Button @click="onClickSubmit">Submit</Button>
+          <p class="my-4" v-if="isShowingIncompleteMessage">
+            Cannot submit as some required inputs are not filled; see flagged
+            items above.
+          </p>
+        </div>
       </ContentPanel>
     </div>
   </NavigationLayout>
 </template>
 
 <script lang="ts">
-import { Vue, Component, Watch, Ref } from "vue-property-decorator";
+import { Vue, Component, Ref } from "vue-property-decorator";
 import MetaInfo from "vue-meta";
 import Game from "@/models/Game";
 import Class from "@/models/Class";
@@ -213,6 +249,9 @@ import Subclass from "@/models/Subclass";
 import MythicPath from "@/models/MythicPath";
 import { ICharacterSelection } from "@/components/CharacterSelection.vue";
 import WOTRBuild from "@/models/WOTRBuild";
+import { numbersInRange } from "@/support/BasicValueOptions";
+import { abilityScores } from "@/support/BasicValueOptions";
+import { IWOTRLevel } from "@/components/WOTRLevel.vue";
 
 @Component<CreateBuild>({
   head(): MetaInfo {
@@ -227,8 +266,24 @@ export default class CreateBuild extends Vue {
   @Ref("characterSelect")
   protected characterSelect!: ICharacterSelection;
 
+  @Ref("buildForm")
+  protected buildForm!: IVuetifyForm;
+
+  @Ref("levelsToTwenty")
+  protected levelsToTwenty!: IWOTRLevel;
+
+  @Ref("levelsTwentyToForty")
+  protected levelsTwentyToForty!: IWOTRLevel;
+
+  @Ref("petlevels")
+  protected petlevels!: IWOTRLevel;
+
   // Class properties
+  protected isValid = false;
+
   protected isLoading = true;
+
+  protected tabs = TabItems.LevelsToTwenty;
 
   protected gameId = 1;
 
@@ -244,67 +299,36 @@ export default class CreateBuild extends Vue {
 
   protected subclasses: Subclass[] = [];
 
-  protected abilityScores = [
-    "",
-    "Strength",
-    "Dexterity",
-    "Constitution",
-    "Intelligence",
-    "Wisdom",
-    "Charisma"
+  protected textFieldRules = [
+    (v: string) => !!v || "Required: enter a value",
+    (v: string) => (v && v.length >= 10) || "Must be at least 10 characters"
   ];
 
-  protected numbers = [
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16,
-    17,
-    18,
-    19,
-    20,
-    21,
-    22,
-    23,
-    24,
-    25,
-    26,
-    27,
-    28,
-    29,
-    30,
-    31,
-    32,
-    33,
-    34,
-    35,
-    36,
-    37,
-    38,
-    39,
-    40
+  protected selectRules = [
+    (v: string | number) => !!v || "Required: select a value"
+  ];
+
+  protected multiSelectRules = [
+    (v: []) => v.length || "Required: select at least 1 value"
+  ];
+
+  protected tagsSelectRules = [
+    (v: []) =>
+      v.length > 2 || "3+ Required: Tags are the main way to categorise builds"
   ];
 
   protected build: Record<string, any> = {
     game_id: 1,
     alignment_id: null,
+    mythic_path: null,
     base_ability_scores: {},
     build_name: "",
-    diety_id: null,
-    levels: []
+    diety_id: null
   };
+
+  protected isShowingIncompleteMessage = false;
+
+  protected hasPet = false;
 
   // Lifecycle & Init
   protected mounted(): void {
@@ -313,7 +337,6 @@ export default class CreateBuild extends Vue {
 
   protected async initialize(): Promise<void> {
     this.isLoading = true;
-    this.fillLevelsArray();
     Promise.all([
       this.fetchClasses(),
       this.fetchMythicPaths(),
@@ -325,26 +348,48 @@ export default class CreateBuild extends Vue {
 
   // Click Handlers
   protected onClickSubmit(): void {
-    if (!this.isBuildValid) {
+    if (
+      !(
+        this.areBasicLevelsValid &&
+        this.areLegendLevelsValid &&
+        this.arePetLevelsValid
+      )
+    ) {
+      this.validateAll();
+      this.flagIncompleteForm();
       return;
     }
+
     this.createBuild();
   }
 
+  protected validateAll(): void {
+    console.log(this.validateAll);
+  }
+
   // Class Methods
-  protected fillLevelsArray(): void {
-    this.build.levels = [];
-    for (let i = 0; i < this.levelRange; i++) {
-      const level = {
-        level: i + 1,
-        spells: null,
-        feats: null,
-        ability_increase: null,
-        class: null,
-        subclass: null
-      };
-      this.build.levels.push(level);
-    }
+  protected addPet(): void {
+    this.hasPet = true;
+  }
+
+  protected flagIncompleteForm(): void {
+    this.isShowingIncompleteMessage = true;
+    setTimeout(() => {
+      this.isShowingIncompleteMessage = false;
+    }, 5000);
+  }
+
+  // Form Methods
+  protected validate(): boolean {
+    return this.buildForm.validate();
+  }
+
+  protected reset(): void {
+    this.buildForm.reset();
+  }
+
+  protected resetValidation(): void {
+    this.buildForm.resetValidation();
   }
 
   // Async Methods
@@ -394,33 +439,56 @@ export default class CreateBuild extends Vue {
   }
 
   // Getters
-  protected get levelRange(): number {
-    // TODO: Legend to 40.
-    return 20;
+  protected get numbers(): number[] {
+    return numbersInRange;
   }
 
-  protected get isBuildValid(): boolean {
-    let valid = true;
-    this.build.levels.forEach(level => {
-      if (
-        !level.class ||
-        !level.subclass ||
-        !!!(level.ability_increase || level.feats || level.spells)
-      ) {
-        valid = false;
-      }
-    });
-    return valid;
+  protected get abilityScores(): string[] {
+    return abilityScores;
+  }
+
+  protected get isLegendMythicPath(): boolean {
+    return !!(this.build.mythic_path?.id == 2);
+  }
+
+  protected get areBasicLevelsValid(): boolean {
+    return !!(this.isValid && this.levelsToTwenty.isValid);
+  }
+
+  protected get arePetLevelsValid(): boolean {
+    return !!(!this.hasPet || this.petlevels.isValid);
+  }
+
+  protected get areLegendLevelsValid(): boolean {
+    return !!(!this.isLegendMythicPath || this.levelsTwentyToForty.isValid);
   }
 
   // Watchers
-  @Watch("levelRange", { immediate: true, deep: true })
-  onFiltersChange(value: number, oldValue: number) {
-    if (value !== oldValue) {
-      this.fillLevelsArray();
-    }
-  }
+}
+
+interface IVuetifyForm {
+  validate: () => boolean;
+  reset: () => void;
+  resetValidation: () => void;
+}
+
+enum TabItems {
+  LevelsToTwenty = 0,
+  LevelsTwentyToForty = 1,
+  Pet = 2
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+
+.tabs ::v-deep .v-tabs-bar {
+  background-color: transparent !important;
+}
+</style>
