@@ -27,6 +27,7 @@
               :item-text="'name'"
               :item-value="'id'"
               :label="'Classes'"
+              class="w-1/3 pr-1"
               multiple
               chips
               small-chips
@@ -40,6 +41,7 @@
               :item-value="'id'"
               :disabled="!areClassesSelected"
               :label="'Subclasses'"
+              class="w-1/3 px-1"
               multiple
               chips
               small-chips
@@ -52,6 +54,7 @@
               :item-text="'name'"
               :item-value="'id'"
               :label="'Mythic Path'"
+              class="w-1/3 pl-1"
               multiple
               chips
               small-chips
@@ -64,6 +67,7 @@
               :item-text="'name'"
               :item-value="'id'"
               :label="'Tags'"
+              class="w-full"
               multiple
               chips
               small-chips
@@ -77,7 +81,7 @@
           </Button>
 
           <Button @click="onClickApplyFilters">
-            Apply Filters
+            Search
           </Button>
         </div>
       </ContentPanel>

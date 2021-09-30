@@ -183,13 +183,19 @@
             >Lvs: 21 - 40</v-tab
           >
           <v-tab v-if="hasPet" @click="tabs = 2">Pet</v-tab>
+
           <v-tooltip top>
-            <template v-if="!hasPet" v-slot:activator="{ on, attrs }">
-              <v-icon small v-bind="attrs" v-on="on" @click="addPet"
-                >mdi-paw</v-icon
+            <template v-slot:activator="{ on, attrs }">
+              <v-icon
+                class="ml-8"
+                small
+                v-bind="attrs"
+                v-on="on"
+                @click="toggleHasPet"
+                >{{ hasPet ? "mdi-paw-off" : "mdi-paw" }}</v-icon
               >
             </template>
-            <span>Add Pet</span>
+            <span>{{ hasPet ? "Remove Pet" : "Add Pet" }}</span>
           </v-tooltip>
         </v-tabs>
       </ContentPanel>
@@ -202,6 +208,8 @@
         :startingLevel="1"
         :subclasses="subclasses"
         :buildTags="buildTags"
+        :spells="spells"
+        :feats="feats"
       />
 
       <!-- Levels - 40 -->
@@ -212,6 +220,8 @@
         :startingLevel="21"
         :subclasses="subclasses"
         :buildTags="buildTags"
+        :spells="spells"
+        :feats="feats"
       />
 
       <!-- Pet Levels -->
@@ -222,6 +232,8 @@
         :startingLevel="1"
         :subclasses="subclasses"
         :buildTags="buildTags"
+        :spells="spells"
+        :feats="feats"
       />
 
       <!-- Submission -->
@@ -232,6 +244,7 @@
             Cannot submit as some required inputs are not filled; see flagged
             items above.
           </p>
+          <Button @click="createBuildPayload">Test Button</Button>
         </div>
       </ContentPanel>
     </div>
@@ -246,6 +259,8 @@ import Class from "@/models/Class";
 import Character from "@/models/Character";
 import BuildTag from "@/models/BuildTag";
 import Subclass from "@/models/Subclass";
+import Spell from "@/models/Spell";
+import Feat from "@/models/Feat";
 import MythicPath from "@/models/MythicPath";
 import { ICharacterSelection } from "@/components/CharacterSelection.vue";
 import WOTRBuild from "@/models/WOTRBuild";
@@ -255,7 +270,7 @@ import { IWOTRLevel } from "@/components/WOTRLevel.vue";
 
 @Component<CreateBuild>({
   head(): MetaInfo {
-    return { title: `Pathfinder WotR Build Guides: Phaltz.com` };
+    return { title: `Pathfinder WotR Create Build Guide: Phaltz.com` };
   },
   components: {
     //
@@ -299,6 +314,10 @@ export default class CreateBuild extends Vue {
 
   protected subclasses: Subclass[] = [];
 
+  protected spells: Spell[] = [];
+
+  protected feats: Feat[] = [];
+
   protected textFieldRules = [
     (v: string) => !!v || "Required: enter a value",
     (v: string) => (v && v.length >= 10) || "Must be at least 10 characters"
@@ -337,11 +356,13 @@ export default class CreateBuild extends Vue {
 
   protected async initialize(): Promise<void> {
     this.isLoading = true;
-    Promise.all([
+    await Promise.all([
       this.fetchClasses(),
       this.fetchMythicPaths(),
       this.fetchBuildTags(),
-      this.fetchSubclasses()
+      this.fetchSubclasses(),
+      this.fetchSpells(),
+      this.fetchFeats()
     ]);
     this.isLoading = false;
   }
@@ -364,19 +385,26 @@ export default class CreateBuild extends Vue {
   }
 
   protected validateAll(): void {
-    console.log(this.validateAll);
+    this.buildForm.validate();
+    (this.$refs.levelsToTwenty as IWOTRLevel).validate();
+    if (this.hasPet) {
+      (this.$refs.petLevels as IWOTRLevel).validate();
+    }
+    if (this.isLegendMythicPath) {
+      (this.$refs.levelsTwentyToForty as IWOTRLevel).validate();
+    }
   }
 
   // Class Methods
-  protected addPet(): void {
-    this.hasPet = true;
+  protected toggleHasPet(): void {
+    this.hasPet = !this.hasPet;
   }
 
   protected flagIncompleteForm(): void {
     this.isShowingIncompleteMessage = true;
     setTimeout(() => {
       this.isShowingIncompleteMessage = false;
-    }, 5000);
+    }, 6000);
   }
 
   // Form Methods
@@ -425,6 +453,22 @@ export default class CreateBuild extends Vue {
     }
   }
 
+  protected async fetchSpells(): Promise<void> {
+    try {
+      this.spells = await new Spell().all();
+    } catch (error) {
+      //
+    }
+  }
+
+  protected async fetchFeats(): Promise<void> {
+    try {
+      this.feats = await new Feat().all();
+    } catch (error) {
+      //
+    }
+  }
+
   protected async createBuild(): Promise<void> {
     try {
       const response = await new WOTRBuild().create(this.build);
@@ -436,6 +480,32 @@ export default class CreateBuild extends Vue {
     } catch (error) {
       //
     }
+  }
+
+  protected createBuildPayload(): any {
+    return {
+      name: this.build.build_name || "",
+      tags: this.build.tags || [],
+      classess: this.evaluateUniqueClasses(),
+      mythic_path: this.build.mythic_path,
+      characters: [1]
+    };
+  }
+
+  // THIS IS WHERE YOU LEFT OFF
+  // GET BUILD CREATE
+  // THEN STORE THE ID
+  // THEN LOOP OVER AND CREATE LEVELS
+
+  protected evaluateUniqueClasses(): any {
+    const levelsToTwenty = (this.$refs
+      .levelsToTwenty as IWOTRLevel).uniqueClassIds();
+    const levelsTwentyToForty = (this.$refs
+      .levelsTwentyToForty as IWOTRLevel).uniqueClassIds();
+
+    return this.isLegendMythicPath
+      ? [...new Set(levelsToTwenty.concat(levelsTwentyToForty))]
+      : levelsToTwenty;
   }
 
   // Getters
@@ -456,11 +526,11 @@ export default class CreateBuild extends Vue {
   }
 
   protected get arePetLevelsValid(): boolean {
-    return !!(!this.hasPet || this.petlevels.isValid);
+    return !!(!this.hasPet || this.petlevels?.isValid);
   }
 
   protected get areLegendLevelsValid(): boolean {
-    return !!(!this.isLegendMythicPath || this.levelsTwentyToForty.isValid);
+    return !!(!this.isLegendMythicPath || this.levelsTwentyToForty?.isValid);
   }
 
   // Watchers

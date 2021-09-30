@@ -30,7 +30,7 @@
 
           <AutoComplete
             v-model="levels[index].feats"
-            :items="buildTags"
+            :items="feats"
             :item-text="'name'"
             :item-value="'id'"
             class="w-1/2 pr-1"
@@ -43,7 +43,7 @@
 
           <AutoComplete
             v-model="levels[index].spells"
-            :items="buildTags"
+            :items="spells"
             :item-text="'name'"
             :item-value="'id'"
             class="w-1/2 pl-1"
@@ -73,6 +73,8 @@ import MetaInfo from "vue-meta";
 import Class from "@/models/Class";
 import BuildTag from "@/models/BuildTag";
 import Subclass from "@/models/Subclass";
+import Spell from "@/models/Spell";
+import Feat from "@/models/Feat";
 import { IClassSubclassSelectEmit } from "~/components/ClassSubclassSelect.vue";
 import { abilityScores } from "@/support/BasicValueOptions";
 import {
@@ -106,6 +108,12 @@ export default class WOTRLevel extends Vue implements IWOTRLevel {
   protected buildTags!: BuildTag[];
 
   @Prop({ required: true })
+  protected spells!: Spell[];
+
+  @Prop({ required: true })
+  protected feats!: Feat[];
+
+  @Prop({ required: true })
   protected startingLevel!: number;
   // Class properties
   public isValid = false;
@@ -136,7 +144,7 @@ export default class WOTRLevel extends Vue implements IWOTRLevel {
 
   // Class Methods
   protected fillLevelsArray(): void {
-    [...Array(20)].forEach((number: undefined, index: number) => {
+    [...Array(20)].forEach((number: number, index: number) => {
       this.levels.push(new LevelShell(this.startingLevel + index));
     });
   }
@@ -152,6 +160,16 @@ export default class WOTRLevel extends Vue implements IWOTRLevel {
 
   protected resetValidation(): void {
     this.form.resetValidation();
+  }
+
+  public uniqueClassIds(): number[] {
+    return [
+      ...new Set(
+        this.levels
+          .filter(level => !!level.class.id)
+          .map(level => level.class.id)
+      )
+    ];
   }
 
   // Getters
@@ -174,10 +192,6 @@ export default class WOTRLevel extends Vue implements IWOTRLevel {
   protected get tagsSelectRules(): ((v: []) => boolean | string)[] {
     return tagsSelectRules;
   }
-
-  public get getLevels(): Record<string, any>[] {
-    return this.levels;
-  }
 }
 
 // Interfaces
@@ -187,10 +201,11 @@ interface IVuetifyForm {
   resetValidation: () => void;
 }
 
-export interface IWOTRLevel {
+export interface IWOTRLevel extends Vue {
   isValid: boolean;
   validate: () => boolean;
-  getLevels: Record<string, any>[];
+  getLevels?: () => Record<string, any>[];
+  uniqueClassIds: () => number[];
 }
 
 // Constructors

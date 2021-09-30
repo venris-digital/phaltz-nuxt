@@ -14,6 +14,8 @@ export default class Build extends Model {
 
   public game_id!: string;
 
+  public name!: string;
+
   public alignment!: string;
 
   public character!: Character;

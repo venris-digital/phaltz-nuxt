@@ -5,6 +5,8 @@
     <div v-else class="game-builds__build-filters">
       <div class="build-filters__row">
         A Build Page
+
+        {{ build }}
       </div>
     </div>
   </NavigationLayout>
@@ -13,6 +15,7 @@
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
 import MetaInfo from "vue-meta";
+import WOTRBuild from "~/models/WOTRBuild";
 
 @Component<PathfinderBuild>({
   head(): MetaInfo {
@@ -26,6 +29,8 @@ export default class PathfinderBuild extends Vue {
   // Class properties
   protected isLoading = true;
 
+  protected build: WOTRBuild | null = null;
+
   // Lifecycle & Init
   protected mounted(): void {
     this.initialize();
@@ -33,13 +38,20 @@ export default class PathfinderBuild extends Vue {
 
   protected async initialize(): Promise<void> {
     this.isLoading = true;
-
+    await this.fetchBuild();
     this.isLoading = false;
   }
 
   // Class Methods
 
   // Async Methods
+  protected async fetchBuild(): Promise<void> {
+    try {
+      this.build = await new WOTRBuild().find(this.$route.params.id);
+    } catch (error) {
+      //
+    }
+  }
 }
 </script>
 
