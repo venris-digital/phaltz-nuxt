@@ -237,14 +237,30 @@
       />
 
       <!-- Submission -->
-      <ContentPanel class="flex justify-center">
+      <ContentPanel
+        v-if="isUploading"
+        class="border border-white border-opacity-10 bg-gradient-to-tl from-test-black-medium to-test-blue-light shadow-lg"
+      >
+        <PageHeading>
+          "Submitting Build"
+        </PageHeading>
+
+        <p class="text-sm">
+          Thanks for submitting your build; you'll be redirected to it's build
+          page shortly. Please do not navigate away from this page.
+        </p>
+
+        <Loader class="mt-8" v-if="isLoading" :size="50" />
+      </ContentPanel>
+
+      <ContentPanel v-else class="flex justify-center">
         <div class="flex flex-col items-center">
           <Button @click="onClickSubmit">Submit</Button>
           <p class="my-4" v-if="isShowingIncompleteMessage">
             Cannot submit as some required inputs are not filled; see flagged
             items above.
           </p>
-          <Button @click="createBuildPayload">Test Button</Button>
+          <Button @click="test">Test Button</Button>
         </div>
       </ContentPanel>
     </div>
@@ -262,6 +278,7 @@ import Subclass from "@/models/Subclass";
 import Spell from "@/models/Spell";
 import Feat from "@/models/Feat";
 import MythicPath from "@/models/MythicPath";
+import WOTRLevel from "@/models/WOTRLevel";
 import { ICharacterSelection } from "@/components/CharacterSelection.vue";
 import WOTRBuild from "@/models/WOTRBuild";
 import { numbersInRange } from "@/support/BasicValueOptions";
@@ -297,6 +314,8 @@ export default class CreateBuild extends Vue {
   protected isValid = false;
 
   protected isLoading = true;
+
+  protected isUploading = false;
 
   protected tabs = TabItems.LevelsToTwenty;
 
@@ -354,6 +373,10 @@ export default class CreateBuild extends Vue {
     this.initialize();
   }
 
+  protected test(): void {
+    console.log(this.$store.state.auth);
+  }
+
   protected async initialize(): Promise<void> {
     this.isLoading = true;
     await Promise.all([
@@ -369,18 +392,17 @@ export default class CreateBuild extends Vue {
 
   // Click Handlers
   protected onClickSubmit(): void {
-    if (
-      !(
-        this.areBasicLevelsValid &&
-        this.areLegendLevelsValid &&
-        this.arePetLevelsValid
-      )
-    ) {
-      this.validateAll();
-      this.flagIncompleteForm();
-      return;
-    }
-
+    // if (
+    //   !(
+    //     this.areBasicLevelsValid() &&
+    //     this.areLegendLevelsValid() &&
+    //     this.arePetLevelsValid()
+    //   )
+    // ) {
+    //   this.validateAll();
+    //   this.flagIncompleteForm();
+    //   return;
+    // }
     this.createBuild();
   }
 
@@ -470,16 +492,60 @@ export default class CreateBuild extends Vue {
   }
 
   protected async createBuild(): Promise<void> {
+    this.isUploading = true;
     try {
-      const response = await new WOTRBuild().create(this.build);
+      const response = await new WOTRBuild().create(this.createBuildPayload());
+      const buildId = response.id;
 
-      this.$router.push({
-        path: "pathfinder-wotr/builds/",
-        params: { id: response.id }
-      });
+      const promises = (this.$refs.levelsToTwenty as IWOTRLevel)
+        .getLevels()
+        .map(level => {
+          return this.createLevel({
+            build: buildId,
+            ability_score_increase: level.ability_score_increase,
+            class: level.class.id,
+            feats: level.feats,
+            spells: level.spells,
+            subclass: level.subclass.id,
+            notes: level.notes
+          });
+        });
+
+      try {
+        await Promise.all(promises);
+      } catch (error) {
+        //
+      }
+
+      this.$router.push({ path: `/pathfinder-wotr/builds/${buildId}` });
     } catch (error) {
       //
     }
+  }
+
+  protected async createLevel(level: Record<string, any>): Promise<void> {
+    try {
+      await new WOTRLevel().create(level);
+    } catch (error) {
+      //
+    }
+  }
+
+  protected areLegendLevelsValid(): boolean {
+    return !!(
+      !this.isLegendMythicPath ||
+      (this.$refs.levelsTwentyToForty as IWOTRLevel).isValid
+    );
+  }
+
+  protected areBasicLevelsValid(): boolean {
+    return !!(
+      this.isValid && (this.$refs.levelsToTwenty as IWOTRLevel).isValid
+    );
+  }
+
+  protected arePetLevelsValid(): boolean {
+    return !!(!this.hasPet || (this.$refs.petlevels as IWOTRLevel).isValid);
   }
 
   protected createBuildPayload(): any {
@@ -487,15 +553,10 @@ export default class CreateBuild extends Vue {
       name: this.build.build_name || "",
       tags: this.build.tags || [],
       classess: this.evaluateUniqueClasses(),
-      mythic_path: this.build.mythic_path,
+      mythic_path: this.build.mythic_path.id,
       characters: [1]
     };
   }
-
-  // THIS IS WHERE YOU LEFT OFF
-  // GET BUILD CREATE
-  // THEN STORE THE ID
-  // THEN LOOP OVER AND CREATE LEVELS
 
   protected evaluateUniqueClasses(): any {
     const levelsToTwenty = (this.$refs
@@ -519,18 +580,6 @@ export default class CreateBuild extends Vue {
 
   protected get isLegendMythicPath(): boolean {
     return !!(this.build.mythic_path?.id == 2);
-  }
-
-  protected get areBasicLevelsValid(): boolean {
-    return !!(this.isValid && this.levelsToTwenty.isValid);
-  }
-
-  protected get arePetLevelsValid(): boolean {
-    return !!(!this.hasPet || this.petlevels?.isValid);
-  }
-
-  protected get areLegendLevelsValid(): boolean {
-    return !!(!this.isLegendMythicPath || this.levelsTwentyToForty?.isValid);
   }
 
   // Watchers

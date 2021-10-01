@@ -29,6 +29,8 @@
       </div>
       <div class="phaltz-navigation__footer min-h-block"></div>
     </div>
+
+    <SignUpDialog v-if="false" :display="false" />
   </v-app>
 </template>
 

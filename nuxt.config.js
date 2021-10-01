@@ -63,7 +63,30 @@ export default {
   },
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: [],
+  modules: ["@nuxtjs/axios", "@nuxtjs/auth-next"],
+
+  auth: {
+    strategies: {
+      laravelSanctum: {
+        provider: "laravel/sanctum",
+        url: "http://localhost:8000",
+        endpoints: {
+          register: {
+            url: "/api/register",
+            method: "POST"
+          },
+          login: {
+            url: "/api/login",
+            method: "POST"
+          },
+          createBuild: {
+            url: "/wotr/builds",
+            method: "POST"
+          }
+        }
+      }
+    }
+  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
@@ -82,6 +105,7 @@ export default {
   // }
 
   env: {
-    apiServer: process.env.API_SERVER
+    apiServer: process.env.API_SERVER,
+    baseServer: process.env.BASE_SERVER
   }
 };

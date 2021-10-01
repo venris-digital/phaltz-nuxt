@@ -1,5 +1,5 @@
 <template>
-  <NuxtLink :to="{ path: `/pathfinder-wotr/builds/${123}` }">
+  <NuxtLink :to="{ path: `/pathfinder-wotr/builds/${103}` }">
     <!-- <div
       class="my-8 rounded-md p-8 bg-gradient-to-r from-theme-gray to-theme-gray-variant flex justify-start items-center cursor cursor-pointer"
     > -->

@@ -22,7 +22,7 @@
           />
 
           <AutoComplete
-            v-model="levels[index].ability_increase"
+            v-model="levels[index].ability_score_increase"
             :items="abilityScores"
             label="Ability Score Increase"
             class="w-1/3 pl-1"
@@ -55,7 +55,7 @@
           />
         </div>
         <TextInput
-          v-model="levels[index].summary"
+          v-model="levels[index].notes"
           outlined
           dense
           label="Notes"
@@ -172,6 +172,10 @@ export default class WOTRLevel extends Vue implements IWOTRLevel {
     ];
   }
 
+  public getLevels(): Record<string, any>[] {
+    return this.levels;
+  }
+
   // Getters
   protected get abilityScores(): string[] {
     return abilityScores;
@@ -204,7 +208,7 @@ interface IVuetifyForm {
 export interface IWOTRLevel extends Vue {
   isValid: boolean;
   validate: () => boolean;
-  getLevels?: () => Record<string, any>[];
+  getLevels: () => Record<string, any>[];
   uniqueClassIds: () => number[];
 }
 
@@ -218,10 +222,10 @@ class LevelShell {
 
   public spells = [];
   public feats = [];
-  public ability_increase = "";
+  public ability_score_increase = "";
   public class = {};
   public subclass = {};
-  public summary = "";
+  public notes = "";
 }
 </script>
 
