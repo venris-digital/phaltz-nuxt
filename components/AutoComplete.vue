@@ -5,8 +5,8 @@
     outlined
     dense
     clearable
+    class="font-theme"
     :allow-overflow="false"
-    eager
   ></v-autocomplete>
 </template>
 

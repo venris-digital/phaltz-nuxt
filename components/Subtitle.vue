@@ -1,9 +1,7 @@
 <template>
-  <div class="pl-2 border-l-4 border-theme-blue">
-    <h2 class="text-lg font-theme my">
-      <slot />
-    </h2>
-  </div>
+  <h2 class="text-lg font-theme font-bold my">
+    <slot />
+  </h2>
 </template>
 
 <script lang="ts">

@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <div class="w-full min-h-screen flex flex-col">
+    <div class="w-full min-h-screen flex flex-col font-theme">
       <nav class="phaltz-navigation">
         <!-- <ul class="phaltz-navigation__navigation-list">
           <li class="navigation-list__item">
@@ -14,16 +14,21 @@
           </li>
         </ul> -->
         <NuxtLink to="/">
-          <v-img :src="require(`~/assets/images/phaltz.svg`)" max-width="40" />
+          <!-- <v-img :src="require(`~/assets/images/phaltz.svg`)" max-width="40" /> -->
+          <span class="font-bold uppercase text-white tracking-widest	"
+            >Phaltz</span
+          >
         </NuxtLink>
 
         <div class="">
           <Button>Sign In</Button>
-          <Button :secondary="true">Register</Button>
+          <NuxtLink to="/pathfinder-wotr/create-build">
+            <Button :secondary="true">Create Build</Button>
+          </NuxtLink>
         </div>
       </nav>
-      <div class="w-full flex-auto min-h py-4 bg-test-black-dark">
-        <div class="max-w-5xl m-auto">
+      <div class="w-full flex-auto min-h py-4 bg-copy-black">
+        <div class="max-w-9xl m-auto">
           <slot />
         </div>
       </div>
@@ -77,7 +82,7 @@ interface NavigationItem {
   @apply text-white;
   @apply w-full;
   @apply p-4;
-  @apply bg-test-black-medium;
+  @apply bg-copy-darkest-gray;
   @apply shadow-md;
   @apply flex-initial;
   @apply flex;
@@ -85,7 +90,7 @@ interface NavigationItem {
   @apply items-center;
   @apply border-b;
   @apply border-white;
-  @apply border-opacity-10;
+  @apply border-opacity-5;
 
   .phaltz-navigation__navigation-list {
     @apply flex;
@@ -98,9 +103,9 @@ interface NavigationItem {
 .phaltz-navigation__footer {
   flex: 0 1 40px;
   @apply min-h-block;
-  @apply bg-test-black-light;
+  @apply bg-copy-darkest-gray;
   @apply border-t;
   @apply border-white;
-  @apply border-opacity-10;
+  @apply border-opacity-5;
 }
 </style>

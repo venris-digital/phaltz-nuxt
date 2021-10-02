@@ -9,6 +9,7 @@
       label="Class"
       class="w-1/2 pr-1"
       :return-object="true"
+      prepend-inner-icon="mdi-layers"
     />
 
     <AutoComplete
@@ -21,6 +22,7 @@
       label="Subclass"
       class="w-1/2 pl-1"
       :return-object="true"
+      prepend-inner-icon="mdi-layers-outline"
     />
   </div>
 </template>

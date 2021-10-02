@@ -3,6 +3,7 @@
     v-bind="$attrs"
     v-on="$listeners"
     class="phaltz-button"
+    small
     :color="secondary ? 'accent' : 'primary'"
   >
     <slot />

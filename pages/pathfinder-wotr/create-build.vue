@@ -1,9 +1,7 @@
 <template>
   <NavigationLayout>
     <!-- Intro -->
-    <ContentPanel
-      class="border border-white border-opacity-10 bg-gradient-to-tl from-test-black-medium to-test-blue-light shadow-lg"
-    >
+    <ContentPanel>
       <PageHeading>
         Pathfinder: Wrath of the Righteous - Create A New Build
       </PageHeading>
@@ -23,9 +21,7 @@
     <div v-else>
       <v-form ref="buildForm" v-model="isValid">
         <!-- Overview -->
-        <ContentPanel
-          class="border border-white border-opacity-10 bg-gradient-to-tl from-test-black-medium to-test-blue-light shadow-lg"
-        >
+        <ContentPanel>
           <Subtitle>
             Overview
           </Subtitle>
@@ -37,6 +33,7 @@
               required
               class="w-1/2 pr-1"
               :rules="textFieldRules"
+              prepend-inner-icon="mdi-account-edit"
             />
 
             <AutoComplete
@@ -48,6 +45,7 @@
               :rules="selectRules"
               class="w-1/2 pl-1"
               required
+              prepend-inner-icon="mdi-state-machine"
             />
 
             <AutoComplete
@@ -59,17 +57,19 @@
               :return-object="true"
               :rules="selectRules"
               required
+              prepend-inner-icon="mdi-account-supervisor-circle"
             />
 
             <AutoComplete
-              v-model="build.diety_id"
+              v-model="build.Deity_id"
               :items="classes"
               :item-text="'name'"
-              label="Diety"
+              label="Deity"
               class="w-1/2 pl-1"
               :return-object="true"
               :rules="selectRules"
               required
+              prepend-inner-icon="mdi-dharmachakra"
             />
 
             <AutoComplete
@@ -81,6 +81,7 @@
               class="w-1/2 pr-1"
               :rules="selectRules"
               required
+              prepend-inner-icon="mdi-dots-grid"
             />
 
             <AutoComplete
@@ -96,6 +97,7 @@
               chips
               small-chips
               deletable-chips
+              prepend-inner-icon="mdi-tag-multiple"
             />
           </div>
           <v-textarea
@@ -105,14 +107,13 @@
             dense
             placeholder="(Optional) an overview of the build; how it plays, or any context you'd like to give to potential players that isn't well described level by level."
             label="Build Summary"
+            prepend-inner-icon="mdi-pencil-box"
           >
           </v-textarea>
         </ContentPanel>
 
         <!-- Ability Scores -->
-        <ContentPanel
-          class="border border-white border-opacity-10 bg-gradient-to-tl from-test-black-medium to-test-blue-light shadow-lg"
-        >
+        <ContentPanel>
           <Subtitle>
             Base Ability Scores
           </Subtitle>
@@ -125,6 +126,7 @@
               :rules="selectRules"
               required
               class="w-1/3 pr-1"
+              prepend-inner-icon="mdi-arm-flex"
             />
 
             <AutoComplete
@@ -134,6 +136,7 @@
               :rules="selectRules"
               required
               class="w-1/3 px-1"
+              prepend-inner-icon="mdi-strategy"
             />
 
             <AutoComplete
@@ -143,6 +146,7 @@
               :rules="selectRules"
               required
               class="w-1/3 pl-1"
+              prepend-inner-icon="mdi-hospital-box"
             />
 
             <AutoComplete
@@ -152,6 +156,7 @@
               :rules="selectRules"
               required
               class="w-1/3 pr-1"
+              prepend-inner-icon="mdi-school"
             />
 
             <AutoComplete
@@ -161,6 +166,7 @@
               :rules="selectRules"
               required
               class="w-1/3 px-1"
+              prepend-inner-icon="mdi-script-text"
             />
 
             <AutoComplete
@@ -170,6 +176,7 @@
               :rules="selectRules"
               required
               class="w-1/3 pl-1"
+              prepend-inner-icon="mdi-account-heart"
             />
           </div>
         </ContentPanel>
@@ -237,10 +244,7 @@
       />
 
       <!-- Submission -->
-      <ContentPanel
-        v-if="isUploading"
-        class="border border-white border-opacity-10 bg-gradient-to-tl from-test-black-medium to-test-blue-light shadow-lg"
-      >
+      <ContentPanel v-if="isUploading">
         <PageHeading>
           "Submitting Build"
         </PageHeading>
@@ -361,7 +365,7 @@ export default class CreateBuild extends Vue {
     mythic_path: null,
     base_ability_scores: {},
     build_name: "",
-    diety_id: null
+    Deity_id: null
   };
 
   protected isShowingIncompleteMessage = false;
@@ -552,7 +556,7 @@ export default class CreateBuild extends Vue {
     return {
       name: this.build.build_name || "",
       tags: this.build.tags || [],
-      classess: this.evaluateUniqueClasses(),
+      classes: this.evaluateUniqueClasses(),
       mythic_path: this.build.mythic_path.id,
       characters: [1]
     };

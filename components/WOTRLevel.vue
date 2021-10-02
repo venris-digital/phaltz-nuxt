@@ -3,7 +3,6 @@
   <div v-else>
     <v-form ref="form" v-model="isValid">
       <ContentPanel
-        class="border border-white border-opacity-10 bg-gradient-to-tl from-test-black-medium to-test-blue-light shadow-lg"
         v-for="(level, index) in levels"
         :key="`level-container-level${level.level}`"
       >
@@ -26,6 +25,7 @@
             :items="abilityScores"
             label="Ability Score Increase"
             class="w-1/3 pl-1"
+            prepend-inner-icon="mdi-plus-circle"
           />
 
           <AutoComplete
@@ -39,6 +39,7 @@
             chips
             small-chips
             deletable-chips
+            prepend-inner-icon="mdi-dlna"
           />
 
           <AutoComplete
@@ -52,6 +53,7 @@
             chips
             small-chips
             deletable-chips
+            prepend-inner-icon="mdi-fire-circle"
           />
         </div>
         <TextInput
@@ -59,6 +61,7 @@
           outlined
           dense
           label="Notes"
+          prepend-inner-icon="mdi-pencil"
           placeholder="(Optional) Any additional context you'd like to give to potential players."
         >
         </TextInput>

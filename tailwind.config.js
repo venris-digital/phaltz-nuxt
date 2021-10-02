@@ -55,6 +55,15 @@ module.exports = {
         white: "#f9f9f9",
         grey: "#7e7e7e",
         cream: "#d3c7aa"
+      },
+
+      copy: {
+        black: "#000000",
+        "dark-gray": "#2A3038",
+        "darker-gray": "#212529",
+        "darkest-gray": "#191C24",
+        highlight: "#12151E",
+        text: "#6C7293"
       }
     },
     spacing: {
@@ -313,7 +322,7 @@ module.exports = {
         '"Courier New"',
         "monospace"
       ],
-      theme: ["Montserrat"]
+      theme: ["Rubik"]
     },
     fontSize: {
       xs: ["0.75rem", { lineHeight: "1rem" }],
@@ -578,6 +587,8 @@ module.exports = {
       "5xl": "64rem",
       "6xl": "72rem",
       "7xl": "80rem",
+      "8xl": "88rem",
+      "9xl": "96rem",
       full: "100%",
       min: "min-content",
       max: "max-content",

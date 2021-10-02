@@ -1,108 +1,91 @@
 <template>
   <NavigationLayout>
+    <PageHeading class="ml-4 mb-8">
+      Pathfinder: Wrath of the Righteous - Character Builds
+    </PageHeading>
     <Loader v-if="isLoading" :size="50" />
-    <div v-else>
-      <PageHeading class="ml-4 mb-8">
-        Pathfinder: Wrath of the Righteous - Character Builds
-      </PageHeading>
-
-      <ContentPanel
-        class="border border-white border-opacity-10 bg-gradient-to-tl from-test-black-medium to-test-blue-light shadow-lg"
-      >
-        <Subtitle class="mb-8">
-          Search Filters
-        </Subtitle>
-
-        <CharacterSelection
-          ref="characterSelect"
-          :characters="characters"
-          @characterSelected="filterByCharacter"
-        />
-
-        <div class="pathfinder-wotr-builds__build-filters">
-          <div class="build-filters__row">
-            <AutoComplete
-              v-model="filters.classes"
-              :items="classes"
-              :item-text="'name'"
-              :item-value="'id'"
-              :label="'Classes'"
-              class="w-1/3 pr-1"
-              multiple
-              chips
-              small-chips
-              deletable-chips
-            />
-
-            <AutoComplete
-              v-model="filters.subclasses"
-              :items="subclasses"
-              :item-text="'name'"
-              :item-value="'id'"
-              :disabled="!areClassesSelected"
-              :label="'Subclasses'"
-              class="w-1/3 px-1"
-              multiple
-              chips
-              small-chips
-              deletable-chips
-            />
-
-            <AutoComplete
-              v-model="filters.mythic"
-              :items="mythicPaths"
-              :item-text="'name'"
-              :item-value="'id'"
-              :label="'Mythic Path'"
-              class="w-1/3 pl-1"
-              multiple
-              chips
-              small-chips
-              deletable-chips
-            />
-
-            <AutoComplete
-              v-model="filters.tags"
-              :items="buildTags"
-              :item-text="'name'"
-              :item-value="'id'"
-              :label="'Tags'"
-              class="w-full"
-              multiple
-              chips
-              small-chips
-              deletable-chips
-            />
-          </div>
-        </div>
-        <div class="w-full flex justify-between px-4">
-          <Button :secondary="true" @click="onClickResetFilters">
-            Reset Filters
-          </Button>
-
-          <Button @click="onClickApplyFilters">
-            Search
-          </Button>
-        </div>
-      </ContentPanel>
-
-      <ContentPanel class="mt-16 bg-transparent">
-        <div class="flex justify-between items-center px-4 mb-8">
-          <Subtitle>
-            Builds
+    <div class="flex" v-else>
+      <div class="w-1/4">
+        <ContentPanel>
+          <Subtitle class="mb-8">
+            Search Filters
           </Subtitle>
-          <div class="text-right">
-            <Button :disabled="false" to="/pathfinder-wotr/create-build">
-              Create Build
-            </Button>
-            <span v-if="false" class="block text-xs ml-2 mt-1"
-              >You must be logged in to create a build.</span
-            >
-          </div>
-        </div>
 
-        <BuildCard v-for="(card, index) in test" :key="`build-card-${index}`" />
-      </ContentPanel>
+          <AutoComplete
+            v-model="filters.character"
+            :items="characters"
+            :item-text="'name'"
+            :item-value="'id'"
+            :label="'Character'"
+            :eager="true"
+            prepend-inner-icon="mdi-account"
+          />
+
+          <AutoComplete
+            v-model="filters.classes"
+            :items="classes"
+            :item-text="'name'"
+            :item-value="'id'"
+            :label="'Classes'"
+            :eager="true"
+            multiple
+            chips
+            small-chips
+            deletable-chips
+            prepend-inner-icon="mdi-layers"
+          />
+
+          <AutoComplete
+            v-model="filters.mythic"
+            :items="mythicPaths"
+            :item-text="'name'"
+            :item-value="'id'"
+            :label="'Mythic Path'"
+            :eager="true"
+            multiple
+            chips
+            small-chips
+            deletable-chips
+            prepend-inner-icon="mdi-state-machine"
+          />
+
+          <AutoComplete
+            v-model="filters.tags"
+            :items="buildTags"
+            :item-text="'name'"
+            :item-value="'id'"
+            :label="'Tags'"
+            :eager="true"
+            class="w-full"
+            multiple
+            chips
+            small-chips
+            deletable-chips
+            prepend-inner-icon="mdi-tag-multiple"
+          />
+
+          <div class="w-full flex justify-between px-4">
+            <Button :secondary="true" @click="onClickResetFilters">
+              Reset Filters
+            </Button>
+
+            <Button @click="onClickApplyFilters">
+              Search
+            </Button>
+          </div>
+        </ContentPanel>
+      </div>
+
+      <Loader class="mt-20" v-if="isSearching" :size="50" />
+      <div v-else class="w-3/4">
+        <div class="w-full flex flex-wrap">
+          <BuildCard
+            class="w-1/3"
+            v-for="(card, index) in test"
+            :key="`build-card-${index}`"
+          />
+        </div>
+      </div>
     </div>
   </NavigationLayout>
 </template>
@@ -134,6 +117,8 @@ export default class PathfinderWOTR extends Vue {
   // Class properties
   protected isLoading = true;
 
+  protected isSearching = true;
+
   protected gameId = 1;
 
   protected game: Game | null = null;
@@ -157,7 +142,28 @@ export default class PathfinderWOTR extends Vue {
     mythic: null
   };
 
-  protected test = [1, 2, 3, 4, 5, 6];
+  protected test = [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20
+  ];
 
   // Lifecycle & Init
   protected mounted(): void {
@@ -166,6 +172,7 @@ export default class PathfinderWOTR extends Vue {
 
   protected async initialize(): Promise<void> {
     this.isLoading = true;
+    this.isSearching = true;
     await Promise.all([
       this.fetchGame(),
       this.fetchCharacters(),
@@ -174,6 +181,7 @@ export default class PathfinderWOTR extends Vue {
       this.fetchMythicPaths()
     ]);
     this.isLoading = false;
+    this.isSearching = false;
   }
 
   // Click Handlers
@@ -273,17 +281,4 @@ interface BuildFiltersPayload {
 }
 </script>
 
-<style lang="scss" scoped>
-.pathfinder-wotr-builds__build-filters {
-  @apply flex;
-  @apply flex-col;
-  @apply items-center;
-  @apply mt-8;
-
-  .build-filters__row {
-    @apply flex;
-    @apply flex-wrap;
-    @apply px-1;
-  }
-}
-</style>
+<style lang="scss" scoped></style>

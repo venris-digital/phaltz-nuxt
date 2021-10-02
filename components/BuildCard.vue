@@ -3,85 +3,92 @@
     <!-- <div
       class="my-8 rounded-md p-8 bg-gradient-to-r from-theme-gray to-theme-gray-variant flex justify-start items-center cursor cursor-pointer"
     > -->
-    <ContentPanel
-      class="border border-white border-opacity-10 bg-gradient-to-tl from-test-black-medium to-test-blue-light shadow-lg flex justify-start items-center cursor cursor-pointer"
-    >
-      <div
-        class="h-full flex justify-center items-center mr-8 w-1/12 cursor-default"
-      >
-        <div class="flex flex-shrink flex-col items-center self-start">
-          <v-icon class="block ">mdi-arrow-up-thick</v-icon>
-          <v-icon class="block ">mdi-arrow-down-thick</v-icon>
-        </div>
-        <span class="block font-bold">749</span>
-      </div>
+    <ContentPanel>
+      <h3 class="font-bold text-sm block font-theme text-white">
+        An Example Build Title
+      </h3>
 
-      <div class="w-11/12 ml-4">
-        <div class="w-full flex justify-between flex-wrap mb-2 items-center">
-          <span class="text-lg block font-theme">An Example Build Title</span>
+      <v-divider class="my-2 opacity-25"></v-divider>
 
-          <span class="text-xs font-bold"
-            >AUTHOR:
-            <NuxtLink class="font-normal" to="/"> Example user </NuxtLink></span
+      <div>
+        <div class="my-1">
+          <v-icon class="mr-2">mdi-account</v-icon>
+          <v-chip
+            class="mr-1 my-1"
+            small
+            color="#282a2e"
+            exact-active-class="#282a2e"
+            >Player Character</v-chip
           >
         </div>
-        <v-divider class="my-2"></v-divider>
 
-        <div class="flex flex-wrap justify-between">
-          <div class="my-1">
-            <span class="block mb-1">Classes: </span>
-            <v-chip
-              class="mr-1"
-              small
-              color="#282a2e"
-              exact-active-class="#282a2e"
-              >Wizard</v-chip
-            >
-          </div>
-
-          <div class="my-1">
-            <span class="block mb-1">Mythic Path: </span>
-            <v-chip
-              class="mr-1"
-              small
-              color="#282a2e"
-              exact-active-class="#282a2e"
-              >Lich</v-chip
-            >
-          </div>
-
-          <div class="my-1">
-            <span class="block mb-1">Tags: </span>
-            <v-chip
-              class="mr-1"
-              small
-              color="#282a2e"
-              exact-active-class="#282a2e"
-              >DPS</v-chip
-            >
-            <v-chip
-              class="mr-1"
-              small
-              color="#282a2e"
-              exact-active-class="#282a2e"
-              >Gish</v-chip
-            >
-            <v-chip
-              class="mr-1"
-              small
-              color="#282a2e"
-              exact-active-class="#282a2e"
-              >Tank</v-chip
-            >
-            <v-chip
-              class="mr-1"
-              small
-              color="#282a2e"
-              exact-active-class="#282a2e"
-              >Full Caster</v-chip
-            >
-          </div>
+        <div class="my-2">
+          <!-- <span class="block mb-1">Classes: </span> -->
+          <v-icon class="mr-2">mdi-layers</v-icon>
+          <v-chip
+            class="mr-1 my-1"
+            small
+            color="#282a2e"
+            exact-active-class="#282a2e"
+            >Wizard</v-chip
+          >
         </div>
+
+        <div class="my-2">
+          <v-icon class="mr-2">mdi-state-machine</v-icon>
+          <v-chip
+            class="mr-1 my-1"
+            small
+            color="#282a2e"
+            exact-active-class="#282a2e"
+            >Lich</v-chip
+          >
+        </div>
+
+        <div class="my-2 w-full">
+          <v-icon class="mr-2">mdi-tag-multiple</v-icon>
+          <v-chip
+            class="mr-1 my-1"
+            small
+            color="#282a2e"
+            exact-active-class="#282a2e"
+            >DPS</v-chip
+          >
+          <v-chip
+            class="mr-1 my-1"
+            small
+            color="#282a2e"
+            exact-active-class="#282a2e"
+            >Gish</v-chip
+          >
+          <v-chip
+            class="mr-1 my-1"
+            small
+            color="#282a2e"
+            exact-active-class="#282a2e"
+            >Tank</v-chip
+          >
+          <v-chip
+            class="mr-1 my-1"
+            small
+            color="#282a2e"
+            exact-active-class="#282a2e"
+            >Full Caster</v-chip
+          >
+        </div>
+      </div>
+
+      <v-divider class="my-2 opacity-25"></v-divider>
+
+      <div class="w-full flex justify-between flex-wrap items-center">
+        <span class="text-copy-text text-xs">
+          Author: Phaltz
+        </span>
+
+        <span class="text-copy-text text-xs">
+          <v-icon x-small>mdi-thumb-up</v-icon>
+          17
+        </span>
       </div>
     </ContentPanel>
     <!-- </div> -->
@@ -99,14 +106,4 @@ import { Vue, Component } from "vue-property-decorator";
 export default class Loader extends Vue {}
 </script>
 
-<style lang="scss" scoped>
-.nuxt-link-active {
-  @apply text-white;
-}
-.nuxt-link {
-  @apply text-white;
-}
-a {
-  @apply text-white;
-}
-</style>
+<style lang="scss" scoped></style>
