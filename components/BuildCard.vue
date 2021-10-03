@@ -1,11 +1,11 @@
 <template>
-  <NuxtLink :to="{ path: `/pathfinder-wotr/builds/${103}` }">
+  <NuxtLink :to="{ path: `/pathfinder-wotr/builds/${build.id}` }">
     <!-- <div
       class="my-8 rounded-md p-8 bg-gradient-to-r from-theme-gray to-theme-gray-variant flex justify-start items-center cursor cursor-pointer"
     > -->
     <ContentPanel>
       <h3 class="font-bold text-sm block font-theme text-white">
-        An Example Build Title
+        {{ build.name }}
       </h3>
 
       <v-divider class="my-2 opacity-25"></v-divider>
@@ -14,66 +14,52 @@
         <div class="my-1">
           <v-icon class="mr-2">mdi-account</v-icon>
           <v-chip
+            v-for="(character, index) in build.characters"
+            :key="`character-chip-${index}`"
             class="mr-1 my-1"
             small
             color="#282a2e"
             exact-active-class="#282a2e"
-            >Player Character</v-chip
+            >{{ character.name }}</v-chip
           >
         </div>
 
         <div class="my-2">
-          <!-- <span class="block mb-1">Classes: </span> -->
           <v-icon class="mr-2">mdi-layers</v-icon>
           <v-chip
+            v-for="(characterClass, index) in build.classes"
+            :key="`character-class-chip-${index}`"
             class="mr-1 my-1"
             small
             color="#282a2e"
             exact-active-class="#282a2e"
-            >Wizard</v-chip
+            >{{ characterClass.name }}</v-chip
           >
         </div>
 
         <div class="my-2">
           <v-icon class="mr-2">mdi-state-machine</v-icon>
           <v-chip
+            v-for="(mythic, index) in build.mythic_path"
+            :key="`mythic-chip-${index}`"
             class="mr-1 my-1"
             small
             color="#282a2e"
             exact-active-class="#282a2e"
-            >Lich</v-chip
+            >{{ mythic.name }}</v-chip
           >
         </div>
 
         <div class="my-2 w-full">
           <v-icon class="mr-2">mdi-tag-multiple</v-icon>
           <v-chip
+            v-for="(tag, index) in build.tags"
+            :key="`tag-chip-${index}`"
             class="mr-1 my-1"
             small
             color="#282a2e"
             exact-active-class="#282a2e"
-            >DPS</v-chip
-          >
-          <v-chip
-            class="mr-1 my-1"
-            small
-            color="#282a2e"
-            exact-active-class="#282a2e"
-            >Gish</v-chip
-          >
-          <v-chip
-            class="mr-1 my-1"
-            small
-            color="#282a2e"
-            exact-active-class="#282a2e"
-            >Tank</v-chip
-          >
-          <v-chip
-            class="mr-1 my-1"
-            small
-            color="#282a2e"
-            exact-active-class="#282a2e"
-            >Full Caster</v-chip
+            >{{ tag.name }}</v-chip
           >
         </div>
       </div>
@@ -96,14 +82,18 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Vue, Component, Prop } from "vue-property-decorator";
+import WOTRBuild from "@/models/WOTRBuild";
 
-@Component<Loader>({
+@Component<BuildCard>({
   components: {
     //
   }
 })
-export default class Loader extends Vue {}
+export default class BuildCard extends Vue {
+  @Prop({ required: true })
+  protected build!: WOTRBuild;
+}
 </script>
 
 <style lang="scss" scoped></style>

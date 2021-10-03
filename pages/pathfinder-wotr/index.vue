@@ -18,6 +18,10 @@
             :item-value="'id'"
             :label="'Character'"
             :eager="true"
+            multiple
+            chips
+            small-chips
+            deletable-chips
             prepend-inner-icon="mdi-account"
           />
 
@@ -81,8 +85,9 @@
         <div class="w-full flex flex-wrap">
           <BuildCard
             class="w-1/3"
-            v-for="(card, index) in test"
+            v-for="(build, index) in builds"
             :key="`build-card-${index}`"
+            :build="build"
           />
         </div>
       </div>
@@ -99,7 +104,7 @@ import Character from "@/models/Character";
 import BuildTag from "@/models/BuildTag";
 import Subclass from "@/models/Subclass";
 import MythicPath from "@/models/MythicPath";
-import { ICharacterSelection } from "@/components/CharacterSelection.vue";
+import WOTRBuild, { BuildFilters } from "@/models/WOTRBuild";
 
 @Component<PathfinderWOTR>({
   head(): MetaInfo {
@@ -111,8 +116,8 @@ import { ICharacterSelection } from "@/components/CharacterSelection.vue";
 })
 export default class PathfinderWOTR extends Vue {
   // Refs
-  @Ref("characterSelect")
-  protected characterSelect!: ICharacterSelection;
+  // @Ref("characterSelect")
+  // protected characterSelect!: ICharacterSelection;
 
   // Class properties
   protected isLoading = true;
@@ -120,6 +125,8 @@ export default class PathfinderWOTR extends Vue {
   protected isSearching = true;
 
   protected gameId = 1;
+
+  protected builds: WOTRBuild[] | null = null;
 
   protected game: Game | null = null;
 
@@ -133,13 +140,11 @@ export default class PathfinderWOTR extends Vue {
 
   protected subclasses: Subclass[] = [];
 
-  protected filters: BuildFiltersPayload = {
-    game: this.gameId,
-    character: 0,
+  protected filters: BuildFilters = {
+    characters: [],
     classes: [],
-    subclasses: [],
     tags: [],
-    mythic: null
+    mythic: []
   };
 
   protected test = [
@@ -178,16 +183,14 @@ export default class PathfinderWOTR extends Vue {
       this.fetchCharacters(),
       this.fetchClasses(),
       this.fetchBuildTags(),
-      this.fetchMythicPaths()
+      this.fetchMythicPaths(),
+      this.fetchBuilds()
     ]);
     this.isLoading = false;
     this.isSearching = false;
   }
 
   // Click Handlers
-  protected onClickApplyFilters(): void {
-    console.log("onClickApplyFilters");
-  }
 
   protected onClickCreateBuild(): void {
     this.$router.push({ path: "pathfinder-wotr/create-build" });
@@ -195,22 +198,25 @@ export default class PathfinderWOTR extends Vue {
 
   protected onClickResetFilters(): void {
     this.filters = {
-      game: this.gameId,
-      character: 0,
+      // game: this.gameId,
+      characters: [],
       classes: [],
-      subclasses: [],
       tags: [],
-      mythic: null
+      mythic: []
     };
-    (this.$refs.characterSelect as ICharacterSelection).selectedCharacter = 0;
+    // (this.$refs.characterSelect as ICharacterSelection).selectedCharacter = 0;
+    this.onClickApplyFilters();
   }
 
   // Class Methods
-  protected filterByCharacter(characterId: string): void {
-    this.filters.character = characterId;
-  }
 
   // Async Methods
+  protected async onClickApplyFilters(): Promise<void> {
+    this.isSearching = true;
+    await this.fetchBuilds();
+    this.isSearching = false;
+  }
+
   protected async fetchGame(): Promise<void> {
     try {
       this.game = await new Game().find(this.gameId);
@@ -259,6 +265,14 @@ export default class PathfinderWOTR extends Vue {
     }
   }
 
+  protected async fetchBuilds(): Promise<void> {
+    try {
+      this.builds = await new WOTRBuild().filterBuilds(this.filters);
+    } catch (error) {
+      //
+    }
+  }
+
   // Getters
   protected get areClassesSelected(): boolean {
     return !!this.filters.classes.length;
@@ -266,18 +280,9 @@ export default class PathfinderWOTR extends Vue {
 
   // Watchers
   @Watch("filters.classes", { immediate: true, deep: true })
-  onFiltersChange(value: BuildFiltersPayload, oldValue: BuildFiltersPayload) {
+  onFiltersChange(value: BuildFilters, oldValue: BuildFilters) {
     this.fetchSubclasses();
   }
-}
-
-interface BuildFiltersPayload {
-  game: number | string;
-  character: string | number;
-  classes: string[];
-  subclasses: string[];
-  tags: string[];
-  mythic: number | string | null;
 }
 </script>
 

@@ -246,15 +246,20 @@
       <!-- Submission -->
       <ContentPanel v-if="isUploading">
         <PageHeading>
-          "Submitting Build"
+          Submitting Build
         </PageHeading>
 
         <p class="text-sm">
-          Thanks for submitting your build; you'll be redirected to it's build
-          page shortly. Please do not navigate away from this page.
+          <v-icon>mdi-alert-circle</v-icon>
+          Please do not navigate away from this page.
         </p>
 
-        <Loader class="mt-8" v-if="isLoading" :size="50" />
+        <p class="text-sm">
+          Thanks for submitting your build; you'll be redirected to it's build
+          page shortly
+        </p>
+
+        <Loader class="mt-8" :size="50" />
       </ContentPanel>
 
       <ContentPanel v-else class="flex justify-center">
@@ -264,7 +269,6 @@
             Cannot submit as some required inputs are not filled; see flagged
             items above.
           </p>
-          <Button @click="test">Test Button</Button>
         </div>
       </ContentPanel>
     </div>
@@ -377,10 +381,6 @@ export default class CreateBuild extends Vue {
     this.initialize();
   }
 
-  protected test(): void {
-    console.log(this.$store.state.auth);
-  }
-
   protected async initialize(): Promise<void> {
     this.isLoading = true;
     await Promise.all([
@@ -396,17 +396,17 @@ export default class CreateBuild extends Vue {
 
   // Click Handlers
   protected onClickSubmit(): void {
-    // if (
-    //   !(
-    //     this.areBasicLevelsValid() &&
-    //     this.areLegendLevelsValid() &&
-    //     this.arePetLevelsValid()
-    //   )
-    // ) {
-    //   this.validateAll();
-    //   this.flagIncompleteForm();
-    //   return;
-    // }
+    if (
+      !(
+        this.areBasicLevelsValid() &&
+        this.areLegendLevelsValid() &&
+        this.arePetLevelsValid()
+      )
+    ) {
+      this.validateAll();
+      this.flagIncompleteForm();
+      return;
+    }
     this.createBuild();
   }
 
@@ -505,8 +505,11 @@ export default class CreateBuild extends Vue {
         .getLevels()
         .map(level => {
           return this.createLevel({
+            level: level.level.toString(),
             build: buildId,
-            ability_score_increase: level.ability_score_increase,
+            ability_score_increase: level.ability_score_increase
+              ? level.ability_score_increase.toString()
+              : null,
             class: level.class.id,
             feats: level.feats,
             spells: level.spells,
@@ -555,10 +558,30 @@ export default class CreateBuild extends Vue {
   protected createBuildPayload(): any {
     return {
       name: this.build.build_name || "",
+      strength: this.build.base_ability_scores?.strength
+        ? this.build.base_ability_scores?.strength.toString()
+        : null,
+      dexterity: this.build.base_ability_scores?.dexterity
+        ? this.build.base_ability_scores?.dexterity.toString()
+        : null,
+      constitution: this.build.base_ability_scores?.constitution
+        ? this.build.base_ability_scores?.constitution.toString()
+        : null,
+      intelligence: this.build.base_ability_scores?.intelligence
+        ? this.build.base_ability_scores?.intelligence.toString()
+        : null,
+      wisdom: this.build.base_ability_scores?.wisdom
+        ? this.build.base_ability_scores?.wisdom.toString()
+        : null,
+      charisma: this.build.base_ability_scores?.charisma
+        ? this.build.base_ability_scores?.charisma.toString()
+        : null,
+      game_id: "1",
       tags: this.build.tags || [],
       classes: this.evaluateUniqueClasses(),
       mythic_path: this.build.mythic_path.id,
-      characters: [1]
+      characters: [1],
+      summary: this.build.summary || ""
     };
   }
 

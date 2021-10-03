@@ -44,6 +44,13 @@ export default class Build extends Model {
   public summary?: string;
 
   public tags!: BuildTag[];
+
+  public filterBuilds(payload: BuildFilters): Promise<this[]> {
+    this.endpoint = `${
+      this.endpoint
+    }/filter?classes=${payload.classes.join()}&mythic=${payload.mythic.join()}&characters=${payload.characters.join()}&tags=${payload.tags.join()}`;
+    return this.all();
+  }
 }
 
 interface BuildLevel {
@@ -55,4 +62,11 @@ interface BuildLevel {
   subclass: Subclass[];
   summary?: string;
   skills?: Skill[];
+}
+
+export interface BuildFilters {
+  tags: number[];
+  classes: number[];
+  mythic: number[];
+  characters: number[];
 }
