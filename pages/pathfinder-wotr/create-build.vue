@@ -6,7 +6,7 @@
         Pathfinder: Wrath of the Righteous - Create A New Build
       </PageHeading>
 
-      <p class="text-sm">
+      <p class="text-sm text-copy-text">
         Ad mollit aliqua laborum laborum aute. Irure fugiat duis aliqua aliqua
         dolore dolor ipsum quis est adipisicing anim. Enim aute elit dolore
         adipisicing incididunt do id et nulla. Ipsum laborum et duis incididunt
@@ -183,13 +183,14 @@
       </v-form>
 
       <!-- Tabs -->
-      <ContentPanel>
+      <ContentPanel :transparent="true">
         <v-tabs class="tabs">
           <v-tab @click="tabs = 0">Lvs: 1 - 20</v-tab>
           <v-tab :disabled="!isLegendMythicPath" @click="tabs = 1"
             >Lvs: 21 - 40</v-tab
           >
-          <v-tab v-if="hasPet" @click="tabs = 2">Pet</v-tab>
+          <v-tab :disabled="isLegendMythicPath" @click="tabs = 2">Mythic</v-tab>
+          <v-tab v-if="hasPet" @click="tabs = 3">Pet</v-tab>
 
           <v-tooltip top>
             <template v-slot:activator="{ on, attrs }">
@@ -213,6 +214,7 @@
         ref="levelsToTwenty"
         :classes="classes"
         :startingLevel="1"
+        :numberOfLevels="20"
         :subclasses="subclasses"
         :buildTags="buildTags"
         :spells="spells"
@@ -225,6 +227,22 @@
         ref="levelsTwentyToForty"
         :classes="classes"
         :startingLevel="21"
+        :numberOfLevels="20"
+        :subclasses="subclasses"
+        :buildTags="buildTags"
+        :spells="spells"
+        :feats="feats"
+      />
+
+      <!-- Levels - Mythic -->
+      <WOTRLevel
+        v-show="tabs === 2"
+        ref="mythicLevels"
+        :classes="classes"
+        :mythicPaths="mythicPaths"
+        :startingLevel="1"
+        :numberOfLevels="10"
+        :levelType="'mythic'"
         :subclasses="subclasses"
         :buildTags="buildTags"
         :spells="spells"
@@ -233,10 +251,11 @@
 
       <!-- Pet Levels -->
       <WOTRLevel
-        v-show="tabs === 2"
+        v-show="tabs === 3"
         ref="petLevels"
         :classes="classes"
         :startingLevel="1"
+        :numberOfLevels="20"
         :subclasses="subclasses"
         :buildTags="buildTags"
         :spells="spells"
@@ -244,17 +263,17 @@
       />
 
       <!-- Submission -->
-      <ContentPanel v-if="isUploading">
+      <ContentPanel v-if="isUploading" class="text-copy-text">
         <PageHeading>
           Submitting Build
         </PageHeading>
 
-        <p class="text-sm">
-          <v-icon>mdi-alert-circle</v-icon>
+        <p class="text-sm flex items-center">
+          <v-icon class="mr-2">mdi-alert-circle</v-icon>
           Please do not navigate away from this page.
         </p>
 
-        <p class="text-sm">
+        <p class="text-sm mt-4">
           Thanks for submitting your build; you'll be redirected to it's build
           page shortly
         </p>
@@ -262,7 +281,11 @@
         <Loader class="mt-8" :size="50" />
       </ContentPanel>
 
-      <ContentPanel v-else class="flex justify-center">
+      <ContentPanel
+        v-else
+        :transparent="true"
+        class="flex justify-center text-copy-text"
+      >
         <div class="flex flex-col items-center">
           <Button @click="onClickSubmit">Submit</Button>
           <p class="my-4" v-if="isShowingIncompleteMessage">
@@ -315,8 +338,8 @@ export default class CreateBuild extends Vue {
   @Ref("levelsTwentyToForty")
   protected levelsTwentyToForty!: IWOTRLevel;
 
-  @Ref("petlevels")
-  protected petlevels!: IWOTRLevel;
+  @Ref("petLevels")
+  protected petLevels!: IWOTRLevel;
 
   // Class properties
   protected isValid = false;
@@ -379,6 +402,10 @@ export default class CreateBuild extends Vue {
   // Lifecycle & Init
   protected mounted(): void {
     this.initialize();
+  }
+
+  protected test(): void {
+    console.log(this.$refs.petLevels);
   }
 
   protected async initialize(): Promise<void> {
@@ -506,6 +533,7 @@ export default class CreateBuild extends Vue {
         .map(level => {
           return this.createLevel({
             level: level.level.toString(),
+            build_id: buildId.toString(),
             build: buildId,
             ability_score_increase: level.ability_score_increase
               ? level.ability_score_increase.toString()
@@ -517,6 +545,71 @@ export default class CreateBuild extends Vue {
             notes: level.notes
           });
         });
+
+      if (this.isLegendMythicPath) {
+        const levelsToForty = (this.$refs.levelsTwentyToForty as IWOTRLevel)
+          .getLevels()
+          .map(level => {
+            return this.createLevel({
+              level: level.level.toString(),
+              build_id: buildId.toString(),
+              build: buildId,
+              ability_score_increase: level.ability_score_increase
+                ? level.ability_score_increase.toString()
+                : null,
+              class: level.class.id,
+              feats: level.feats,
+              spells: level.spells,
+              subclass: level.subclass.id,
+              notes: level.notes
+            });
+          });
+
+        promises.concat(levelsToForty);
+      } else {
+        const mythicLevels = (this.$refs.mythicLevels as IWOTRLevel)
+          .getLevels()
+          .map(level => {
+            return this.createLevel({
+              level: level.level.toString(),
+              build_id: buildId.toString(),
+              build: buildId,
+              ability_score_increase: level.ability_score_increase
+                ? level.ability_score_increase.toString()
+                : null,
+              mythic_path_id: level.mythic_path.id,
+              feats: level.feats,
+              spells: level.spells,
+              notes: level.notes,
+              mythic_level: true
+            });
+          });
+
+        promises.concat(mythicLevels);
+      }
+
+      if (this.hasPet) {
+        const petLevels = (this.$refs.petLevels as IWOTRLevel)
+          .getLevels()
+          .map(level => {
+            return this.createLevel({
+              level: level.level.toString(),
+              build_id: buildId.toString(),
+              build: buildId,
+              ability_score_increase: level.ability_score_increase
+                ? level.ability_score_increase.toString()
+                : null,
+              class: level.class.id,
+              feats: level.feats,
+              spells: level.spells,
+              subclass: level.subclass.id,
+              notes: level.notes,
+              pet_level: true
+            });
+          });
+
+        promises.concat(petLevels);
+      }
 
       try {
         await Promise.all(promises);
@@ -552,7 +645,7 @@ export default class CreateBuild extends Vue {
   }
 
   protected arePetLevelsValid(): boolean {
-    return !!(!this.hasPet || (this.$refs.petlevels as IWOTRLevel).isValid);
+    return !!(!this.hasPet || (this.$refs.petLevels as IWOTRLevel).isValid);
   }
 
   protected createBuildPayload(): any {
@@ -621,7 +714,8 @@ interface IVuetifyForm {
 enum TabItems {
   LevelsToTwenty = 0,
   LevelsTwentyToForty = 1,
-  Pet = 2
+  MYTHIC = 2,
+  PET = 3
 }
 </script>
 

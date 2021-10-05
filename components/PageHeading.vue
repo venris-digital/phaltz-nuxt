@@ -1,6 +1,6 @@
 <template>
   <div class="ml-2 pl-4 border-l-4 border-theme-blue">
-    <h1 class="text-2xl font-theme font-bold my-4">
+    <h1 class="text-2xl font-theme font-bold text-copy-text my-4">
       <slot />
     </h1>
   </div>

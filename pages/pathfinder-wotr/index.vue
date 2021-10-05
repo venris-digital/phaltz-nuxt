@@ -68,7 +68,7 @@
             prepend-inner-icon="mdi-tag-multiple"
           />
 
-          <div class="w-full flex justify-between px-4">
+          <div class="w-full flex justify-between">
             <Button :secondary="true" @click="onClickResetFilters">
               Reset Filters
             </Button>
@@ -80,9 +80,9 @@
         </ContentPanel>
       </div>
 
-      <Loader class="mt-20" v-if="isSearching" :size="50" />
-      <div v-else class="w-3/4">
-        <div class="w-full flex flex-wrap">
+      <div class="w-3/4">
+        <Loader class="mt-20" v-if="isSearching" :size="50" />
+        <div v-else class="w-full flex flex-wrap">
           <BuildCard
             class="w-1/3"
             v-for="(build, index) in builds"

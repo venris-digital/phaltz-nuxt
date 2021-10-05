@@ -26,8 +26,6 @@ export default class Button extends Vue {
 
 <style lang="scss" scoped>
 .phaltz-button {
-  @apply mx-2;
-
   ::v-deep .v-btn__content {
     @apply text-xs;
   }

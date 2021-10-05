@@ -4,14 +4,14 @@
       class="my-8 rounded-md p-8 bg-gradient-to-r from-theme-gray to-theme-gray-variant flex justify-start items-center cursor cursor-pointer"
     > -->
     <ContentPanel>
-      <h3 class="font-bold text-sm block font-theme text-white">
+      <h3 class="font-bold text-sm block font-theme text-copy-text">
         {{ build.name }}
       </h3>
 
       <v-divider class="my-2 opacity-25"></v-divider>
 
       <div>
-        <div class="my-1">
+        <div class="my-1 flex flex-wrap items-center">
           <v-icon class="mr-2">mdi-account</v-icon>
           <v-chip
             v-for="(character, index) in build.characters"
@@ -24,7 +24,7 @@
           >
         </div>
 
-        <div class="my-2">
+        <div class="my-2 flex flex-wrap items-center">
           <v-icon class="mr-2">mdi-layers</v-icon>
           <v-chip
             v-for="(characterClass, index) in build.classes"
@@ -37,7 +37,7 @@
           >
         </div>
 
-        <div class="my-2">
+        <div class="my-2 flex flex-wrap items-center">
           <v-icon class="mr-2">mdi-state-machine</v-icon>
           <v-chip
             v-for="(mythic, index) in build.mythic_path"
@@ -50,7 +50,7 @@
           >
         </div>
 
-        <div class="my-2 w-full">
+        <div class="my-2 w-full flex flex-wrap items-center">
           <v-icon class="mr-2">mdi-tag-multiple</v-icon>
           <v-chip
             v-for="(tag, index) in build.tags"

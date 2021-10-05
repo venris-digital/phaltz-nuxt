@@ -9,7 +9,21 @@
         <Subtitle> Level {{ level.level }} </Subtitle>
 
         <div class="flex flex-wrap justify-start mt-8">
+          <AutoComplete
+            v-if="levelType === 'mythic'"
+            v-model="levels[index].mythic_path"
+            :items="mythicPaths"
+            :item-text="'name'"
+            label="Mythic Path"
+            :return-object="true"
+            :rules="selectRules"
+            class="w-2/3 pr-1"
+            required
+            prepend-inner-icon="mdi-state-machine"
+          />
+
           <ClassSubclassSelect
+            v-else
             :classes="classes"
             :subclasses="subclasses"
             :index="index"
@@ -78,6 +92,7 @@ import BuildTag from "@/models/BuildTag";
 import Subclass from "@/models/Subclass";
 import Spell from "@/models/Spell";
 import Feat from "@/models/Feat";
+import MythicPath from "@/models/MythicPath";
 import { IClassSubclassSelectEmit } from "~/components/ClassSubclassSelect.vue";
 import { abilityScores } from "@/support/BasicValueOptions";
 import {
@@ -104,6 +119,9 @@ export default class WOTRLevel extends Vue implements IWOTRLevel {
   @Prop({ required: true })
   protected classes!: Class[];
 
+  @Prop({ default: () => [] })
+  protected mythicPaths?: MythicPath[];
+
   @Prop({ required: true })
   protected subclasses!: Subclass[];
 
@@ -118,6 +136,13 @@ export default class WOTRLevel extends Vue implements IWOTRLevel {
 
   @Prop({ required: true })
   protected startingLevel!: number;
+
+  @Prop({ default: 20 })
+  protected numberOfLevels!: number;
+
+  @Prop({ default: "conventional" })
+  protected levelType!: LevelType;
+
   // Class properties
   public isValid = false;
 
@@ -147,7 +172,7 @@ export default class WOTRLevel extends Vue implements IWOTRLevel {
 
   // Class Methods
   protected fillLevelsArray(): void {
-    [...Array(20)].forEach((number: number, index: number) => {
+    [...Array(this.numberOfLevels)].forEach((number: number, index: number) => {
       this.levels.push(new LevelShell(this.startingLevel + index));
     });
   }
@@ -228,7 +253,15 @@ class LevelShell {
   public ability_score_increase = "";
   public class = {};
   public subclass = {};
+  public mythic_path = {};
   public notes = "";
+}
+
+// Enums
+enum LevelType {
+  CONVENTIONAL = "conventional",
+  MYTHIC = "mythic",
+  PET = "pet"
 }
 </script>
 

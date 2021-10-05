@@ -57,13 +57,31 @@ module.exports = {
         cream: "#d3c7aa"
       },
 
+      // copy: {
+      //   black: "#000000",
+      //   "dark-gray": "#2A3038",
+      //   "darker-gray": "#212529",
+      //   "darkest-gray": "#191C24",
+      //   highlight: "#12151E",
+      //   text: "#6C7293"
+      // },
+
       copy: {
-        black: "#000000",
+        black: "#111111",
         "dark-gray": "#2A3038",
         "darker-gray": "#212529",
-        "darkest-gray": "#191C24",
+        "darkest-gray": "#151515",
         highlight: "#12151E",
-        text: "#6C7293"
+        text: "#CFCFCF"
+      },
+
+      phaltz: {
+        black: "#121212",
+        background: "#212121",
+        foreground: "#323232",
+        highlight: "#12151E",
+        text: "#EEEEEE",
+        action: "#0076ed"
       }
     },
     spacing: {
@@ -589,6 +607,8 @@ module.exports = {
       "7xl": "80rem",
       "8xl": "88rem",
       "9xl": "96rem",
+      "10xl": "102rem",
+      "11xl": "110rem",
       full: "100%",
       min: "min-content",
       max: "max-content",

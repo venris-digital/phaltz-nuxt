@@ -11,7 +11,7 @@
             'border-white',
             'border-opacity-5',
             'bg-copy-darkest-gray',
-            'shadow-lg'
+            'shadow-md'
           ]
     "
   >

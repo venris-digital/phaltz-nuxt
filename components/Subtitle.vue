@@ -1,5 +1,5 @@
 <template>
-  <h2 class="text-lg font-theme font-bold my">
+  <h2 class="text-lg font-theme font-bold text-copy-text">
     <slot />
   </h2>
 </template>

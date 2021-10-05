@@ -18,6 +18,10 @@ export default class WOTRLevel extends Model {
 
   public build!: number;
 
+  public pet_level?: boolean | null;
+
+  public mythic_level?: boolean | null;
+
   public getAllByBuildId(buildId: string | number): Promise<this[]> {
     this.endpoint = `${this.endpoint}/build/${buildId}`;
     return this.all();
