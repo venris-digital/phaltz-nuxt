@@ -15,6 +15,7 @@
           ]
     "
   >
+    <Subtitle v-if="title">{{ title }}</Subtitle>
     <slot />
   </section>
 </template>
@@ -30,6 +31,9 @@ import { Vue, Component, Prop } from "vue-property-decorator";
 export default class ContentPanel extends Vue {
   @Prop({ default: false })
   protected transparent?: boolean;
+
+  @Prop({ default: null })
+  protected title?: string | null;
 }
 </script>
 

@@ -8,7 +8,7 @@
       <PageHeading>{{ build.name || "" }}</PageHeading>
       <div class="flex">
         <div class="w-1/3">
-          <ContentPanel>
+          <ContentPanel title="Overview">
             <div>
               <span class="text-copy-text text-xs">
                 Author:
@@ -33,13 +33,15 @@
                 <div class="w-1/2 mt-4 flex flex-wrap items-center">
                   <!-- <span class="mr-4">Mythic Path:</span> -->
                   <v-icon class="mr-2">mdi-state-machine</v-icon>
+
                   <v-chip
-                    v-if="build.mythic_path"
+                    v-for="(path, index) in build.mythic_path"
+                    :key="`build-mythic_path-${index}`"
                     class="mr-1 mt-1"
                     small
                     color="#282a2e"
                     exact-active-class="#282a2e"
-                    >{{ build.mythic_path[0].name }}</v-chip
+                    >{{ path.name || "" }}</v-chip
                   >
                 </div>
 
@@ -51,7 +53,7 @@
                     small
                     color="#282a2e"
                     exact-active-class="#282a2e"
-                    >Chaotic Good</v-chip
+                    >{{ build.alignment.name }}</v-chip
                   >
                 </div>
 
@@ -82,7 +84,7 @@
                     small
                     color="#282a2e"
                     exact-active-class="#282a2e"
-                    >Abadar</v-chip
+                    >{{ build.deity.name }}</v-chip
                   >
                 </div>
 
@@ -95,7 +97,7 @@
                     small
                     color="#282a2e"
                     exact-active-class="#282a2e"
-                    >Elf</v-chip
+                    >{{ build.race.name }}</v-chip
                   >
                 </div>
 
@@ -119,7 +121,7 @@
             </div>
           </ContentPanel>
 
-          <ContentPanel>
+          <ContentPanel title="Attributes">
             <div
               class="w-full mt-4 flex items-center justify-between text-copy-text"
             >
@@ -130,7 +132,10 @@
                   small
                   color="#282a2e"
                   exact-active-class="#282a2e"
-                  >18</v-chip
+                  >{{ build.strength }}</v-chip
+                >
+                <span class="font-theme text-copy-text text-xs font-bold mt-1"
+                  >STR</span
                 >
               </div>
               <div class="flex flex-col items-center">
@@ -140,7 +145,10 @@
                   small
                   color="#282a2e"
                   exact-active-class="#282a2e"
-                  >14</v-chip
+                  >{{ build.dexterity }}</v-chip
+                >
+                <span class="font-theme text-copy-text text-xs font-bold mt-1"
+                  >DEX</span
                 >
               </div>
               <div class="flex flex-col items-center">
@@ -150,7 +158,10 @@
                   small
                   color="#282a2e"
                   exact-active-class="#282a2e"
-                  >14</v-chip
+                  >{{ build.constitution }}</v-chip
+                >
+                <span class="font-theme text-copy-text text-xs font-bold mt-1"
+                  >CON</span
                 >
               </div>
               <div class="flex flex-col items-center">
@@ -160,7 +171,10 @@
                   small
                   color="#282a2e"
                   exact-active-class="#282a2e"
-                  >20</v-chip
+                  >{{ build.intelligence }}</v-chip
+                >
+                <span class="font-theme text-copy-text text-xs font-bold mt-1"
+                  >INT</span
                 >
               </div>
               <div class="flex flex-col items-center">
@@ -170,7 +184,10 @@
                   small
                   color="#282a2e"
                   exact-active-class="#282a2e"
-                  >14</v-chip
+                  >{{ build.wisdom }}</v-chip
+                >
+                <span class="font-theme text-copy-text text-xs font-bold mt-1"
+                  >WIS</span
                 >
               </div>
               <div class="flex flex-col items-center">
@@ -180,9 +197,43 @@
                   small
                   color="#282a2e"
                   exact-active-class="#282a2e"
-                  >14</v-chip
+                  >{{ build.charisma }}</v-chip
+                >
+                <span class="font-theme text-copy-text text-xs font-bold mt-1"
+                  >CHA</span
                 >
               </div>
+            </div>
+          </ContentPanel>
+
+          <ContentPanel title="Priority Skills">
+            <div class="flex items-center mt-4">
+              <v-icon class="mr-2 mt-1">mdi-dice-5</v-icon>
+              <div class="w-full flex flex-wrap items-center text-copy-text">
+                <v-chip
+                  class="mt-1 mr-1"
+                  small
+                  v-for="(skill, index) in build.skills"
+                  :key="`build-skill-${index}`"
+                  color="#282a2e"
+                  exact-active-class="#282a2e"
+                  >{{ skill.name }}</v-chip
+                >
+              </div>
+            </div>
+          </ContentPanel>
+
+          <ContentPanel v-if="build.youtube_link" title="External Media">
+            <div class="w-full flex justify-center pt-4">
+              <iframe
+                width="100%"
+                height="315"
+                :src="youTubeHelper.embedUrlFromUrl(build.youtube_link)"
+                title="YouTube video player"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+              ></iframe>
             </div>
           </ContentPanel>
         </div>
@@ -206,7 +257,7 @@
           <ContentPanel
             v-show="tabs === 0"
             v-for="(level, index) in traditionalLevels"
-            :key="`level-${index}`"
+            :key="`level-traditional-${index}`"
           >
             <div>
               <Subtitle> Level {{ level.level }} </Subtitle>
@@ -277,34 +328,21 @@
           <ContentPanel
             v-show="tabs === 1"
             v-for="(level, index) in mythicLevels"
-            :key="`level-${index}`"
+            :key="`level-mythic-${index}`"
           >
             <div>
               <Subtitle> Level {{ level.level }} </Subtitle>
               <div class="w-full flex flex-wrap text-copy-text">
-                <div class="w-1/2 mt-4 flex flex-wrap items-center">
+                <div class="w-full mt-4 flex flex-wrap items-center">
                   <!-- <span class="mr-4">Class: </span> -->
-                  <v-icon class="mr-2">mdi-layers</v-icon>
+                  <v-icon class="mr-2">mdi-state-machine</v-icon>
                   <v-chip
-                    v-if="level.class.length"
+                    v-if="level.mythic"
                     class="mr-1 mt-1"
                     small
                     color="#282a2e"
                     exact-active-class="#282a2e"
-                    >{{ level.class[0].name }}</v-chip
-                  >
-                </div>
-
-                <div class="w-1/2 mt-4 flex flex-wrap items-center">
-                  <!-- <span class="mr-4">Subclass: </span> -->
-                  <v-icon class="mr-2">mdi-layers-outline</v-icon>
-                  <v-chip
-                    v-if="level.subclass.length"
-                    class="mr-1 mt-1"
-                    small
-                    color="#282a2e"
-                    exact-active-class="#282a2e"
-                    >{{ level.subclass[0].name }}</v-chip
+                    >{{ level.mythic.name }}</v-chip
                   >
                 </div>
 
@@ -336,7 +374,10 @@
                   >
                 </div>
 
-                <div class="w-full mt-4 text-xs">
+                <div
+                  class="w-full mt-4 text-xs"
+                  :class="{ 'py-2 px-6': level.notes }"
+                >
                   {{ level.notes || "" }}
                 </div>
               </div>
@@ -344,11 +385,10 @@
           </ContentPanel>
 
           <!-- Pet Levels -->
-
           <ContentPanel
             v-show="tabs === 2"
             v-for="(level, index) in petLevels"
-            :key="`level-${index}`"
+            :key="`level-pet-${index}`"
           >
             <div>
               <Subtitle> Level {{ level.level }} </Subtitle>
@@ -424,6 +464,7 @@ import { Vue, Component } from "vue-property-decorator";
 import MetaInfo from "vue-meta";
 import WOTRBuild from "@/models/WOTRBuild";
 import WOTRLevel from "@/models/WOTRLevel";
+import { YouTubeHelper } from "@/support/YouTubeHelper";
 
 @Component<PathfinderBuild>({
   head(): MetaInfo {
@@ -446,6 +487,8 @@ export default class PathfinderBuild extends Vue {
   protected mythicLevels: WOTRLevel[] = [];
 
   protected petLevels: WOTRLevel[] = [];
+
+  protected youTubeHelper = new YouTubeHelper();
 
   protected tabs = 0;
 

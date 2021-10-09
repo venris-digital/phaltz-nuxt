@@ -1,7 +1,7 @@
 import Model from "@/models/Model";
 
-export default class Skill extends Model {
-  protected endpoint = "/skills";
+export default class Deity extends Model {
+  protected endpoint = "/deities";
 
   public name!: string;
 
@@ -12,5 +12,3 @@ export default class Skill extends Model {
     return this.all();
   }
 }
-
-export enum SkillIncludes {}

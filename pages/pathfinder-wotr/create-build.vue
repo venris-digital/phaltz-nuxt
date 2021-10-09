@@ -40,17 +40,20 @@
               v-model="build.mythic_path"
               :items="mythicPaths"
               :item-text="'name'"
-              label="Mythic Path"
-              :return-object="true"
-              :rules="selectRules"
+              :item-value="'id'"
               class="w-1/2 pl-1"
-              required
+              label="Mythic Paths"
+              :rules="multiSelectRules"
+              multiple
+              chips
+              small-chips
+              deletable-chips
               prepend-inner-icon="mdi-state-machine"
             />
 
             <AutoComplete
               v-model="build.race"
-              :items="classes"
+              :items="races"
               :item-text="'name'"
               label="Race"
               class="w-1/2 pr-1"
@@ -61,11 +64,26 @@
             />
 
             <AutoComplete
-              v-model="build.Deity_id"
-              :items="classes"
+              v-model="build.skills"
+              :items="skills"
+              :item-text="'name'"
+              :item-value="'id'"
+              class="w-1/2 pl-1"
+              label="Skills"
+              :rules="multiSelectRules"
+              multiple
+              chips
+              small-chips
+              deletable-chips
+              prepend-inner-icon="mdi-dice-5"
+            />
+
+            <AutoComplete
+              v-model="build.deity"
+              :items="deities"
               :item-text="'name'"
               label="Deity"
-              class="w-1/2 pl-1"
+              class="w-1/2 pr-1"
               :return-object="true"
               :rules="selectRules"
               required
@@ -73,12 +91,12 @@
             />
 
             <AutoComplete
-              v-model="build.alignment_id"
-              :items="classes"
+              v-model="build.alignment"
+              :items="alignments"
               :item-text="'name'"
-              :item-value="'id'"
               label="Alignment"
-              class="w-1/2 pr-1"
+              class="w-1/2 pl-1"
+              :return-object="true"
               :rules="selectRules"
               required
               prepend-inner-icon="mdi-dots-grid"
@@ -91,13 +109,20 @@
               :item-value="'id'"
               :rules="tagsSelectRules"
               required
-              class="w-1/2 pl-1"
+              class="w-1/2 pr-1"
               label="Tags"
               multiple
               chips
               small-chips
               deletable-chips
               prepend-inner-icon="mdi-tag-multiple"
+            />
+
+            <TextInput
+              v-model="build.youtube_link"
+              label="YouTube Link"
+              class="w-1/2 pl-1"
+              prepend-inner-icon="mdi-youtube"
             />
           </div>
           <v-textarea
@@ -189,7 +214,7 @@
           <v-tab :disabled="!isLegendMythicPath" @click="tabs = 1"
             >Lvs: 21 - 40</v-tab
           >
-          <v-tab :disabled="isLegendMythicPath" @click="tabs = 2">Mythic</v-tab>
+          <v-tab @click="tabs = 2">Mythic</v-tab>
           <v-tab v-if="hasPet" @click="tabs = 3">Pet</v-tab>
 
           <v-tooltip top>
@@ -315,6 +340,10 @@ import WOTRBuild from "@/models/WOTRBuild";
 import { numbersInRange } from "@/support/BasicValueOptions";
 import { abilityScores } from "@/support/BasicValueOptions";
 import { IWOTRLevel } from "@/components/WOTRLevel.vue";
+import Race from "@/models/Race";
+import Skill from "@/models/Skill";
+import Deity from "@/models/Deity";
+import Alignment from "@/models/Alignment";
 
 @Component<CreateBuild>({
   head(): MetaInfo {
@@ -368,6 +397,14 @@ export default class CreateBuild extends Vue {
 
   protected feats: Feat[] = [];
 
+  protected races: Race[] = [];
+
+  protected skills: Skill[] = [];
+
+  protected deities: Deity[] = [];
+
+  protected alignments: Alignment[] = [];
+
   protected textFieldRules = [
     (v: string) => !!v || "Required: enter a value",
     (v: string) => (v && v.length >= 10) || "Must be at least 10 characters"
@@ -388,11 +425,10 @@ export default class CreateBuild extends Vue {
 
   protected build: Record<string, any> = {
     game_id: 1,
-    alignment_id: null,
-    mythic_path: null,
+    alignment: {},
+    mythic_path: [],
     base_ability_scores: {},
-    build_name: "",
-    Deity_id: null
+    build_name: ""
   };
 
   protected isShowingIncompleteMessage = false;
@@ -416,7 +452,11 @@ export default class CreateBuild extends Vue {
       this.fetchBuildTags(),
       this.fetchSubclasses(),
       this.fetchSpells(),
-      this.fetchFeats()
+      this.fetchFeats(),
+      this.fetchRaces(),
+      this.fetchSkills(),
+      this.fetchDeities(),
+      this.fetchAlignments()
     ]);
     this.isLoading = false;
   }
@@ -517,6 +557,38 @@ export default class CreateBuild extends Vue {
   protected async fetchFeats(): Promise<void> {
     try {
       this.feats = await new Feat().all();
+    } catch (error) {
+      //
+    }
+  }
+
+  protected async fetchRaces(): Promise<void> {
+    try {
+      this.races = await new Race().all();
+    } catch (error) {
+      //
+    }
+  }
+
+  protected async fetchSkills(): Promise<void> {
+    try {
+      this.skills = await new Skill().all();
+    } catch (error) {
+      //
+    }
+  }
+
+  protected async fetchDeities(): Promise<void> {
+    try {
+      this.deities = await new Deity().all();
+    } catch (error) {
+      //
+    }
+  }
+
+  protected async fetchAlignments(): Promise<void> {
+    try {
+      this.alignments = await new Alignment().all();
     } catch (error) {
       //
     }
@@ -672,9 +744,14 @@ export default class CreateBuild extends Vue {
       game_id: "1",
       tags: this.build.tags || [],
       classes: this.evaluateUniqueClasses(),
-      mythic_path: this.build.mythic_path.id,
+      mythic_path: this.build.mythic_path,
       characters: [1],
-      summary: this.build.summary || ""
+      summary: this.build.summary || "",
+      race_id: this.build.race.id.toString() || "",
+      skills: this.build.skills || [],
+      deity_id: this.build.deity.id.toString() || "",
+      alignment_id: this.build.alignment.id.toString() || "",
+      youtube_link: this.build.youtube_link || undefined
     };
   }
 
@@ -699,7 +776,7 @@ export default class CreateBuild extends Vue {
   }
 
   protected get isLegendMythicPath(): boolean {
-    return !!(this.build.mythic_path?.id == 2);
+    return !!this.build.mythic_path.some((pathId: number) => pathId === 2);
   }
 
   // Watchers

@@ -1,7 +1,7 @@
 import Http from "@/models/Http";
 
 export default class Model {
-  public id!: string;
+  public id!: number;
 
   public created_at!: string;
 

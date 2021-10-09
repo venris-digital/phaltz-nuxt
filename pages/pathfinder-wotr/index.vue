@@ -12,7 +12,7 @@
           </Subtitle>
 
           <AutoComplete
-            v-model="filters.character"
+            v-model="filters.characters"
             :items="characters"
             :item-text="'name'"
             :item-value="'id'"
@@ -96,13 +96,12 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Watch, Ref } from "vue-property-decorator";
+import { Vue, Component } from "vue-property-decorator";
 import MetaInfo from "vue-meta";
 import Game from "@/models/Game";
 import Class from "@/models/Class";
 import Character from "@/models/Character";
 import BuildTag from "@/models/BuildTag";
-import Subclass from "@/models/Subclass";
 import MythicPath from "@/models/MythicPath";
 import WOTRBuild, { BuildFilters } from "@/models/WOTRBuild";
 
@@ -137,8 +136,6 @@ export default class PathfinderWOTR extends Vue {
   protected mythicPaths: MythicPath[] = [];
 
   protected buildTags: BuildTag[] = [];
-
-  protected subclasses: Subclass[] = [];
 
   protected filters: BuildFilters = {
     characters: [],
@@ -249,14 +246,6 @@ export default class PathfinderWOTR extends Vue {
     }
   }
 
-  protected async fetchSubclasses(): Promise<void> {
-    try {
-      this.subclasses = await new Subclass().all();
-    } catch (error) {
-      //
-    }
-  }
-
   protected async fetchMythicPaths(): Promise<void> {
     try {
       this.mythicPaths = await new MythicPath().all();
@@ -279,10 +268,6 @@ export default class PathfinderWOTR extends Vue {
   }
 
   // Watchers
-  @Watch("filters.classes", { immediate: true, deep: true })
-  onFiltersChange(value: BuildFilters, oldValue: BuildFilters) {
-    this.fetchSubclasses();
-  }
 }
 </script>
 
