@@ -21,7 +21,7 @@
         </NuxtLink>
 
         <div class="">
-          <Button class="mr-2">Sign In</Button>
+          <Button @click="onClickSignIn" class="mr-2">Sign In</Button>
           <NuxtLink to="/pathfinder-wotr/create-build">
             <Button :secondary="true">Create Build</Button>
           </NuxtLink>
@@ -35,7 +35,10 @@
       <div class="phaltz-navigation__footer bg-phaltz-black min-h-block"></div>
     </div>
 
-    <SignUpDialog v-if="false" :display="false" />
+    <SignUpDialog
+      v-if="isShowingSignUpDialog"
+      :display="isShowingSignUpDialog"
+    />
   </v-app>
 </template>
 
@@ -69,6 +72,14 @@ export default class NavigationLayout extends Vue {
         text: "Contact"
       }
     ];
+  }
+
+  protected onClickSignIn(): void {
+    this.$store.dispatch("openSignUpDialog");
+  }
+
+  protected get isShowingSignUpDialog(): boolean {
+    return this.$store.getters.isShowingSignUpDialog;
   }
 }
 

@@ -27,11 +27,26 @@
           </Subtitle>
 
           <div class="flex flex-wrap mt-8">
+            <AutoComplete
+              v-model="build.characters"
+              :items="characters"
+              :item-text="'name'"
+              :item-value="'id'"
+              class="w-1/2 pr-1"
+              label="Characters"
+              :rules="multiSelectRules"
+              multiple
+              chips
+              small-chips
+              deletable-chips
+              prepend-inner-icon="mdi-account"
+            />
+
             <TextInput
               v-model="build.build_name"
               label="Build Name"
               required
-              class="w-1/2 pr-1"
+              class="w-1/2 pl-1"
               :rules="textFieldRules"
               prepend-inner-icon="mdi-account-edit"
             />
@@ -41,7 +56,7 @@
               :items="mythicPaths"
               :item-text="'name'"
               :item-value="'id'"
-              class="w-1/2 pl-1"
+              class="w-1/2 pr-1"
               label="Mythic Paths"
               :rules="multiSelectRules"
               multiple
@@ -56,7 +71,7 @@
               :items="races"
               :item-text="'name'"
               label="Race"
-              class="w-1/2 pr-1"
+              class="w-1/2 pl-1"
               :return-object="true"
               :rules="selectRules"
               required
@@ -68,7 +83,7 @@
               :items="skills"
               :item-text="'name'"
               :item-value="'id'"
-              class="w-1/2 pl-1"
+              class="w-1/2 pr-1"
               label="Skills"
               :rules="multiSelectRules"
               multiple
@@ -83,7 +98,7 @@
               :items="deities"
               :item-text="'name'"
               label="Deity"
-              class="w-1/2 pr-1"
+              class="w-1/2 pl-1"
               :return-object="true"
               :rules="selectRules"
               required
@@ -95,11 +110,18 @@
               :items="alignments"
               :item-text="'name'"
               label="Alignment"
-              class="w-1/2 pl-1"
+              class="w-1/2 pr-1"
               :return-object="true"
               :rules="selectRules"
               required
               prepend-inner-icon="mdi-dots-grid"
+            />
+
+            <TextInput
+              v-model="build.youtube_link"
+              label="YouTube Link"
+              class="w-1/2 pl-1"
+              prepend-inner-icon="mdi-youtube"
             />
 
             <AutoComplete
@@ -109,20 +131,13 @@
               :item-value="'id'"
               :rules="tagsSelectRules"
               required
-              class="w-1/2 pr-1"
+              class="w-full"
               label="Tags"
               multiple
               chips
               small-chips
               deletable-chips
               prepend-inner-icon="mdi-tag-multiple"
-            />
-
-            <TextInput
-              v-model="build.youtube_link"
-              label="YouTube Link"
-              class="w-1/2 pl-1"
-              prepend-inner-icon="mdi-youtube"
             />
           </div>
           <v-textarea
@@ -456,7 +471,8 @@ export default class CreateBuild extends Vue {
       this.fetchRaces(),
       this.fetchSkills(),
       this.fetchDeities(),
-      this.fetchAlignments()
+      this.fetchAlignments(),
+      this.fetchCharacters()
     ]);
     this.isLoading = false;
   }
@@ -589,6 +605,14 @@ export default class CreateBuild extends Vue {
   protected async fetchAlignments(): Promise<void> {
     try {
       this.alignments = await new Alignment().all();
+    } catch (error) {
+      //
+    }
+  }
+
+  protected async fetchCharacters(): Promise<void> {
+    try {
+      this.characters = await new Character().all();
     } catch (error) {
       //
     }
@@ -745,7 +769,7 @@ export default class CreateBuild extends Vue {
       tags: this.build.tags || [],
       classes: this.evaluateUniqueClasses(),
       mythic_path: this.build.mythic_path,
-      characters: [1],
+      characters: this.build.characters || [],
       summary: this.build.summary || "",
       race_id: this.build.race.id.toString() || "",
       skills: this.build.skills || [],

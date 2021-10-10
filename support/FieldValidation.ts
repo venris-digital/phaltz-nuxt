@@ -8,7 +8,7 @@ export const selectRules = [
 ];
 
 export const multiSelectRules = [
-  (v: []) => v.length || "Required: select at least 1 value"
+  (v: []) => v.length >= 1 || "Required: select at least 1 value"
 ];
 
 export const tagsSelectRules = [

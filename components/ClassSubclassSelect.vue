@@ -55,11 +55,12 @@ export default class ClassSubclassSelect extends Vue {
 
   // Getters
   protected get filteredSubclasses(): Subclass[] {
-    return (
-      this.subclasses.filter(
-        subclass => subclass.parent_class == this.selectedClass?.id
-      ) || []
-    );
+    // return (
+    //   this.subclasses.filter(
+    //     subclass => subclass.parent_class == this.selectedClass?.id
+    //   ) || []
+    // );
+    return [];
   }
 
   // Watchers

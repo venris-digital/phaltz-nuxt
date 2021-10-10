@@ -8,7 +8,7 @@
       </template>
       <v-card>
         <v-card-title>
-          <span class="mb-16">Sign Up</span>
+          <span class="mb-4">Sign Up</span>
         </v-card-title>
         <v-card-text>
           <TextInput
@@ -17,6 +17,7 @@
             :type="'email'"
             :label="'Email'"
             :required="true"
+            :prepend-inner-icon="'mdi-email'"
           />
 
           <TextInput
@@ -25,6 +26,7 @@
             :label="'Password'"
             :type="'password'"
             :required="true"
+            :prepend-inner-icon="'mdi-lock'"
           />
 
           <TextInput
@@ -33,16 +35,23 @@
             :label="'Password Confirmation'"
             :type="'password'"
             :required="true"
+            :prepend-inner-icon="'mdi-lock-check'"
           />
 
           <TextInput
             v-model="userDetails.displayName"
             :clearable="false"
             :label="'Display Name'"
+            :prepend-inner-icon="'mdi-account-circle'"
           />
 
-          <div class="flex items-center">
-            <v-checkbox required></v-checkbox> Something something, over 18.*
+          <div class="flex items-center max-h-8">
+            <v-checkbox required></v-checkbox> Click to confirm that you have
+            read and agreed to the site's terms of use.
+          </div>
+          <div class="flex items-center max-h-8">
+            <v-checkbox required></v-checkbox> Click to confirm that you have
+            read and agreed to the site's privacy policy.
           </div>
         </v-card-text>
         <v-card-actions>
@@ -62,6 +71,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import User, { RegistrationPayload } from "@/models/User";
+import axios from "axios";
 
 @Component({})
 export default class SignUpDialog extends Vue {
@@ -69,10 +79,10 @@ export default class SignUpDialog extends Vue {
   protected display!: boolean;
 
   protected userDetails = {
-    email: "",
-    password: "",
-    passwordConfirmation: "",
-    displayName: ""
+    email: "samueljhwhite@gmail.com",
+    password: "0ShadowG949",
+    passwordConfirmation: "0ShadowG949",
+    displayName: "Phaltz"
   };
 
   protected csrf: any = "";
@@ -80,20 +90,17 @@ export default class SignUpDialog extends Vue {
   protected response: any = {};
 
   protected async onClickRegister(): Promise<void> {
-    this.$auth.loginWith("laravelSanctum", {
-      data: this.registrationPayload
+    // const response = await this.$auth.loginWith("laravelSanctum", {
+    //   data: this.registrationPayload
+    // });
+
+    await new User().createSession();
+    const token = await new User().login({
+      email: this.userDetails.email,
+      password: this.userDetails.password
     });
-
-    // try {
-    //   console.log("function called");
-    //   // this.csrf = await new User().createSession();
-
-    //   this.response = await new User()
-    //     .register()
-    //     .create(this.registrationPayload);
-    // } catch (error) {
-    //   //
-    // }
+    const user = await new User().fetchUser(token);
+    console.log(user);
   }
 
   protected closeDialog() {
@@ -110,12 +117,3 @@ export default class SignUpDialog extends Vue {
   }
 }
 </script>
-
-<style>
-.v-input {
-  font-family: "Hind", "system-ui";
-}
-.v-list {
-  font-family: "Hind", "system-ui";
-}
-</style>

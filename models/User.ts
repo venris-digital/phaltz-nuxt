@@ -1,6 +1,7 @@
 import Model from "@/models/Model";
 import WOTRBuild from "./WOTRBuild";
 import { HttpBaseServer } from "@/models/Http";
+import axios from "axios";
 
 export default class User extends Model {
   protected endpoint = "/users";
@@ -16,10 +17,23 @@ export default class User extends Model {
     return this;
   }
 
-  // public async createSession(): Promise<this[]> {
-  //   const response = await HttpBaseServer.get("/sanctum/csrf-cookie");
-  //   return response.data;
-  // }
+  public async createSession(): Promise<this[]> {
+    const response = await HttpBaseServer.get("/sanctum/csrf-cookie");
+    return response.data;
+  }
+
+  public async login(payload: LoginPayload): Promise<any> {
+    this.endpoint = "/login";
+    return this.create(payload);
+  }
+
+  public async fetchUser(token: IToken): Promise<this> {
+    return await axios.get("http://localhost:8000/api/user", {
+      headers: {
+        Authorization: `Bearer ${token.token}`
+      }
+    });
+  }
 }
 
 export enum UserIncludes {
@@ -31,4 +45,13 @@ export interface RegistrationPayload {
   password: string;
   password_confirmation: string;
   display_name: string;
+}
+
+export interface LoginPayload {
+  email: string;
+  password: string;
+}
+
+export interface IToken {
+  token: string;
 }

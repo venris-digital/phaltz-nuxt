@@ -5,7 +5,8 @@ export default axios.create({
   baseURL: process.env.apiServer,
   headers: {
     Accept: "application/json",
-    "Content-type": "application/json"
+    "Content-type": "application/json",
+    "X-Requested-With": "XMLHttpRequest"
   }
 });
 

@@ -5,7 +5,9 @@
     <!-- TODO: Why are classes & subclasses arrays -->
     <!-- TODO: Why only one tag? -->
     <div v-else>
-      <PageHeading>{{ build.name || "" }}</PageHeading>
+      <PageHeading
+        >Pathfinder: WOTR Build Guide - {{ build.name || "" }}</PageHeading
+      >
       <div class="flex">
         <div class="w-1/3">
           <ContentPanel title="Overview">
