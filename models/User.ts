@@ -28,11 +28,15 @@ export default class User extends Model {
   }
 
   public async fetchUser(token: IToken): Promise<this> {
-    return await axios.get("http://localhost:8000/api/user", {
+    console.log(token);
+    const user = await axios.get("http://localhost:8000/api/user", {
       headers: {
         Authorization: `Bearer ${token.token}`
       }
     });
+    this.endpoint = "/user";
+
+    return user.data;
   }
 }
 

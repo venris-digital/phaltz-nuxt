@@ -63,51 +63,14 @@ export default {
   },
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: ["@nuxtjs/axios", "@nuxtjs/auth-next"],
+  // modules: ["@nuxtjs/axios", "@nuxtjs/auth-next"],
+  // modules: ["@nuxtjs/axios"],
 
-  axios: {
-    proxy: true,
-    withCredentials: true,
-    Headers: true
-  },
-  proxy: {
-    // This is the url that nuxt will use to access laravel
-    "/foo": {
-      // This is the laravel url, in this case, http://localhost:8000
-      target: "http://localhost:8000",
-
-      pathRewrite: { "^/foo": "/" }
-    }
-  },
-  auth: {
-    strategies: {
-      laravelSanctum: {
-        provider: "laravel/sanctum",
-        url: "/foo",
-        endpoints: {
-          login: {
-            url: "/api/login"
-          },
-          logout: {
-            url: "/api/logout"
-          },
-          user: {
-            url: "/api/user",
-            propertyName: ""
-          }
-        },
-        autoFetchUser: true,
-        tokenRequired: true,
-        tokenType: "Bearer"
-      }
-    },
-    cookie: {
-      name: "XSRF-TOKEN",
-      options: {
-        sameSite: "lax"
-      }
-    }
-  },
+  // axios: {
+  //   proxy: true,
+  //   withCredentials: true,
+  //   Headers: true
+  // },
 
   // router: {
   //   middleware: ["auth"]

@@ -59,7 +59,7 @@
           <Button :secondary="true" @click="closeDialog()">
             Cancel
           </Button>
-          <Button @click="onClickRegister">
+          <Button @click="onClickSignIn">
             Submit
           </Button>
         </v-card-actions>
@@ -70,11 +70,11 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import User, { RegistrationPayload } from "@/models/User";
-import axios from "axios";
+import User, { LoginPayload, RegistrationPayload } from "@/models/User";
+import AbstractAuthAware from "./AbstractAuthAware.vue";
 
 @Component({})
-export default class SignUpDialog extends Vue {
+export default class SignUpDialog extends AbstractAuthAware {
   @Prop({ default: false })
   protected display!: boolean;
 
@@ -85,22 +85,15 @@ export default class SignUpDialog extends Vue {
     displayName: "Phaltz"
   };
 
-  protected csrf: any = "";
-
-  protected response: any = {};
-
-  protected async onClickRegister(): Promise<void> {
-    // const response = await this.$auth.loginWith("laravelSanctum", {
-    //   data: this.registrationPayload
-    // });
-
-    await new User().createSession();
-    const token = await new User().login({
-      email: this.userDetails.email,
-      password: this.userDetails.password
-    });
-    const user = await new User().fetchUser(token);
-    console.log(user);
+  protected async onClickSignIn(): Promise<void> {
+    this.createSession();
+    const token = await this.login(this.loginPayload);
+    if (!this.token) {
+      return;
+    }
+    this.setTokenToStore(token);
+    this.fetchAndSetUser();
+    this.setTokenToLocalStorage();
   }
 
   protected closeDialog() {
@@ -113,6 +106,13 @@ export default class SignUpDialog extends Vue {
       email: this.userDetails.email || "",
       password: this.userDetails.password || "",
       password_confirmation: this.userDetails.passwordConfirmation || ""
+    };
+  }
+
+  protected get loginPayload(): LoginPayload {
+    return {
+      email: this.userDetails.email || "",
+      password: this.userDetails.password || ""
     };
   }
 }

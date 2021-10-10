@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <div class="w-full min-h-screen flex flex-col font-theme">
+    <div v-if="!isLoading" class="w-full min-h-screen flex flex-col font-theme">
       <nav class="phaltz-navigation bg-phaltz-black">
         <!-- <ul class="phaltz-navigation__navigation-list">
           <li class="navigation-list__item">
@@ -21,7 +21,9 @@
         </NuxtLink>
 
         <div class="">
-          <Button @click="onClickSignIn" class="mr-2">Sign In</Button>
+          <Button v-if="!isSignedIn" @click="onClickSignIn" class="mr-2"
+            >Sign In</Button
+          >
           <NuxtLink to="/pathfinder-wotr/create-build">
             <Button :secondary="true">Create Build</Button>
           </NuxtLink>
@@ -44,16 +46,32 @@
 
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
+import AbstractAuthAware from "./AbstractAuthAware.vue";
 
 @Component<NavigationLayout>({
   components: {
     //
   }
 })
-export default class NavigationLayout extends Vue {
-  protected test: any = {};
+export default class NavigationLayout extends AbstractAuthAware {
+  protected isLoading = false;
+
   protected mounted(): void {
-    //
+    this.initialize();
+  }
+
+  protected initialize(): void {
+    if (this.$store.getters.hasCompletedAuthCheck) {
+      return;
+    }
+    this.createSession();
+    const token = this.readTokenFromLocalStorage();
+    if (!token) {
+      return;
+    }
+    this.setTokenToStore(token);
+    this.fetchAndSetUser();
+    this.$store.dispatch("setCompletedAuthCheck");
   }
 
   protected onClickItem(): void {
@@ -80,6 +98,10 @@ export default class NavigationLayout extends Vue {
 
   protected get isShowingSignUpDialog(): boolean {
     return this.$store.getters.isShowingSignUpDialog;
+  }
+
+  protected get isSignedIn(): boolean {
+    return !!(this.$store.getters.user && this.$store.getters.token);
   }
 }
 
