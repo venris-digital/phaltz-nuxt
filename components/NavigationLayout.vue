@@ -24,6 +24,13 @@
           <Button v-if="!isSignedIn" @click="onClickSignIn" class="mr-2"
             >Sign In</Button
           >
+          <Button
+            v-if="isSignedIn"
+            @click="onClickSignOut"
+            :secondary="true"
+            class="mr-2"
+            >Sign Out</Button
+          >
           <NuxtLink to="/pathfinder-wotr/create-build">
             <Button :secondary="true">Create Build</Button>
           </NuxtLink>
@@ -45,7 +52,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Component } from "vue-property-decorator";
 import AbstractAuthAware from "./AbstractAuthAware.vue";
 
 @Component<NavigationLayout>({
@@ -74,8 +81,8 @@ export default class NavigationLayout extends AbstractAuthAware {
     this.$store.dispatch("setCompletedAuthCheck");
   }
 
-  protected onClickItem(): void {
-    // console.log(this.test.something?.somethingElse);
+  protected async onClickSignOut(): Promise<void> {
+    await this.logout();
   }
 
   protected get navigationItems(): NavigationItem[] {

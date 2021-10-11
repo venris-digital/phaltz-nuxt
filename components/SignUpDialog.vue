@@ -88,11 +88,11 @@ export default class SignUpDialog extends AbstractAuthAware {
   protected async onClickSignIn(): Promise<void> {
     this.createSession();
     const token = await this.login(this.loginPayload);
-    if (!this.token) {
+    if (!token) {
       return;
     }
     this.setTokenToStore(token);
-    this.fetchAndSetUser();
+    await this.fetchAndSetUser();
     this.setTokenToLocalStorage();
   }
 

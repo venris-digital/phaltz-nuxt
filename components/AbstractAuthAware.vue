@@ -17,6 +17,16 @@ export default class AbstractAuthAware extends Vue {
     return await new User().login(payload);
   }
 
+  protected async logout(): Promise<void> {
+    if (!this.token) {
+      return;
+    }
+    await new User().logout(this.token);
+    this.deleteTokenFromLocalStorage();
+    this.removeTokenFromStore();
+    this.removeUserFromStore();
+  }
+
   protected async fetchAndSetUser(): Promise<void> {
     const user = await this.fetchUser();
     if (!user) {
@@ -67,6 +77,10 @@ export default class AbstractAuthAware extends Vue {
       return;
     }
     return JSON.parse(token);
+  }
+
+  protected deleteTokenFromLocalStorage(): any {
+    localStorage.removeItem("bearerToken");
   }
 }
 </script>

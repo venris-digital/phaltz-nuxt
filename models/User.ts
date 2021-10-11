@@ -27,8 +27,30 @@ export default class User extends Model {
     return this.create(payload);
   }
 
+  public async logout(token: IToken): Promise<void> {
+    // const headers = {
+    //   Authorization: `Bearer ${token.token}`,
+    //   Accept: "application/json",
+    //   "Content-type": "application/json",
+    //   withCredentials: true,
+    //   "X-Requested-With": "XMLHttpRequest"
+    // };
+    const response = await axios.post(
+      "http://localhost:8000/api/logout",
+      undefined,
+      {
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token.token}`
+        }
+      }
+    );
+    this.endpoint = "/logout";
+
+    return response.data;
+  }
+
   public async fetchUser(token: IToken): Promise<this> {
-    console.log(token);
     const user = await axios.get("http://localhost:8000/api/user", {
       headers: {
         Authorization: `Bearer ${token.token}`

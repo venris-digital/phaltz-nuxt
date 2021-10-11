@@ -11,6 +11,9 @@ export const getters = {
   hasCompletedAuthCheck: (state: any) => {
     return state.completedAuthCheck;
   },
+  isLoggedIn: (state: any) => {
+    return !!(state.Auth && state.token);
+  },
   user: (state: any) => {
     return state.Auth;
   },
@@ -30,7 +33,7 @@ export const mutations = {
     state.token = token;
   },
   TOKEN_DELETE: (state: any) => {
-    //
+    state.token = null;
   },
   AUTH_SET: (state: any, user: User) => {
     state.Auth = user;
