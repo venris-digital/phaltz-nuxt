@@ -20,49 +20,76 @@
           <Loader />
         </v-card-text>
         <v-card-text v-else>
-          <TextInput
-            v-model="userDetails.email"
-            :clearable="false"
-            :type="'email'"
-            :label="'Email'"
-            :required="true"
-            :prepend-inner-icon="'mdi-email'"
-          />
+          <v-form ref="signUpForm" v-model="isValid">
+            <TextInput
+              v-model="userDetails.email"
+              :clearable="false"
+              :type="'email'"
+              :label="'Email'"
+              :required="true"
+              :rules="emailRules"
+              :prepend-inner-icon="'mdi-email'"
+            />
 
-          <TextInput
-            v-model="userDetails.password"
-            :clearable="false"
-            :label="'Password'"
-            :type="'password'"
-            :required="true"
-            :prepend-inner-icon="'mdi-lock'"
-          />
+            <TextInput
+              v-model="userDetails.password"
+              :clearable="false"
+              :label="'Password'"
+              :type="'password'"
+              :required="true"
+              :rules="passwordRules"
+              :prepend-inner-icon="'mdi-lock'"
+            />
 
-          <TextInput
-            v-if="isRegistering"
-            v-model="userDetails.passwordConfirmation"
-            :clearable="false"
-            :label="'Password Confirmation'"
-            :type="'password'"
-            :required="true"
-            :prepend-inner-icon="'mdi-lock-check'"
-          />
+            <TextInput
+              v-if="isRegistering"
+              v-model="userDetails.passwordConfirmation"
+              :clearable="false"
+              :label="'Password Confirmation'"
+              :type="'password'"
+              :required="true"
+              :prepend-inner-icon="'mdi-lock-check'"
+              :rules="passwordRules"
+            />
 
-          <TextInput
-            v-if="isRegistering"
-            v-model="userDetails.displayName"
-            :clearable="false"
-            :label="'Display Name'"
-            :prepend-inner-icon="'mdi-account-circle'"
-          />
+            <TextInput
+              v-if="isRegistering"
+              v-model="userDetails.displayName"
+              :clearable="false"
+              :label="'Display Name'"
+              :prepend-inner-icon="'mdi-account-circle'"
+              required
+              :rules="displayNameRules"
+            />
 
-          <div v-if="isRegistering" class="flex items-center max-h-8">
-            <v-checkbox required></v-checkbox> Click to confirm that you have
-            read and agreed to the site's terms of use.
-          </div>
-          <div v-if="isRegistering" class="flex items-center max-h-8">
-            <v-checkbox required></v-checkbox> Click to confirm that you have
-            read and agreed to the site's privacy policy.
+            <div v-if="isRegistering" class="flex items-center max-h-12">
+              <v-checkbox required :rules="checkBoxRules">
+                <template v-slot:label>
+                  <span class="text-xs"
+                    >Click to confirm that you have read and agreed to the
+                    <a href="/terms-of-use" target="_blank">
+                      site's terms of use</a
+                    >.
+                  </span>
+                </template>
+              </v-checkbox>
+            </div>
+            <div v-if="isRegistering" class="flex items-center max-h-12">
+              <v-checkbox required :rules="checkBoxRules">
+                <template v-slot:label>
+                  <span class="text-xs"
+                    >Click to confirm that you have read and agreed to the
+                    <a href="/privacy-policy" target="_blank">
+                      site's privacy policy</a
+                    >.
+                  </span>
+                </template>
+              </v-checkbox>
+            </div>
+          </v-form>
+
+          <div v-if="error">
+            {{ error }}
           </div>
         </v-card-text>
         <v-card-actions>
@@ -82,18 +109,29 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
+import { Component, Ref, Prop } from "vue-property-decorator";
 import User, { LoginPayload, RegistrationPayload } from "@/models/User";
 import AbstractAuthAware from "./AbstractAuthAware.vue";
+import {
+  checkboxRules,
+  displayNameRules,
+  passwordRules,
+  emailRules
+} from "@/support/FieldValidation";
 
 @Component({})
 export default class SignUpDialog extends AbstractAuthAware {
+  @Ref("signUpForm")
+  protected signUpForm!: IVuetifyForm;
+
   @Prop({ default: false })
   protected display!: boolean;
 
   protected isRegistering = false;
 
   protected isUploading = false;
+
+  protected isValid = false;
 
   protected userDetails = {
     email: "samueljhwhite@gmail.com",
@@ -104,6 +142,11 @@ export default class SignUpDialog extends AbstractAuthAware {
 
   protected async handleSubmit(): Promise<void> {
     this.isUploading = true;
+    if (!this.isValid) {
+      this.signUpForm.validate();
+      this.isUploading = false;
+      return;
+    }
     this.isRegistering
       ? await this.handleRegistration()
       : await this.handleSignIn();
@@ -157,5 +200,27 @@ export default class SignUpDialog extends AbstractAuthAware {
       password: this.userDetails.password || ""
     };
   }
+
+  protected get checkBoxRules(): ((v: boolean) => boolean | string)[] {
+    return checkboxRules;
+  }
+
+  protected get displayNameRules(): ((v: string) => boolean | string)[] {
+    return displayNameRules;
+  }
+
+  protected get passwordRules(): ((v: string) => boolean | string)[] {
+    return passwordRules;
+  }
+
+  protected get emailRules(): ((v: string) => boolean | string)[] {
+    return emailRules;
+  }
+}
+
+interface IVuetifyForm {
+  validate: () => boolean;
+  reset: () => void;
+  resetValidation: () => void;
 }
 </script>

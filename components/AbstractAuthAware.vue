@@ -3,22 +3,34 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import User, { IToken, LoginPayload, RegistrationPayload } from "@/models/User";
+import { AxiosError } from "axios";
 
 @Component({})
 export default class AbstractAuthAware extends Vue {
   // INCLUDE HTTP CLIENT HERE, WHICH USES THE TOKEN.
+  protected error: AxiosError | null = null;
   // Store token
   protected get token(): IToken | null {
     return this.$store.getters.token;
   }
 
   // Async Calls
-  protected async login(payload: LoginPayload): Promise<IToken> {
-    return await new User().login(payload);
+  protected async login(payload: LoginPayload): Promise<IToken | void> {
+    try {
+      return await new User().login(payload);
+    } catch (error) {
+      this.error = (error as AxiosError).response?.data?.message;
+    }
   }
 
-  protected async register(payload: RegistrationPayload): Promise<IToken> {
-    return await new User().register(payload);
+  protected async register(
+    payload: RegistrationPayload
+  ): Promise<IToken | void> {
+    try {
+      return await new User().register(payload);
+    } catch (error) {
+      this.error = (error as AxiosError).response?.data?.message;
+    }
   }
 
   protected async logout(): Promise<void> {

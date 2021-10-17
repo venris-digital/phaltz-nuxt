@@ -17,15 +17,17 @@
       </ContentPanel>
 
       <!-- <ContentPanel :title="'Builds'"> -->
-      <div v-if="builds.length" class="w-full flex flex-wrap">
-        <BuildCard
-          class="w-1/11"
-          v-for="(build, index) in builds"
-          :key="`build-card-${index}`"
-          :build="build"
-        />
+      <div class="flex justify-center w-full">
+        <div v-if="builds.length" class="w-full flex flex-wrap">
+          <BuildCard
+            class="w-3/12"
+            v-for="(build, index) in builds"
+            :key="`build-card-${index}`"
+            :build="build"
+          />
+        </div>
+        <span class="px-4" v-else>This user has not created any builds</span>
       </div>
-      <span v-else>This user has not created any builds</span>
       <!-- </ContentPanel> -->
     </div>
   </NavigationLayout>

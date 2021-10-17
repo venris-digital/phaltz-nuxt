@@ -16,9 +16,9 @@
             :item-text="'name'"
             label="Mythic Path"
             :return-object="true"
-            :rules="selectRules"
             class="w-full pr-1"
-            required
+            :rules="isLegendMythicPath ? undefined : selectRulesObject"
+            :required="isLegendMythicPath ? false : true"
             prepend-inner-icon="mdi-state-machine"
           />
 
@@ -27,8 +27,8 @@
             :classes="classes"
             :subclasses="subclasses"
             :index="index"
-            :rules="selectRules"
-            required
+            :rules="isPetLevels ? undefined : selectRulesObject"
+            :required="isPetLevels ? false : true"
             class="w-2/3 pr-1"
             @classSelected="onClassSelected"
             @subclassSelected="onSubclassSelected"
@@ -99,6 +99,7 @@ import { abilityScores } from "@/support/BasicValueOptions";
 import {
   textFieldRules,
   selectRules,
+  selectRulesObject,
   multiSelectRules,
   tagsSelectRules
 } from "@/support/FieldValidation";
@@ -122,6 +123,12 @@ export default class WOTRLevel extends Vue implements IWOTRLevel {
 
   @Prop({ default: () => [] })
   protected mythicPaths?: MythicPath[];
+
+  @Prop({ default: false })
+  protected isLegendMythicPath?: boolean;
+
+  @Prop({ default: false })
+  protected isPetLevels?: boolean;
 
   @Prop({ required: true })
   protected subclasses!: Subclass[];
@@ -202,7 +209,9 @@ export default class WOTRLevel extends Vue implements IWOTRLevel {
   }
 
   public getLevels(): Record<string, any>[] {
-    return this.levels;
+    return this.levels.filter(
+      level => level.class?.name || level.mythic_path?.name
+    );
   }
 
   // Getters
@@ -216,6 +225,12 @@ export default class WOTRLevel extends Vue implements IWOTRLevel {
 
   protected get selectRules(): ((v: string) => boolean | string)[] {
     return selectRules;
+  }
+
+  protected get selectRulesObject(): ((
+    v: Record<string, any>
+  ) => boolean | string)[] {
+    return selectRulesObject;
   }
 
   protected get multiSelectRules(): ((v: []) => boolean | string)[] {

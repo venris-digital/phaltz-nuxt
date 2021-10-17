@@ -73,7 +73,7 @@
               label="Race"
               class="w-1/2 pl-1"
               :return-object="true"
-              :rules="selectRules"
+              :rules="selectRulesObject"
               required
               prepend-inner-icon="mdi-account-supervisor-circle"
             />
@@ -85,7 +85,6 @@
               :item-value="'id'"
               class="w-1/2 pr-1"
               label="Skills"
-              :rules="multiSelectRules"
               multiple
               chips
               small-chips
@@ -100,7 +99,7 @@
               label="Deity"
               class="w-1/2 pl-1"
               :return-object="true"
-              :rules="selectRules"
+              :rules="selectRulesObject"
               required
               prepend-inner-icon="mdi-dharmachakra"
             />
@@ -112,7 +111,7 @@
               label="Alignment"
               class="w-1/2 pr-1"
               :return-object="true"
-              :rules="selectRules"
+              :rules="selectRulesObject"
               required
               prepend-inner-icon="mdi-dots-grid"
             />
@@ -278,6 +277,7 @@
       <WOTRLevel
         v-show="tabs === 2"
         ref="mythicLevels"
+        :isLegendMythicPath="isLegendMythicPath"
         :classes="classes"
         :mythicPaths="mythicPaths"
         :startingLevel="1"
@@ -293,6 +293,7 @@
       <WOTRLevel
         v-show="tabs === 3"
         ref="petLevels"
+        :isPetLevels="true"
         :classes="classes"
         :startingLevel="1"
         :numberOfLevels="20"
@@ -359,6 +360,7 @@ import Race from "@/models/Race";
 import Skill from "@/models/Skill";
 import Deity from "@/models/Deity";
 import Alignment from "@/models/Alignment";
+import { selectRulesObject } from "~/support/FieldValidation";
 
 @Component<CreateBuild>({
   head(): MetaInfo {
@@ -378,6 +380,9 @@ export default class CreateBuild extends Vue {
 
   @Ref("levelsToTwenty")
   protected levelsToTwenty!: IWOTRLevel;
+
+  @Ref("mythicLevels")
+  protected mythicLevels!: IWOTRLevel;
 
   @Ref("levelsTwentyToForty")
   protected levelsTwentyToForty!: IWOTRLevel;
@@ -428,6 +433,12 @@ export default class CreateBuild extends Vue {
   protected selectRules = [
     (v: string | number) => !!v || "Required: select a value"
   ];
+
+  protected get selectRulesObject(): ((
+    v: Record<string, any>
+  ) => boolean | string)[] {
+    return selectRulesObject;
+  }
 
   protected multiSelectRules = [
     (v: []) => v.length || "Required: select at least 1 value"
@@ -483,7 +494,8 @@ export default class CreateBuild extends Vue {
       !(
         this.areBasicLevelsValid() &&
         this.areLegendLevelsValid() &&
-        this.arePetLevelsValid()
+        this.arePetLevelsValid() &&
+        this.areMythicLevelsValid()
       )
     ) {
       this.validateAll();
@@ -496,6 +508,8 @@ export default class CreateBuild extends Vue {
   protected validateAll(): void {
     this.buildForm.validate();
     (this.$refs.levelsToTwenty as IWOTRLevel).validate();
+    (this.$refs.mythicLevels as IWOTRLevel).validate();
+    console.log(this.$refs.mythicLevels);
     if (this.hasPet) {
       (this.$refs.petLevels as IWOTRLevel).validate();
     }
@@ -662,27 +676,27 @@ export default class CreateBuild extends Vue {
           });
 
         promises.concat(levelsToForty);
-      } else {
-        const mythicLevels = (this.$refs.mythicLevels as IWOTRLevel)
-          .getLevels()
-          .map(level => {
-            return this.createLevel({
-              level: level.level.toString(),
-              build_id: buildId.toString(),
-              build: buildId,
-              ability_score_increase: level.ability_score_increase
-                ? level.ability_score_increase.toString()
-                : null,
-              mythic_path_id: level.mythic_path.id,
-              feats: level.feats,
-              spells: level.spells,
-              notes: level.notes,
-              mythic_level: true
-            });
-          });
-
-        promises.concat(mythicLevels);
       }
+
+      const mythicLevels = (this.$refs.mythicLevels as IWOTRLevel)
+        .getLevels()
+        .map(level => {
+          return this.createLevel({
+            level: level.level.toString(),
+            build_id: buildId.toString(),
+            build: buildId,
+            ability_score_increase: level.ability_score_increase
+              ? level.ability_score_increase.toString()
+              : null,
+            mythic_path_id: level.mythic_path.id,
+            feats: level.feats,
+            spells: level.spells,
+            notes: level.notes,
+            mythic_level: true
+          });
+        });
+
+      promises.concat(mythicLevels);
 
       if (this.hasPet) {
         const petLevels = (this.$refs.petLevels as IWOTRLevel)
@@ -742,6 +756,10 @@ export default class CreateBuild extends Vue {
 
   protected arePetLevelsValid(): boolean {
     return !!(!this.hasPet || (this.$refs.petLevels as IWOTRLevel).isValid);
+  }
+
+  protected areMythicLevelsValid(): boolean {
+    return !!(this.$refs.mythicLevels as IWOTRLevel).isValid;
   }
 
   protected createBuildPayload(): any {

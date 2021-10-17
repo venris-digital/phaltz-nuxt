@@ -72,8 +72,8 @@
         </span>
 
         <span class="text-copy-text text-xs">
-          <v-icon x-small>mdi-thumb-up</v-icon>
-          17
+          <!-- <v-icon x-small>mdi-thumb-up</v-icon>
+          17 -->
         </span>
       </div>
     </ContentPanel>
