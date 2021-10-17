@@ -3,8 +3,9 @@
     v-bind="$attrs"
     v-on="$listeners"
     class="phaltz-button"
+    :class="{ 'text-black': white }"
     small
-    :color="secondary ? 'accent' : 'primary'"
+    :color="color"
   >
     <slot />
   </v-btn>
@@ -21,6 +22,19 @@ import { Vue, Component, Prop } from "vue-property-decorator";
 export default class Button extends Vue {
   @Prop({ default: false })
   protected secondary!: boolean;
+
+  @Prop({ default: false })
+  protected white!: boolean;
+
+  protected get color(): string {
+    if (this.secondary) {
+      return "accent";
+    }
+    if (this.white) {
+      return "#CFCFCF";
+    }
+    return "primary";
+  }
 }
 </script>
 

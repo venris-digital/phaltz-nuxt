@@ -2,7 +2,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import User, { IToken, LoginPayload } from "@/models/User";
+import User, { IToken, LoginPayload, RegistrationPayload } from "@/models/User";
 
 @Component({})
 export default class AbstractAuthAware extends Vue {
@@ -15,6 +15,10 @@ export default class AbstractAuthAware extends Vue {
   // Async Calls
   protected async login(payload: LoginPayload): Promise<IToken> {
     return await new User().login(payload);
+  }
+
+  protected async register(payload: RegistrationPayload): Promise<IToken> {
+    return await new User().register(payload);
   }
 
   protected async logout(): Promise<void> {

@@ -69,6 +69,6 @@ export const actions = {
     commit("SIGN_UP_DIALOG_OPEN");
   },
   closeSignUpDialog: ({ commit }: any) => {
-    commit("SIGN_UP_DIALOG_CLOSE", "cat");
+    commit("SIGN_UP_DIALOG_CLOSE");
   }
 };

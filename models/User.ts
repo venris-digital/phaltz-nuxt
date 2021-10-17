@@ -12,11 +12,6 @@ export default class User extends Model {
 
   public builds?: WOTRBuild;
 
-  public register(): this {
-    this.endpoint = `/register`;
-    return this;
-  }
-
   public async createSession(): Promise<this[]> {
     const response = await HttpBaseServer.get("/sanctum/csrf-cookie");
     return response.data;
@@ -24,6 +19,11 @@ export default class User extends Model {
 
   public async login(payload: LoginPayload): Promise<any> {
     this.endpoint = "/login";
+    return this.create(payload);
+  }
+
+  public async register(payload: RegistrationPayload): Promise<any> {
+    this.endpoint = "/register";
     return this.create(payload);
   }
 

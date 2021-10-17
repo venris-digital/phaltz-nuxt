@@ -17,7 +17,7 @@
             label="Mythic Path"
             :return-object="true"
             :rules="selectRules"
-            class="w-2/3 pr-1"
+            class="w-full pr-1"
             required
             prepend-inner-icon="mdi-state-machine"
           />
@@ -35,6 +35,7 @@
           />
 
           <AutoComplete
+            v-if="levelType !== 'mythic'"
             v-model="levels[index].ability_score_increase"
             :items="abilityScores"
             label="Ability Score Increase"

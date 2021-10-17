@@ -14,7 +14,9 @@
             <div>
               <span class="text-copy-text text-xs">
                 Author:
-                <NuxtLink to="/">Phaltz</NuxtLink>
+                <NuxtLink :to="`/users/${build.user_id}`">{{
+                  build.user.display_name
+                }}</NuxtLink>
               </span>
 
               <div class="flex flex-wrap w-full">
@@ -302,6 +304,14 @@
                     exact-active-class="#282a2e"
                     >{{ spell.name }}</v-chip
                   >
+                  <v-chip
+                    v-if="!level.spells.length"
+                    class="mr-1 mt-1"
+                    small
+                    color="#282a2e"
+                    exact-active-class="#282a2e"
+                    >{{ "No spells" }}</v-chip
+                  >
                 </div>
 
                 <div class="w-1/2 mt-4 flex flex-wrap items-center">
@@ -315,6 +325,28 @@
                     color="#282a2e"
                     exact-active-class="#282a2e"
                     >{{ feat.name }}</v-chip
+                  >
+                  <v-chip
+                    v-if="!level.feats.length"
+                    class="mr-1 mt-1"
+                    small
+                    color="#282a2e"
+                    exact-active-class="#282a2e"
+                    >{{ "No feats" }}</v-chip
+                  >
+                </div>
+
+                <div class="w-1/2 mt-4 flex flex-wrap items-center">
+                  <!-- <span class="mr-4">Subclass: </span> -->
+                  <v-icon class="mr-2">mdi-plus-circle</v-icon>
+                  <v-chip
+                    class="mr-1 mt-1"
+                    small
+                    color="#282a2e"
+                    exact-active-class="#282a2e"
+                    >{{
+                      level.ability_score_increase || "No stat increase"
+                    }}</v-chip
                   >
                 </div>
 

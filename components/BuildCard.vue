@@ -68,7 +68,7 @@
 
       <div class="w-full flex justify-between flex-wrap items-center">
         <span class="text-copy-text text-xs">
-          Author: Phaltz
+          Author: {{ build.user.display_name }}
         </span>
 
         <span class="text-copy-text text-xs">

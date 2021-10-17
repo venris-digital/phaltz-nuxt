@@ -51,6 +51,11 @@ export default class Build extends Model {
     }/filter?classes=${payload.classes.join()}&mythic=${payload.mythic.join()}&characters=${payload.characters.join()}&tags=${payload.tags.join()}`;
     return this.all();
   }
+
+  public filterByUser(id: string): Promise<this[]> {
+    this.endpoint = `${this.endpoint}/user/${id}`;
+    return this.all();
+  }
 }
 
 interface BuildLevel {

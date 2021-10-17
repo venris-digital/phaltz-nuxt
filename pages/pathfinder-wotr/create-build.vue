@@ -766,6 +766,7 @@ export default class CreateBuild extends Vue {
         ? this.build.base_ability_scores?.charisma.toString()
         : null,
       game_id: "1",
+      user_id: this.$store.getters.user.id.toString(),
       tags: this.build.tags || [],
       classes: this.evaluateUniqueClasses(),
       mythic_path: this.build.mythic_path,

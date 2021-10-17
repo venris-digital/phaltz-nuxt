@@ -20,23 +20,37 @@
           >
         </NuxtLink>
 
-        <div class="">
-          <Button v-if="!isSignedIn" @click="onClickSignIn" class="mr-2"
-            >Sign In</Button
-          >
-          <Button
-            v-if="isSignedIn"
-            @click="onClickSignOut"
-            :secondary="true"
-            class="mr-2"
-            >Sign Out</Button
-          >
-          <NuxtLink to="/pathfinder-wotr/create-build">
-            <Button :secondary="true">Create Build</Button>
-          </NuxtLink>
+        <div>
+          <div class="flex items-center">
+            <Button v-if="!isSignedIn" @click="onClickSignIn" class="mr-2"
+              >Sign In</Button
+            >
+            <Button
+              v-if="isSignedIn"
+              @click="onClickSignOut"
+              :secondary="true"
+              class="mr-2"
+              >Sign Out</Button
+            >
+            <NuxtLink v-if="isSignedIn" to="/pathfinder-wotr/create-build">
+              <Button :white="true">
+                <span class="text-black">Create Build</span>
+              </Button>
+            </NuxtLink>
+          </div>
         </div>
       </nav>
-      <div class="w-full flex-auto min-h py-4 bg-copy-black">
+      <div class="w-full flex-auto min-h bg-copy-black">
+        <div class="flex justify-end px-8 my-2">
+          <div v-if="account" class="text-copy-text text-xs">
+            Account:
+            <span class="font-bold">
+              <NuxtLink :to="`/users/${account.id}`">{{
+                account.display_name
+              }}</NuxtLink>
+            </span>
+          </div>
+        </div>
         <div class="max-w-11xl m-auto">
           <slot />
         </div>
@@ -53,6 +67,7 @@
 
 <script lang="ts">
 import { Component } from "vue-property-decorator";
+import User from "~/models/User";
 import AbstractAuthAware from "./AbstractAuthAware.vue";
 
 @Component<NavigationLayout>({
@@ -109,6 +124,10 @@ export default class NavigationLayout extends AbstractAuthAware {
 
   protected get isSignedIn(): boolean {
     return !!(this.$store.getters.user && this.$store.getters.token);
+  }
+
+  protected get account(): User | null {
+    return this.$store.getters.user;
   }
 }
 
