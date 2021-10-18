@@ -23,7 +23,7 @@
           <v-form ref="signUpForm" v-model="isValid">
             <TextInput
               v-model="userDetails.email"
-              :clearable="false"
+              :clearable="null"
               :type="'email'"
               :label="'Email'"
               :required="true"

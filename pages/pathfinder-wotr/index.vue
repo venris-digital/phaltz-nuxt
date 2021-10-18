@@ -4,8 +4,8 @@
       Pathfinder: Wrath of the Righteous - Character Builds
     </PageHeading>
     <Loader v-if="isLoading" :size="50" />
-    <div class="flex" v-else>
-      <div class="w-1/4">
+    <div class="phaltz-wotr__builds-wrapper" v-else>
+      <div class="builds-wrapper__search-container">
         <ContentPanel>
           <Subtitle class="mb-8">
             Search Filters
@@ -80,11 +80,11 @@
         </ContentPanel>
       </div>
 
-      <div class="w-3/4">
+      <div class="builds-wrapper__builds-container">
         <Loader class="mt-20" v-if="isSearching" :size="50" />
         <div v-else class="w-full flex flex-wrap">
           <BuildCard
-            class="w-1/3"
+            class="builds-container__build-card"
             v-for="(build, index) in builds"
             :key="`build-card-${index}`"
             :build="build"
@@ -271,4 +271,46 @@ export default class PathfinderWOTR extends Vue {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.phaltz-wotr__builds-wrapper {
+  @media (min-width: 1024px) {
+    @apply flex;
+  }
+
+  .builds-wrapper__search-container {
+    @apply w-full;
+
+    @media (min-width: 1024px) {
+      @apply w-1/3;
+    }
+
+    @media (min-width: 1280px) {
+      @apply w-1/4;
+    }
+  }
+
+  .builds-wrapper__builds-container {
+    @apply w-full;
+
+    @media (min-width: 1024px) {
+      @apply w-2/3;
+    }
+
+    @media (min-width: 1280px) {
+      @apply w-3/4;
+    }
+
+    .builds-container__build-card {
+      @apply w-full;
+
+      @media (min-width: 640px) {
+        @apply w-1/2;
+      }
+
+      @media (min-width: 1280px) {
+        @apply w-1/3;
+      }
+    }
+  }
+}
+</style>

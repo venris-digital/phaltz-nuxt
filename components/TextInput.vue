@@ -1,11 +1,5 @@
 <template>
-  <v-text-field
-    v-bind="$attrs"
-    v-on="$listeners"
-    outlined
-    dense
-    clearable
-  ></v-text-field>
+  <v-text-field v-bind="$attrs" v-on="$listeners" outlined dense></v-text-field>
 </template>
 
 <script lang="ts">

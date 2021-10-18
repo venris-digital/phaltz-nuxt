@@ -18,7 +18,23 @@
     </ContentPanel>
 
     <Loader v-if="isLoading" :size="50" />
-    <div v-else>
+
+    <ContentPanel
+      title="Sign In To Create A Build"
+      v-if="!isLoading && !$store.getters.isLoggedIn"
+    >
+      <div class="text-copy-text text-sm mt-8">
+        Sorry, but you must be signed in to create a build.
+        <p>
+          You can
+          <span class="text-theme-blue cursor-pointer" @click="onClickSignUp"
+            >click here to sign in, or create an account.</span
+          >
+        </p>
+      </div>
+    </ContentPanel>
+
+    <div v-if="!isLoading && $store.getters.isLoggedIn">
       <v-form ref="buildForm" v-model="isValid">
         <!-- Overview -->
         <ContentPanel>
@@ -466,8 +482,8 @@ export default class CreateBuild extends Vue {
     this.initialize();
   }
 
-  protected test(): void {
-    console.log(this.$refs.petLevels);
+  protected onClickSignUp(): void {
+    this.$store.dispatch("openSignUpDialog");
   }
 
   protected async initialize(): Promise<void> {

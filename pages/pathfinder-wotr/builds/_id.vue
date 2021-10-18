@@ -8,8 +8,8 @@
       <PageHeading
         >Pathfinder: WOTR Build Guide - {{ build.name || "" }}</PageHeading
       >
-      <div class="flex">
-        <div class="w-1/3">
+      <div class="phaltz-wotr__build-wrapper">
+        <div class="build-wrapper__overview-container">
           <ContentPanel title="Overview">
             <div>
               <span class="text-copy-text text-xs">
@@ -19,8 +19,8 @@
                 }}</NuxtLink>
               </span>
 
-              <div class="flex flex-wrap w-full">
-                <div class="w-1/2 mt-4 flex flex-wrap items-center">
+              <div class="overview-container__basic-details-wrapper">
+                <div class="basic-details-wrapper__item ">
                   <!-- <span class="mr-4">Characters:</span> -->
                   <v-icon class="mr-2">mdi-account</v-icon>
                   <v-chip
@@ -34,7 +34,7 @@
                   >
                 </div>
 
-                <div class="w-1/2 mt-4 flex flex-wrap items-center">
+                <div class="basic-details-wrapper__item ">
                   <!-- <span class="mr-4">Mythic Path:</span> -->
                   <v-icon class="mr-2">mdi-state-machine</v-icon>
 
@@ -49,7 +49,7 @@
                   >
                 </div>
 
-                <div class="w-1/2 mt-4 flex flex-wrap items-center">
+                <div class="basic-details-wrapper__item ">
                   <v-icon class="mr-2">mdi-dots-grid</v-icon>
                   <!-- TODO: Value -->
                   <v-chip
@@ -61,7 +61,7 @@
                   >
                 </div>
 
-                <div class="w-1/2 mt-4 flex flex-wrap items-center">
+                <div class="basic-details-wrapper__item ">
                   <!-- <span class="mr-4">Classes:</span> -->
                   <v-icon class="mr-2">mdi-layers</v-icon>
                   <v-chip
@@ -79,7 +79,7 @@
                   >
                 </div>
 
-                <div class="w-1/2 mt-4 flex flex-wrap items-center">
+                <div class="basic-details-wrapper__item ">
                   <!-- <span class="mr-4">Deity:</span> -->
                   <v-icon class="mr-2">mdi-dharmachakra</v-icon>
                   <!-- TODO: Value -->
@@ -92,7 +92,7 @@
                   >
                 </div>
 
-                <div class="w-1/2 mt-4 flex flex-wrap items-center">
+                <div class="basic-details-wrapper__item ">
                   <!-- <span class="mr-4">Race:</span> -->
                   <v-icon class="mr-2">mdi-account-supervisor-circle</v-icon>
                   <!-- TODO: Value -->
@@ -242,7 +242,7 @@
           </ContentPanel>
         </div>
 
-        <div class="w-2/3">
+        <div class="build-wrapper__levels-container">
           <ContentPanel>
             <v-tabs class="tabs">
               <v-tab @click="tabs = 0">
@@ -265,8 +265,8 @@
           >
             <div>
               <Subtitle> Level {{ level.level }} </Subtitle>
-              <div class="w-full flex flex-wrap text-copy-text">
-                <div class="w-1/2 mt-4 flex flex-wrap items-center">
+              <div class="levels-container__level-container">
+                <div class="level-container__item">
                   <!-- <span class="mr-4">Class: </span> -->
                   <v-icon class="mr-2">mdi-layers</v-icon>
                   <v-chip
@@ -279,7 +279,7 @@
                   >
                 </div>
 
-                <div class="w-1/2 mt-4 flex flex-wrap items-center">
+                <div class="level-container__item">
                   <!-- <span class="mr-4">Subclass: </span> -->
                   <v-icon class="mr-2">mdi-layers-outline</v-icon>
                   <v-chip
@@ -292,7 +292,7 @@
                   >
                 </div>
 
-                <div class="w-1/2 mt-4 flex flex-wrap items-center">
+                <div class="level-container__item">
                   <!-- <span class="mr-4">Spells:</span> -->
                   <v-icon class="mr-2">mdi-fire-circle</v-icon>
                   <v-chip
@@ -314,7 +314,7 @@
                   >
                 </div>
 
-                <div class="w-1/2 mt-4 flex flex-wrap items-center">
+                <div class="level-container__item">
                   <!-- <span class="mr-4">Feats:</span> -->
                   <v-icon class="mr-2">mdi-dlna</v-icon>
                   <v-chip
@@ -336,7 +336,7 @@
                   >
                 </div>
 
-                <div class="w-1/2 mt-4 flex flex-wrap items-center">
+                <div class="level-container__item">
                   <!-- <span class="mr-4">Subclass: </span> -->
                   <v-icon class="mr-2">mdi-plus-circle</v-icon>
                   <v-chip
@@ -366,7 +366,7 @@
           >
             <div>
               <Subtitle> Level {{ level.level }} </Subtitle>
-              <div class="w-full flex flex-wrap text-copy-text">
+              <div class="levels-container__level-container">
                 <div class="w-full mt-4 flex flex-wrap items-center">
                   <!-- <span class="mr-4">Class: </span> -->
                   <v-icon class="mr-2">mdi-state-machine</v-icon>
@@ -380,7 +380,7 @@
                   >
                 </div>
 
-                <div class="w-1/2 mt-4 flex flex-wrap items-center">
+                <div class="level-container__item">
                   <!-- <span class="mr-4">Spells:</span> -->
                   <v-icon class="mr-2">mdi-fire-circle</v-icon>
                   <v-chip
@@ -394,7 +394,7 @@
                   >
                 </div>
 
-                <div class="w-1/2 mt-4 flex flex-wrap items-center">
+                <div class="level-container__item">
                   <!-- <span class="mr-4">Feats:</span> -->
                   <v-icon class="mr-2">mdi-dlna</v-icon>
                   <v-chip
@@ -426,8 +426,8 @@
           >
             <div>
               <Subtitle> Level {{ level.level }} </Subtitle>
-              <div class="w-full flex flex-wrap text-copy-text">
-                <div class="w-1/2 mt-4 flex flex-wrap items-center">
+              <div class="levels-container__level-container">
+                <div class="level-container__item">
                   <!-- <span class="mr-4">Class: </span> -->
                   <v-icon class="mr-2">mdi-layers</v-icon>
                   <v-chip
@@ -440,7 +440,7 @@
                   >
                 </div>
 
-                <div class="w-1/2 mt-4 flex flex-wrap items-center">
+                <div class="level-container__item">
                   <!-- <span class="mr-4">Subclass: </span> -->
                   <v-icon class="mr-2">mdi-layers-outline</v-icon>
                   <v-chip
@@ -453,7 +453,7 @@
                   >
                 </div>
 
-                <div class="w-1/2 mt-4 flex flex-wrap items-center">
+                <div class="level-container__item">
                   <!-- <span class="mr-4">Spells:</span> -->
                   <v-icon class="mr-2">mdi-fire-circle</v-icon>
                   <v-chip
@@ -467,7 +467,7 @@
                   >
                 </div>
 
-                <div class="w-1/2 mt-4 flex flex-wrap items-center">
+                <div class="level-container__item">
                   <!-- <span class="mr-4">Feats:</span> -->
                   <v-icon class="mr-2">mdi-dlna</v-icon>
                   <v-chip
@@ -578,15 +578,90 @@ export default class PathfinderBuild extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.game-builds__build-filters {
-  .build-filters__row {
-    @apply flex;
-    @apply justify-start;
-    @apply items-center;
-  }
-}
-
 .tabs ::v-deep .v-tabs-bar {
   background-color: transparent !important;
+}
+
+.phaltz-wotr__build-wrapper {
+  @media (min-width: 1024px) {
+    @apply flex;
+  }
+
+  .build-wrapper__overview-container {
+    @apply w-full;
+
+    @media (min-width: 1024px) {
+      @apply w-1/2;
+    }
+
+    @media (min-width: 1280px) {
+      @apply w-2/5;
+    }
+
+    @media (min-width: 1400px) {
+      @apply w-4/12;
+    }
+
+    .overview-container__basic-details-wrapper {
+      @apply flex;
+      @apply flex-wrap;
+      @apply w-full;
+
+      .basic-details-wrapper__item {
+        @apply w-full;
+        @apply mt-4;
+        @apply flex;
+        @apply flex-wrap;
+        @apply items-center;
+
+        @media (min-width: 640px) {
+          @apply w-1/2;
+        }
+      }
+    }
+  }
+
+  .build-wrapper__levels-container {
+    @apply w-full;
+
+    @media (min-width: 1024px) {
+      @apply w-1/2;
+    }
+
+    @media (min-width: 1280px) {
+      @apply w-3/5;
+    }
+
+    @media (min-width: 1400px) {
+      @apply w-8/12;
+    }
+  }
+
+  .levels-container__level-container {
+    @apply w-full;
+    @apply flex;
+    @apply flex-wrap;
+    @apply text-copy-text;
+
+    .level-container__item {
+      @apply w-full;
+      @apply mt-4;
+      @apply flex;
+      @apply flex-wrap;
+      @apply items-center;
+
+      @media (min-width: 640px) {
+        @apply w-1/2;
+      }
+
+      @media (min-width: 1024px) {
+        @apply w-full;
+      }
+
+      @media (min-width: 1280px) {
+        @apply w-1/2;
+      }
+    }
+  }
 }
 </style>
