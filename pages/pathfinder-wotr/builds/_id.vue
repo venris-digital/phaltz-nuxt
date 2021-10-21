@@ -5,9 +5,12 @@
     <!-- TODO: Why are classes & subclasses arrays -->
     <!-- TODO: Why only one tag? -->
     <div v-else>
-      <PageHeading
-        >Pathfinder: WOTR Build Guide - {{ build.name || "" }}</PageHeading
-      >
+      <PageHeading>
+        <span class="uppercase">{{ build.name || "" }}</span>
+        <br />
+        <span class="text-xs">Pathfinder: WOTR Build Guide</span>
+      </PageHeading>
+
       <div class="phaltz-wotr__build-wrapper">
         <div class="build-wrapper__overview-container">
           <ContentPanel title="Overview">
@@ -502,7 +505,10 @@ import { YouTubeHelper } from "@/support/YouTubeHelper";
 
 @Component<PathfinderBuild>({
   head(): MetaInfo {
-    return { title: `Phaltz: Kevin Build Guide, Pathfinder WOTR` };
+    return {
+      title: `Phaltz: ${this.build?.name ||
+        "A"} - A Pathfinder WOTR Build Guide`
+    };
   },
   components: {
     //

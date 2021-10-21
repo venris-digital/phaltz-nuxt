@@ -51,11 +51,25 @@
             </span>
           </div>
         </div>
-        <div class="max-w-11xl m-auto">
+        <div class="max-w-11xl m-auto mb-32">
           <slot />
         </div>
       </div>
-      <div class="phaltz-navigation__footer bg-phaltz-black min-h-block"></div>
+      <div class="phaltz-navigation__footer bg-phaltz-black min-h-block">
+        <div class="flex w-full h-full justify-center items-center">
+          <div class="flex flex-col items-center my-16">
+            <span
+              class="font-bold uppercase text-copy-text tracking-widest text-6xl"
+              >Phaltz</span
+            >
+            <div class="flex w-52 justify-between items-center text-xs mt-2">
+              <NuxtLink to="/privacy-policy">Privacy Policy</NuxtLink>
+              |
+              <NuxtLink to="/terms-of-use">Terms & Conditions</NuxtLink>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <SignUpDialog
@@ -159,7 +173,7 @@ interface NavigationItem {
   }
 }
 .phaltz-navigation__footer {
-  flex: 0 1 40px;
+  // flex: 0 1 40px;
   @apply min-h-block;
   @apply border-t;
   @apply border-white;

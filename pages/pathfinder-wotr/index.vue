@@ -1,7 +1,9 @@
 <template>
   <NavigationLayout>
-    <PageHeading class="ml-4 mb-8">
-      Pathfinder: Wrath of the Righteous - Character Builds
+    <PageHeading>
+      <span class="uppercase">Character Builds</span>
+      <br />
+      <span class="text-xs">Pathfinder: Wrath of the Righteous</span>
     </PageHeading>
     <Loader v-if="isLoading" :size="50" />
     <div class="phaltz-wotr__builds-wrapper" v-else>

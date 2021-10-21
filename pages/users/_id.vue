@@ -3,6 +3,12 @@
     <Loader v-if="isLoading" :size="50" />
 
     <div v-else>
+      <PageHeading>
+        <span class="uppercase">User</span>
+        <br />
+        <span class="text-xs">Profile and build guides</span>
+      </PageHeading>
+
       <!-- <PageHeading>User Page & Builds</PageHeading> -->
       <ContentPanel class="mt-8" :title="user.display_name || ''">
         <div>
