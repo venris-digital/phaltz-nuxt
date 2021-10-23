@@ -59,6 +59,8 @@ export default class CharacterSelection extends Vue
 
   public selectedCharacter: number = 0;
 
+  protected test = null;
+
   // Lifecycle & Init
   protected mounted(): void {
     this.initialize();
