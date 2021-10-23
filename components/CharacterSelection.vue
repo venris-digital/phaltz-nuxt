@@ -22,8 +22,6 @@
                 class="character-select-icon"
                 :class="active ? 'bg-transparent' : 'opacity-25'"
               >
-                <!-- TODO: Fill lazy -->
-                <!-- lazy-src="https://picsum.photos/id/11/10/6" -->
                 <v-img
                   class="character-select-icon__image"
                   max-height="100"

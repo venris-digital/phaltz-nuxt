@@ -134,10 +134,10 @@ export default class SignUpDialog extends AbstractAuthAware {
   protected isValid = false;
 
   protected userDetails = {
-    email: "samueljhwhite@gmail.com",
-    password: "0ShadowG949",
-    passwordConfirmation: "0ShadowG949",
-    displayName: "Phaltz"
+    email: "",
+    password: "",
+    passwordConfirmation: "",
+    displayName: ""
   };
 
   protected async handleSubmit(): Promise<void> {
