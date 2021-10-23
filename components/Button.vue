@@ -2,7 +2,7 @@
   <v-btn
     v-bind="$attrs"
     v-on="$listeners"
-    class="phaltz-button"
+    class="phaltz-button p-4"
     :class="{ 'text-black': white }"
     small
     :color="color"

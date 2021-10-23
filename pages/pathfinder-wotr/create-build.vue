@@ -1,21 +1,11 @@
 <template>
-  <NavigationLayout>
+  <NavigationLayout class="phaltz-create-build__page-wrapper">
     <!-- Intro -->
-    <ContentPanel>
-      <PageHeading>
-        Pathfinder: Wrath of the Righteous - Create A New Build
-      </PageHeading>
-
-      <p class="text-sm text-copy-text">
-        Ad mollit aliqua laborum laborum aute. Irure fugiat duis aliqua aliqua
-        dolore dolor ipsum quis est adipisicing anim. Enim aute elit dolore
-        adipisicing incididunt do id et nulla. Ipsum laborum et duis incididunt
-        laborum nulla cupidatat in tempor eiusmod irure magna. Officia laborum
-        exercitation eu aliquip irure exercitation. Magna consequat quis nulla
-        laboris consequat reprehenderit culpa pariatur amet ex ut dolore ipsum
-        id.
-      </p>
-    </ContentPanel>
+    <PageHeading>
+      <span class="uppercase">Create Build</span>
+      <br />
+      <span class="text-xs">Pathfinder: Wrath of the Righteous</span>
+    </PageHeading>
 
     <Loader v-if="isLoading" :size="50" />
 
@@ -23,11 +13,11 @@
       title="Sign In To Create A Build"
       v-if="!isLoading && !$store.getters.isLoggedIn"
     >
-      <div class="text-copy-text text-sm mt-8">
+      <div class="page-wrapper__sign-in-container">
         Sorry, but you must be signed in to create a build.
         <p>
           You can
-          <span class="text-theme-blue cursor-pointer" @click="onClickSignUp"
+          <span class="sign-in-container__highlight-text" @click="onClickSignUp"
             >click here to sign in, or create an account.</span
           >
         </p>
@@ -42,13 +32,13 @@
             Overview
           </Subtitle>
 
-          <div class="flex flex-wrap mt-8">
+          <div class="page-wrapper__input-container">
             <AutoComplete
               v-model="build.characters"
               :items="characters"
               :item-text="'name'"
               :item-value="'id'"
-              class="w-1/2 pr-1"
+              class="input-container__half-input input-container__half-input--left"
               label="Characters"
               :rules="multiSelectRules"
               multiple
@@ -62,7 +52,7 @@
               v-model="build.build_name"
               label="Build Name"
               required
-              class="w-1/2 pl-1"
+              class="input-container__half-input input-container__half-input--right"
               :rules="textFieldRules"
               prepend-inner-icon="mdi-account-edit"
             />
@@ -72,7 +62,7 @@
               :items="mythicPaths"
               :item-text="'name'"
               :item-value="'id'"
-              class="w-1/2 pr-1"
+              class="input-container__half-input input-container__half-input--left"
               label="Mythic Paths"
               :rules="multiSelectRules"
               multiple
@@ -87,7 +77,7 @@
               :items="races"
               :item-text="'name'"
               label="Race"
-              class="w-1/2 pl-1"
+              class="input-container__half-input input-container__half-input--right"
               :return-object="true"
               :rules="selectRulesObject"
               required
@@ -99,7 +89,7 @@
               :items="skills"
               :item-text="'name'"
               :item-value="'id'"
-              class="w-1/2 pr-1"
+              class="input-container__half-input input-container__half-input--left"
               label="Skills"
               multiple
               chips
@@ -113,7 +103,7 @@
               :items="deities"
               :item-text="'name'"
               label="Deity"
-              class="w-1/2 pl-1"
+              class="input-container__half-input input-container__half-input--right"
               :return-object="true"
               :rules="selectRulesObject"
               required
@@ -125,7 +115,7 @@
               :items="alignments"
               :item-text="'name'"
               label="Alignment"
-              class="w-1/2 pr-1"
+              class="input-container__half-input input-container__half-input--left"
               :return-object="true"
               :rules="selectRulesObject"
               required
@@ -135,7 +125,7 @@
             <TextInput
               v-model="build.youtube_link"
               label="YouTube Link"
-              class="w-1/2 pl-1"
+              class="input-container__half-input input-container__half-input--right"
               prepend-inner-icon="mdi-youtube"
             />
 
@@ -173,14 +163,14 @@
             Base Ability Scores
           </Subtitle>
 
-          <div class="flex flex-wrap mt-8">
+          <div class="page-wrapper__input-container">
             <AutoComplete
               v-model="build.base_ability_scores.strength"
               :items="numbers"
               label="Strength"
               :rules="selectRules"
               required
-              class="w-1/3 pr-1"
+              class="input-container__third-input input-container__third-input--left"
               prepend-inner-icon="mdi-arm-flex"
             />
 
@@ -190,7 +180,7 @@
               label="Dexterity"
               :rules="selectRules"
               required
-              class="w-1/3 px-1"
+              class="input-container__third-input input-container__third-input--middle"
               prepend-inner-icon="mdi-strategy"
             />
 
@@ -200,7 +190,7 @@
               label="Constitution"
               :rules="selectRules"
               required
-              class="w-1/3 pl-1"
+              class="input-container__third-input input-container__third-input--right"
               prepend-inner-icon="mdi-hospital-box"
             />
 
@@ -210,7 +200,7 @@
               label="Intelligence"
               :rules="selectRules"
               required
-              class="w-1/3 pr-1"
+              class="input-container__third-input input-container__third-input--left"
               prepend-inner-icon="mdi-school"
             />
 
@@ -220,7 +210,7 @@
               label="Wisdom"
               :rules="selectRules"
               required
-              class="w-1/3 px-1"
+              class="input-container__third-input input-container__third-input--middle"
               prepend-inner-icon="mdi-script-text"
             />
 
@@ -230,7 +220,7 @@
               label="Charisma"
               :rules="selectRules"
               required
-              class="w-1/3 pl-1"
+              class="input-container__third-input input-container__third-input--right"
               prepend-inner-icon="mdi-account-heart"
             />
           </div>
@@ -866,5 +856,75 @@ enum TabItems {
 
 .tabs ::v-deep .v-tabs-bar {
   background-color: transparent !important;
+}
+
+.phaltz-create-build__page-wrapper {
+  .page-wrapper__intro-text {
+    @apply text-sm;
+    @apply text-copy-text;
+  }
+
+  .page-wrapper__sign-in-container {
+    @apply text-copy-text;
+    @apply text-sm;
+    @apply mt-8;
+
+    .sign-in-container__highlight-text {
+      @apply text-theme-blue;
+      @apply cursor-pointer;
+    }
+  }
+
+  .page-wrapper__input-container {
+    @apply flex;
+    @apply flex-wrap;
+    @apply mt-8;
+
+    .input-container__half-input {
+      @apply w-full;
+
+      @media (min-width: 768px) {
+        @apply w-1/2;
+      }
+
+      &--left {
+        @media (min-width: 768px) {
+          @apply pr-1;
+        }
+      }
+
+      &--right {
+        @media (min-width: 768px) {
+          @apply pl-1;
+        }
+      }
+    }
+
+    .input-container__third-input {
+      @apply w-full;
+
+      @media (min-width: 768px) {
+        @apply w-1/3;
+      }
+
+      &--left {
+        @media (min-width: 768px) {
+          @apply pr-1;
+        }
+      }
+
+      &--middle {
+        @media (min-width: 768px) {
+          @apply px-1;
+        }
+      }
+
+      &--right {
+        @media (min-width: 768px) {
+          @apply pl-1;
+        }
+      }
+    }
+  }
 }
 </style>

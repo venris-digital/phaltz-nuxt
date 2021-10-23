@@ -8,7 +8,7 @@
       >
         <Subtitle> Level {{ level.level }} </Subtitle>
 
-        <div class="flex flex-wrap justify-start mt-8">
+        <div class="wotr-level__input-container">
           <AutoComplete
             v-if="levelType === 'mythic'"
             v-model="levels[index].mythic_path"
@@ -16,7 +16,7 @@
             :item-text="'name'"
             label="Mythic Path"
             :return-object="true"
-            class="w-full pr-1"
+            class="input-container__full-input"
             :rules="isLegendMythicPath ? undefined : selectRulesObject"
             :required="isLegendMythicPath ? false : true"
             prepend-inner-icon="mdi-state-machine"
@@ -29,7 +29,7 @@
             :index="index"
             :rules="isPetLevels ? undefined : selectRulesObject"
             :required="isPetLevels ? false : true"
-            class="w-2/3 pr-1"
+            class="input-container__two-thirds-input"
             @classSelected="onClassSelected"
             @subclassSelected="onSubclassSelected"
           />
@@ -39,7 +39,7 @@
             v-model="levels[index].ability_score_increase"
             :items="abilityScores"
             label="Ability Score Increase"
-            class="w-1/3 pl-1"
+            class="input-container__third-input input-container__third-input--right"
             prepend-inner-icon="mdi-plus-circle"
           />
 
@@ -48,7 +48,7 @@
             :items="feats"
             :item-text="'name'"
             :item-value="'id'"
-            class="w-1/2 pr-1"
+            class="input-container__half-input input-container__half-input--left"
             label="Feats"
             multiple
             chips
@@ -62,7 +62,7 @@
             :items="spells"
             :item-text="'name'"
             :item-value="'id'"
-            class="w-1/2 pl-1"
+            class="input-container__half-input input-container__half-input--right"
             label="Spells"
             multiple
             chips
@@ -281,4 +281,70 @@ enum LevelType {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.wotr-level__input-container {
+  @apply flex;
+  @apply flex-wrap;
+  @apply justify-start;
+  @apply mt-8;
+
+  .input-container__two-thirds-input {
+    @apply w-full;
+
+    @media (min-width: 768px) {
+      @apply w-2/3;
+      @apply pr-1;
+    }
+  }
+
+  .input-container__full-input {
+    @apply w-full;
+  }
+
+  .input-container__half-input {
+    @apply w-full;
+
+    @media (min-width: 768px) {
+      @apply w-1/2;
+    }
+
+    &--left {
+      @media (min-width: 768px) {
+        @apply pr-1;
+      }
+    }
+
+    &--right {
+      @media (min-width: 768px) {
+        @apply pl-1;
+      }
+    }
+  }
+
+  .input-container__third-input {
+    @apply w-full;
+
+    @media (min-width: 768px) {
+      @apply w-1/3;
+    }
+
+    &--left {
+      @media (min-width: 768px) {
+        @apply pr-1;
+      }
+    }
+
+    &--middle {
+      @media (min-width: 768px) {
+        @apply px-1;
+      }
+    }
+
+    &--right {
+      @media (min-width: 768px) {
+        @apply pl-1;
+      }
+    }
+  }
+}
+</style>
