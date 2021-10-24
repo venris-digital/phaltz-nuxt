@@ -191,6 +191,7 @@ export default class PathfinderWOTR extends Vue {
 
   // Click Handlers
   protected onClickCreateBuild(): void {
+    //
     this.$router.push({ path: "pathfinder-wotr/create-build" });
   }
 
