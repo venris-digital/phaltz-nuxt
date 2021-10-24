@@ -551,6 +551,7 @@ export default class CreateBuild extends Vue {
 
   // Async Methods
   protected async fetchClasses(): Promise<void> {
+    //
     try {
       this.classes = await new Class().getAllByGameId(this.gameId);
     } catch (error) {
