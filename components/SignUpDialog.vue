@@ -158,7 +158,7 @@ export default class SignUpDialog extends AbstractAuthAware {
   }
 
   protected async handleSignIn(): Promise<void> {
-    await this.createSession();
+    // await this.createSession();
     const token = await this.login(this.loginPayload);
     if (!token) {
       return;
@@ -169,10 +169,9 @@ export default class SignUpDialog extends AbstractAuthAware {
   }
 
   protected async handleRegistration(): Promise<void> {
-    console.log("handle reg");
-    await this.createSession();
+    // await this.createSession();
     const token = await this.register(this.registrationPayload);
-    console.log("token: ", token);
+
     if (!token) {
       return;
     }
