@@ -1,6 +1,6 @@
 import Model from "@/models/Model";
 import WOTRBuild from "./WOTRBuild";
-import { HttpBaseServer } from "@/models/Http";
+import { Http } from "@/models/Http";
 import axios from "axios";
 
 export default class User extends Model {
@@ -13,7 +13,7 @@ export default class User extends Model {
   public builds?: WOTRBuild;
 
   public async createSession(): Promise<this[]> {
-    const response = await HttpBaseServer.get("/sanctum/csrf-cookie");
+    const response = await new Http().baseServer().get("/sanctum/csrf-cookie");
     return response.data;
   }
 

@@ -29,7 +29,7 @@
             :index="index"
             :rules="isPetLevels ? undefined : selectRulesObject"
             :required="isPetLevels ? false : true"
-            class="input-container__two-thirds-input"
+            class="w-full"
             @classSelected="onClassSelected"
             @subclassSelected="onSubclassSelected"
           />
@@ -39,7 +39,7 @@
             v-model="levels[index].ability_score_increase"
             :items="abilityScores"
             label="Ability Score Increase"
-            class="input-container__third-input input-container__third-input--right"
+            class="input-container__half-input input-container__half-input--left"
             prepend-inner-icon="mdi-plus-circle"
           />
 
@@ -48,27 +48,17 @@
             :items="feats"
             :item-text="'name'"
             :item-value="'id'"
-            class="input-container__half-input input-container__half-input--left"
+            :class="
+              levelType === 'mythic'
+                ? 'w-full'
+                : 'input-container__half-input input-container__half-input--right'
+            "
             label="Feats"
             multiple
             chips
             small-chips
             deletable-chips
             prepend-inner-icon="mdi-dlna"
-          />
-
-          <AutoComplete
-            v-model="levels[index].spells"
-            :items="spells"
-            :item-text="'name'"
-            :item-value="'id'"
-            class="input-container__half-input input-container__half-input--right"
-            label="Spells"
-            multiple
-            chips
-            small-chips
-            deletable-chips
-            prepend-inner-icon="mdi-fire-circle"
           />
         </div>
         <TextInput
@@ -104,7 +94,7 @@ import {
   tagsSelectRules
 } from "@/support/FieldValidation";
 
-@Component<WOTRLevel>({
+@Component<Level>({
   head(): MetaInfo {
     return { title: `Pathfinder WotR Build Guides: Phaltz.com` };
   },
@@ -112,7 +102,7 @@ import {
     //
   }
 })
-export default class WOTRLevel extends Vue implements IWOTRLevel {
+export default class Level extends Vue implements IWOTRLevel {
   // Refs
   @Ref("form")
   protected form!: IVuetifyForm;
@@ -132,9 +122,6 @@ export default class WOTRLevel extends Vue implements IWOTRLevel {
 
   @Prop({ required: true })
   protected subclasses!: Subclass[];
-
-  @Prop({ required: true })
-  protected buildTags!: BuildTag[];
 
   @Prop({ required: true })
   protected spells!: Spell[];

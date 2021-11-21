@@ -3,15 +3,10 @@
     <Loader v-if="isLoading" :size="50" />
 
     <div v-else>
-      <PageHeading>
-        <span class="uppercase">User</span>
-        <br />
-        <span class="text-xs">Profile and build guides</span>
-      </PageHeading>
+      <PageHeading title="User" text="Profile and build guides" />
 
-      <!-- <PageHeading>User Page & Builds</PageHeading> -->
       <ContentPanel class="mt-8" :title="user.display_name || ''">
-        <div>
+        <!-- <div>
           <span class="text-xs">
             <a
               href="https://www.youtube.com/channel/UCyQC7K1wHxYeBhuViUeSriA"
@@ -19,14 +14,14 @@
               >https://www.youtube.com/channel/UCyQC7K1wHxYeBhuViUeSriA</a
             >
           </span>
-        </div>
+        </div> -->
       </ContentPanel>
 
       <!-- <ContentPanel :title="'Builds'"> -->
       <div class="flex justify-center w-full">
         <div v-if="builds.length" class="w-full flex flex-wrap">
           <BuildCard
-            class="w-3/12"
+            class="w-full"
             v-for="(build, index) in builds"
             :key="`build-card-${index}`"
             :build="build"

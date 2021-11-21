@@ -5,11 +5,10 @@
     <!-- TODO: Why are classes & subclasses arrays -->
     <!-- TODO: Why only one tag? -->
     <div v-else>
-      <PageHeading>
-        <span class="uppercase">{{ build.name || "" }}</span>
-        <br />
-        <span class="text-xs">Pathfinder: WOTR Build Guide</span>
-      </PageHeading>
+      <PageHeading
+        :title="build.name || ''"
+        text="Pathfinder: WOTR Build Guide"
+      />
 
       <div class="phaltz-wotr__build-wrapper">
         <div class="build-wrapper__overview-container">
@@ -254,7 +253,10 @@
               <v-tab @click="tabs = 1">
                 <v-icon class="mr-2">mdi-state-machine</v-icon> Mythic
               </v-tab>
-              <v-tab :disabled="!petLevels.length" @click="tabs = 2">
+              <v-tab @click="tabs = 2">
+                <v-icon class="mr-2">mdi-fire-circle</v-icon> Spell Book
+              </v-tab>
+              <v-tab :disabled="!petLevels.length" @click="tabs = 3">
                 <v-icon class="mr-2">mdi-paw</v-icon> Pet
               </v-tab>
             </v-tabs>
@@ -292,28 +294,6 @@
                     color="#282a2e"
                     exact-active-class="#282a2e"
                     >{{ level.subclass[0].name }}</v-chip
-                  >
-                </div>
-
-                <div class="level-container__item">
-                  <!-- <span class="mr-4">Spells:</span> -->
-                  <v-icon class="mr-2">mdi-fire-circle</v-icon>
-                  <v-chip
-                    v-for="(spell, spellIndex) in level.spells"
-                    :key="`level-${index}-spell-${spellIndex}`"
-                    class="mr-1 mt-1"
-                    small
-                    color="#282a2e"
-                    exact-active-class="#282a2e"
-                    >{{ spell.name }}</v-chip
-                  >
-                  <v-chip
-                    v-if="!level.spells.length"
-                    class="mr-1 mt-1"
-                    small
-                    color="#282a2e"
-                    exact-active-class="#282a2e"
-                    >{{ "No spells" }}</v-chip
                   >
                 </div>
 
@@ -384,20 +364,6 @@
                 </div>
 
                 <div class="level-container__item">
-                  <!-- <span class="mr-4">Spells:</span> -->
-                  <v-icon class="mr-2">mdi-fire-circle</v-icon>
-                  <v-chip
-                    v-for="(spell, spellIndex) in level.spells"
-                    :key="`level-${index}-spell-${spellIndex}`"
-                    class="mr-1 mt-1"
-                    small
-                    color="#282a2e"
-                    exact-active-class="#282a2e"
-                    >{{ spell.name }}</v-chip
-                  >
-                </div>
-
-                <div class="level-container__item">
                   <!-- <span class="mr-4">Feats:</span> -->
                   <v-icon class="mr-2">mdi-dlna</v-icon>
                   <v-chip
@@ -421,9 +387,41 @@
             </div>
           </ContentPanel>
 
-          <!-- Pet Levels -->
+          <!-- Spell Book -->
           <ContentPanel
             v-show="tabs === 2"
+            v-for="(level, index) in spellLevels"
+            :key="`spell-level-${index}`"
+          >
+            <div>
+              <Subtitle> Level {{ level.level }} </Subtitle>
+              <div class="levels-container__level-container">
+                <div class="level-container__item">
+                  <v-icon class="mr-2">mdi-fire-circle</v-icon>
+                  <v-chip
+                    v-for="(spell, spellIndex) in level.spells"
+                    :key="`level-${index}-spell-${spellIndex}`"
+                    class="mr-1 mt-1"
+                    small
+                    color="#282a2e"
+                    exact-active-class="#282a2e"
+                    >{{ spell.name }}</v-chip
+                  >
+                </div>
+
+                <div
+                  class="w-full mt-4 text-xs"
+                  :class="{ 'py-2 px-6': level.notes }"
+                >
+                  {{ level.notes || "" }}
+                </div>
+              </div>
+            </div>
+          </ContentPanel>
+
+          <!-- Pet Levels -->
+          <ContentPanel
+            v-show="tabs === 3"
             v-for="(level, index) in petLevels"
             :key="`level-pet-${index}`"
           >
@@ -457,21 +455,6 @@
                 </div>
 
                 <div class="level-container__item">
-                  <!-- <span class="mr-4">Spells:</span> -->
-                  <v-icon class="mr-2">mdi-fire-circle</v-icon>
-                  <v-chip
-                    v-for="(spell, spellIndex) in level.spells"
-                    :key="`level-${index}-spell-${spellIndex}`"
-                    class="mr-1 mt-1"
-                    small
-                    color="#282a2e"
-                    exact-active-class="#282a2e"
-                    >{{ spell.name }}</v-chip
-                  >
-                </div>
-
-                <div class="level-container__item">
-                  <!-- <span class="mr-4">Feats:</span> -->
                   <v-icon class="mr-2">mdi-dlna</v-icon>
                   <v-chip
                     v-for="(feat, featIndex) in level.feats"
@@ -502,6 +485,8 @@ import MetaInfo from "vue-meta";
 import WOTRBuild from "@/models/WOTRBuild";
 import WOTRLevel from "@/models/WOTRLevel";
 import { YouTubeHelper } from "@/support/YouTubeHelper";
+import SpellLevel from "~/components/WOTRCreateBuild/SpellLevel.vue";
+import WOTRSpellLevel from "~/models/WOTRSpelllevel";
 
 @Component<PathfinderBuild>({
   head(): MetaInfo {
@@ -528,6 +513,8 @@ export default class PathfinderBuild extends Vue {
 
   protected petLevels: WOTRLevel[] = [];
 
+  protected spellLevels: WOTRSpellLevel[] = [];
+
   protected youTubeHelper = new YouTubeHelper();
 
   protected tabs = 0;
@@ -541,6 +528,7 @@ export default class PathfinderBuild extends Vue {
     this.isLoading = true;
     await this.fetchBuild();
     await this.fetchLevels();
+    await this.fetchSpellLevels();
     this.splitLevels();
     this.isLoading = false;
   }
@@ -559,6 +547,38 @@ export default class PathfinderBuild extends Vue {
         this.traditionalLevels.push(level);
       }
     });
+    this.sortLevels();
+  }
+
+  protected sortLevels(): void {
+    this.petLevels.sort((a, b) =>
+      Number(a.level) > Number(b.level)
+        ? 1
+        : Number(b.level) > Number(a.level)
+        ? -1
+        : 0
+    );
+    this.traditionalLevels.sort((a, b) =>
+      Number(a.level) > Number(b.level)
+        ? 1
+        : Number(b.level) > Number(a.level)
+        ? -1
+        : 0
+    );
+    this.mythicLevels.sort((a, b) =>
+      Number(a.level) > Number(b.level)
+        ? 1
+        : Number(b.level) > Number(a.level)
+        ? -1
+        : 0
+    );
+    this.spellLevels.sort((a, b) =>
+      Number(a.level) > Number(b.level)
+        ? 1
+        : Number(b.level) > Number(a.level)
+        ? -1
+        : 0
+    );
   }
 
   // Async Methods
@@ -576,6 +596,19 @@ export default class PathfinderBuild extends Vue {
     }
     try {
       this.levels = await new WOTRLevel().getAllByBuildId(this.build!.id);
+    } catch (error) {
+      //
+    }
+  }
+
+  protected async fetchSpellLevels(): Promise<void> {
+    if (!this.build) {
+      return;
+    }
+    try {
+      this.spellLevels = await new WOTRSpellLevel().getAllByBuildId(
+        this.build!.id
+      );
     } catch (error) {
       //
     }
