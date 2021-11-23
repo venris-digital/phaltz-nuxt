@@ -16,6 +16,8 @@ export default class WOTRLevel extends Model {
 
   public notes!: string;
 
+  public level!: string;
+
   public build!: number;
 
   public pet_level?: boolean | null;

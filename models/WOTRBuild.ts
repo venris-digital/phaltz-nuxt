@@ -8,6 +8,7 @@ import MythicPath from "@/models/MythicPath";
 import Race from "@/models/Race";
 import Feat from "@/models/Feat";
 import Spell from "@/models/Spell";
+import WOTRSpellLevel from "./WOTRSpelllevel";
 
 export default class Build extends Model {
   protected endpoint = "/wotr/builds";
@@ -36,6 +37,8 @@ export default class Build extends Model {
   public final_classes!: Class[];
 
   public levels!: BuildLevel[];
+
+  public spellLevels!: WOTRSpellLevel[];
 
   public mythic!: MythicPath;
 

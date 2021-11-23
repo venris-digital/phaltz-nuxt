@@ -1,4 +1,4 @@
-import Http from "@/models/Http";
+import { Http } from "@/models/Http";
 
 export default class Model {
   public id!: number;
@@ -10,17 +10,17 @@ export default class Model {
   protected endpoint = "/";
 
   public async all(): Promise<this[]> {
-    const response = await Http.get(this.endpoint);
+    const response = await new Http().apiServer().get(this.endpoint);
     return response.data;
   }
 
   public async find(id: string | number): Promise<this> {
-    const response = await Http.get(`${this.endpoint}/${id}`);
+    const response = await new Http().apiServer().get(`${this.endpoint}/${id}`);
     return response.data;
   }
 
   public async create(payload: Record<string, any>): Promise<this> {
-    const response = await Http.post(this.endpoint, payload);
+    const response = await new Http().apiServer().post(this.endpoint, payload);
     return response.data;
   }
 }
