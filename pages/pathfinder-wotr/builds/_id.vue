@@ -127,7 +127,7 @@
             </div>
           </ContentPanel>
 
-          <ContentPanel title="Attributes">
+          <ContentPanel title="Base Attributes">
             <div
               class="w-full mt-4 flex items-center justify-between text-copy-text"
             >

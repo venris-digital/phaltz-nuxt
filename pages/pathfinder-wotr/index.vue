@@ -87,7 +87,7 @@
         <div v-else class="w-full flex flex-wrap">
           <BuildCard
             class="builds-container__build-card"
-            v-for="(build, index) in builds"
+            v-for="(build, index) in visibleBuilds"
             :key="`build-card-${index}`"
             :build="build"
           />
@@ -106,6 +106,7 @@ import Character from "@/models/Character";
 import BuildTag from "@/models/BuildTag";
 import MythicPath from "@/models/MythicPath";
 import WOTRBuild, { BuildFilters } from "@/models/WOTRBuild";
+import Build from "@/models/WOTRBuild";
 
 @Component<PathfinderWOTR>({
   head(): MetaInfo {
@@ -127,7 +128,7 @@ export default class PathfinderWOTR extends Vue {
 
   protected gameId = 1;
 
-  protected builds: WOTRBuild[] | null = null;
+  protected builds: WOTRBuild[] = [];
 
   protected game: Game | null = null;
 
@@ -271,6 +272,10 @@ export default class PathfinderWOTR extends Vue {
 
   protected get searchableClasses(): Class[] {
     return this.classes.filter(characterClass => characterClass.id !== 39);
+  }
+
+  protected get visibleBuilds(): Build[] {
+    return this.builds.filter(build => build.id !== 1);
   }
 
   // Watchers
