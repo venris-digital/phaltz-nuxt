@@ -556,7 +556,7 @@ export default class CreateBuild extends Vue {
   }
 
   protected get isLegendMythicPath(): boolean {
-    return !!this.build.mythic_path.some((pathId: number) => pathId === 2);
+    return !!this.build.mythic_path.some((pathId: number) => pathId === 7);
   }
 
   // Watchers
