@@ -29,7 +29,7 @@
 
           <AutoComplete
             v-model="filters.classes"
-            :items="classes"
+            :items="searchableClasses"
             :item-text="'name'"
             :item-value="'id'"
             :label="'Classes'"
@@ -267,6 +267,10 @@ export default class PathfinderWOTR extends Vue {
   // Getters
   protected get areClassesSelected(): boolean {
     return !!this.filters.classes.length;
+  }
+
+  protected get searchableClasses(): Class[] {
+    return this.classes.filter(characterClass => characterClass.id !== 39);
   }
 
   // Watchers
