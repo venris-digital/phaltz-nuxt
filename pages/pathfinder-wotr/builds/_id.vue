@@ -396,7 +396,7 @@
             <div>
               <Subtitle> Level {{ level.level }} </Subtitle>
               <div class="levels-container__level-container">
-                <div class="level-container__item">
+                <div class="level-container__item level-container__item--full">
                   <v-icon class="mr-2">mdi-fire-circle</v-icon>
                   <v-chip
                     v-for="(spell, spellIndex) in level.spells"
@@ -699,6 +699,10 @@ export default class PathfinderBuild extends Vue {
 
       @media (min-width: 1280px) {
         @apply w-1/2;
+      }
+
+      &--full {
+        @apply w-full;
       }
     }
   }
