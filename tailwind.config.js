@@ -39,6 +39,23 @@ module.exports = {
         "gray-variant-lighter": "#424242"
       },
 
+      dark: {
+        dark: "#24252D",
+        white: "#FFFFFF",
+        grey1: "#E3E1E3",
+        grey2: "#888888",
+        grey3: "#4F4F4F",
+        black1: "#2D2E36",
+        black2: "#1B1A21",
+        black3: "#2A2D3A",
+        black4: "#24252D",
+        black5: "#282a2e",
+        black6: "#202125",
+        black7: "#16171b",
+        blue: "#0076ed",
+        bluedark: "#006cda"
+      },
+
       test: {
         black: {
           dark: "#0a0a0c",
@@ -896,10 +913,10 @@ module.exports = {
     "group-hover",
     "group-focus",
     "focus-within",
+    "active",
     "hover",
     "focus",
     "focus-visible",
-    "active",
     "disabled"
   ],
   variants: {

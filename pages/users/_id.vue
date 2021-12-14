@@ -25,6 +25,7 @@
             v-for="(build, index) in builds"
             :key="`build-card-${index}`"
             :build="build"
+            :to="buildCardLink"
           />
         </div>
         <span class="px-4" v-else>This user has not created any builds</span>
@@ -85,6 +86,13 @@ export default class User extends Vue {
     } catch (error) {
       //
     }
+  }
+
+  // Getters
+  protected get buildCardLink(): string | undefined {
+    return this.$route.params.id === this.$store.getters.user.id.toString()
+      ? `/pathfinder-wotr/edit-build`
+      : undefined;
   }
 }
 </script>

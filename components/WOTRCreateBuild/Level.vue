@@ -2,81 +2,157 @@
   <Loader v-if="isLoading" :size="50" />
   <div v-else>
     <v-form ref="form" v-model="isValid">
-      <ContentPanel
-        v-for="(level, index) in levels"
-        :key="`level-container-level${level.level}`"
-      >
-        <Subtitle> Level {{ level.level }} </Subtitle>
-
-        <div class="wotr-level__input-container">
-          <AutoComplete
-            v-if="levelType === 'mythic'"
-            v-model="levels[index].mythic_path"
-            :items="mythicPaths"
-            :item-text="'name'"
-            label="Mythic Path"
-            :return-object="true"
-            class="input-container__full-input"
-            :rules="isLegendMythicPath ? undefined : selectRulesObject"
-            :required="isLegendMythicPath ? false : true"
-            prepend-inner-icon="mdi-state-machine"
-          />
-
-          <ClassSubclassSelect
-            v-else
-            :classes="classes"
-            :subclasses="subclasses"
-            :index="index"
-            :rules="isPetLevels ? undefined : selectRulesObject"
-            :required="isPetLevels ? false : true"
-            class="w-full"
-            @classSelected="onClassSelected"
-            @subclassSelected="onSubclassSelected"
-          />
-
-          <AutoComplete
-            v-if="levelType !== 'mythic'"
-            v-model="levels[index].ability_score_increase"
-            :items="abilityScores"
-            label="Ability Score Increase"
-            class="input-container__half-input input-container__half-input--left"
-            prepend-inner-icon="mdi-plus-circle"
-          />
-
-          <AutoComplete
-            v-model="levels[index].feats"
-            :items="feats"
-            :item-text="'name'"
-            :item-value="'id'"
-            :class="
-              levelType === 'mythic'
-                ? 'w-full'
-                : 'input-container__half-input input-container__half-input--right'
-            "
-            label="Feats"
-            multiple
-            chips
-            small-chips
-            deletable-chips
-            prepend-inner-icon="mdi-dlna"
-          />
-        </div>
-        <TextInput
-          v-model="levels[index].notes"
-          outlined
-          dense
-          label="Notes"
-          prepend-inner-icon="mdi-pencil"
-          placeholder="(Optional) Any additional context you'd like to give to potential players."
+      <div v-if="internalExistingLevels">
+        <ContentPanel
+          v-for="(level, index) in internalExistingLevels"
+          :key="`level-container-level${level.level}`"
         >
-        </TextInput>
-      </ContentPanel>
+          <Subtitle> Level {{ level.level }} poo </Subtitle>
+
+          <div class="wotr-level__input-container">
+            <AutoComplete
+              v-if="levelType === 'mythic'"
+              v-model="internalExistingLevels[index].mythic"
+              :items="mythicPaths"
+              :item-text="'name'"
+              label="Mythic Path"
+              :return-object="true"
+              class="input-container__full-input"
+              :rules="isLegendMythicPath ? undefined : selectRulesObject"
+              :required="isLegendMythicPath ? false : true"
+              prepend-inner-icon="mdi-state-machine"
+            />
+
+            <ClassSubclassSelect
+              v-else
+              :existingClass="internalExistingLevels[index].class"
+              :existingSubclass="internalExistingLevels[index].subclass"
+              :classes="classes"
+              :subclasses="subclasses"
+              :index="index"
+              :rules="isPetLevels ? undefined : selectRulesObject"
+              :required="isPetLevels ? false : true"
+              class="w-full"
+              @classSelected="onClassSelected"
+              @subclassSelected="onSubclassSelected"
+            />
+
+            <AutoComplete
+              v-if="levelType !== 'mythic'"
+              v-model="internalExistingLevels[index].ability_score_increase"
+              :items="abilityScores"
+              label="Ability Score Increase"
+              class="input-container__half-input input-container__half-input--left"
+              prepend-inner-icon="mdi-plus-circle"
+            />
+
+            <AutoComplete
+              v-model="internalExistingLevels[index].feats"
+              :items="feats"
+              :item-text="'name'"
+              :item-value="'id'"
+              :class="
+                levelType === 'mythic'
+                  ? 'w-full'
+                  : 'input-container__half-input input-container__half-input--right'
+              "
+              label="Feats"
+              multiple
+              chips
+              small-chips
+              deletable-chips
+              prepend-inner-icon="mdi-dlna"
+            />
+          </div>
+          <TextInput
+            v-model="internalExistingLevels[index].notes"
+            outlined
+            dense
+            label="Notes"
+            prepend-inner-icon="mdi-pencil"
+            placeholder="(Optional) Any additional context you'd like to give to potential players."
+          >
+          </TextInput>
+        </ContentPanel>
+      </div>
+
+      <div v-else>
+        <ContentPanel
+          v-for="(level, index) in levels"
+          :key="`level-container-level${level.level}`"
+        >
+          <Subtitle> Level {{ level.level }} </Subtitle>
+
+          <div class="wotr-level__input-container">
+            <AutoComplete
+              v-if="levelType === 'mythic'"
+              v-model="levels[index].mythic_path"
+              :items="mythicPaths"
+              :item-text="'name'"
+              label="Mythic Path"
+              :return-object="true"
+              class="input-container__full-input"
+              :rules="isLegendMythicPath ? undefined : selectRulesObject"
+              :required="isLegendMythicPath ? false : true"
+              prepend-inner-icon="mdi-state-machine"
+            />
+
+            <ClassSubclassSelect
+              v-else
+              :classes="classes"
+              :subclasses="subclasses"
+              :index="index"
+              :rules="isPetLevels ? undefined : selectRulesObject"
+              :required="isPetLevels ? false : true"
+              class="w-full"
+              @classSelected="onClassSelected"
+              @subclassSelected="onSubclassSelected"
+            />
+
+            <AutoComplete
+              v-if="levelType !== 'mythic'"
+              v-model="levels[index].ability_score_increase"
+              :items="abilityScores"
+              label="Ability Score Increase"
+              class="input-container__half-input input-container__half-input--left"
+              prepend-inner-icon="mdi-plus-circle"
+            />
+
+            <AutoComplete
+              v-model="levels[index].feats"
+              :items="feats"
+              :item-text="'name'"
+              :item-value="'id'"
+              :class="
+                levelType === 'mythic'
+                  ? 'w-full'
+                  : 'input-container__half-input input-container__half-input--right'
+              "
+              label="Feats"
+              multiple
+              chips
+              small-chips
+              deletable-chips
+              prepend-inner-icon="mdi-dlna"
+            />
+          </div>
+          <TextInput
+            v-model="levels[index].notes"
+            outlined
+            dense
+            label="Notes"
+            prepend-inner-icon="mdi-pencil"
+            placeholder="(Optional) Any additional context you'd like to give to potential players."
+          >
+          </TextInput>
+        </ContentPanel>
+      </div>
     </v-form>
   </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component, Ref, Prop } from "vue-property-decorator";
+import { Vue, Component, Ref, Prop, PropSync } from "vue-property-decorator";
 import MetaInfo from "vue-meta";
 import Class from "@/models/Class";
 import BuildTag from "@/models/BuildTag";
@@ -84,7 +160,6 @@ import Subclass from "@/models/Subclass";
 import Spell from "@/models/Spell";
 import Feat from "@/models/Feat";
 import MythicPath from "@/models/MythicPath";
-import { IClassSubclassSelectEmit } from "~/components/ClassSubclassSelect.vue";
 import { abilityScores } from "@/support/BasicValueOptions";
 import {
   textFieldRules,
@@ -93,6 +168,11 @@ import {
   multiSelectRules,
   tagsSelectRules
 } from "@/support/FieldValidation";
+import WOTRLevel from "~/models/WOTRLevel";
+import {
+  IClassSelectEmit,
+  ISubclassSelectEmit
+} from "../ClassSubclassSelect.vue";
 
 @Component<Level>({
   head(): MetaInfo {
@@ -108,6 +188,9 @@ export default class Level extends Vue implements IWOTRLevel {
   protected form!: IVuetifyForm;
 
   // Props
+  @PropSync("existingLevels")
+  protected internalExistingLevels?: WOTRLevel[];
+
   @Prop({ required: true })
   protected classes!: Class[];
 
@@ -157,12 +240,16 @@ export default class Level extends Vue implements IWOTRLevel {
   }
 
   // Emit Handlers
-  protected onClassSelected(event: IClassSubclassSelectEmit): void {
-    this.levels[event.index].class = event.item;
+  protected onClassSelected(event: IClassSelectEmit): void {
+    this.internalExistingLevels
+      ? (this.internalExistingLevels[event.index].class = event.item)
+      : (this.levels[event.index].class = event.item);
   }
 
-  protected onSubclassSelected(event: IClassSubclassSelectEmit): void {
-    this.levels[event.index].subclass = event.item;
+  protected onSubclassSelected(event: ISubclassSelectEmit): void {
+    this.internalExistingLevels
+      ? (this.internalExistingLevels[event.index].subclass = event.item)
+      : (this.levels[event.index].subclass = event.item);
   }
 
   // Class Methods

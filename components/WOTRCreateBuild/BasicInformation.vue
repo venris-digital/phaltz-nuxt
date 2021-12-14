@@ -21,7 +21,7 @@
       />
 
       <TextInput
-        v-model="internalBuild.build_name"
+        v-model="internalBuild.name"
         label="Build Name"
         required
         class="input-container__half-input input-container__half-input--right"

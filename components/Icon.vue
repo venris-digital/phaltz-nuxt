@@ -1,14 +1,27 @@
 <template>
-  <v-tooltip v-if="tooltip" top>
+  <v-tooltip v-if="tooltip" :top="top" :bottom="!top">
     <template v-slot:activator="{ on, attrs }">
-      <v-icon v-bind="attrs" v-on="on" :size="size">
+      <v-icon
+        :color="color ? color : undefined"
+        v-bind="attrs"
+        v-on="on"
+        :size="size"
+      >
         <slot />
       </v-icon>
     </template>
     <span>{{ tooltip }}</span>
   </v-tooltip>
 
-  <v-icon v-else :size="size" v-bind="attrs" v-on="$listeners">
+  <v-icon
+    v-else
+    :ripple="false"
+    :color="color ? color : undefined"
+    :size="size"
+    class="remove-background"
+    v-bind="$attrs"
+    v-on="$listeners"
+  >
     <slot />
   </v-icon>
 </template>
@@ -25,8 +38,14 @@ export default class SignInPrompt extends Vue {
   @Prop({ required: false })
   protected tooltip!: string;
 
+  @Prop({ default: true })
+  protected top!: boolean;
+
   @Prop({ default: "24" })
   protected size!: string;
+
+  @Prop({ default: null })
+  protected color!: string;
 }
 </script>
 
@@ -39,6 +58,17 @@ export default class SignInPrompt extends Vue {
   .sign-in-container__highlight-text {
     @apply text-theme-blue;
     @apply cursor-pointer;
+  }
+}
+.remove-background {
+  background-color: transparent !important;
+
+  &:after {
+    background-color: transparent !important;
+  }
+
+  &:before {
+    background-color: transparent !important;
   }
 }
 </style>

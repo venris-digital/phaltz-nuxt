@@ -205,8 +205,7 @@ export default class CreateBuild extends Vue {
     game_id: 1,
     alignment: {},
     mythic_path: [],
-    base_ability_scores: {},
-    build_name: ""
+    name: ""
   };
 
   // TODO: Delete and  replace as getters
@@ -505,25 +504,19 @@ export default class CreateBuild extends Vue {
 
   protected createBuildPayload(): any {
     return {
-      name: this.build.build_name || "",
-      strength: this.build.base_ability_scores?.strength
-        ? this.build.base_ability_scores?.strength.toString()
+      name: this.build.name || "",
+      strength: this.build?.strength ? this.build?.strength.toString() : null,
+      dexterity: this.build?.dexterity
+        ? this.build?.dexterity.toString()
         : null,
-      dexterity: this.build.base_ability_scores?.dexterity
-        ? this.build.base_ability_scores?.dexterity.toString()
+      constitution: this.build?.constitution
+        ? this.build?.constitution.toString()
         : null,
-      constitution: this.build.base_ability_scores?.constitution
-        ? this.build.base_ability_scores?.constitution.toString()
+      intelligence: this.build?.intelligence
+        ? this.build?.intelligence.toString()
         : null,
-      intelligence: this.build.base_ability_scores?.intelligence
-        ? this.build.base_ability_scores?.intelligence.toString()
-        : null,
-      wisdom: this.build.base_ability_scores?.wisdom
-        ? this.build.base_ability_scores?.wisdom.toString()
-        : null,
-      charisma: this.build.base_ability_scores?.charisma
-        ? this.build.base_ability_scores?.charisma.toString()
-        : null,
+      wisdom: this.build?.wisdom ? this.build?.wisdom.toString() : null,
+      charisma: this.build?.charisma ? this.build?.charisma.toString() : null,
       game_id: "1",
       user_id: this.$store.getters.user.id.toString(),
       tags: this.build.tags || [],
@@ -568,7 +561,7 @@ interface IVuetifyForm {
   resetValidation: () => void;
 }
 
-enum TabItems {
+export enum TabItems {
   LevelsToTwenty = 0,
   LevelsTwentyToForty = 1,
   MYTHIC = 2,

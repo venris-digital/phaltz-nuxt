@@ -1,18 +1,18 @@
 <template>
-  <NavigationLayout>
-    <PageHeading
-      title="Character Builds"
-      text="Pathfinder: Wrath of the Righteous"
-    />
-
+  <NavigationLayout2>
     <Loader v-if="isLoading" :size="50" />
-    <div class="phaltz-wotr__builds-wrapper" v-else>
-      <div class="builds-wrapper__search-container">
-        <ContentPanel>
-          <Subtitle class="mb-8">
-            Search Filters
-          </Subtitle>
-
+    <div v-else class="w-full flex justify-center">
+      <ContentPanel class="w-full mx-8 mb-4 mt-8 -p-2">
+        <PageHeading
+          title="Character Builds"
+          text="Pathfinder: Wrath of the Righteous"
+          supportingParagraph="Cupidatat laborum irure labore enim adipisicing officia est. Consectetur
+        culpa qui non proident in duis culpa fugiat. Duis consectetur aliqua
+        adipisicing irure qui. Esse adipisicing reprehenderit exercitation
+        reprehenderit nisi eu sit culpa officia fugiat ullamco. Culpa enim velit
+        laboris officia cupidatat dolor anim elit quis elit sit aliqua."
+        />
+        <div class="flex">
           <AutoComplete
             v-model="filters.characters"
             :items="characters"
@@ -20,25 +20,14 @@
             :item-value="'id'"
             :label="'Character'"
             :eager="true"
+            attach
             multiple
             chips
+            class="w-1/2 pr-2"
+            hide-details
             small-chips
             deletable-chips
             prepend-inner-icon="mdi-account"
-          />
-
-          <AutoComplete
-            v-model="filters.classes"
-            :items="searchableClasses"
-            :item-text="'name'"
-            :item-value="'id'"
-            :label="'Classes'"
-            :eager="true"
-            multiple
-            chips
-            small-chips
-            deletable-chips
-            prepend-inner-icon="mdi-layers"
           />
 
           <AutoComplete
@@ -50,9 +39,31 @@
             :eager="true"
             multiple
             chips
+            attach
+            class="w-1/2 pl-2"
+            hide-details
             small-chips
             deletable-chips
             prepend-inner-icon="mdi-state-machine"
+          />
+        </div>
+
+        <div class="flex mt-2">
+          <AutoComplete
+            v-model="filters.classes"
+            :items="searchableClasses"
+            :item-text="'name'"
+            :item-value="'id'"
+            :label="'Classes'"
+            :eager="true"
+            multiple
+            attach
+            chips
+            class="w-1/2 pr-2"
+            hide-details
+            small-chips
+            deletable-chips
+            prepend-inner-icon="mdi-layers"
           />
 
           <AutoComplete
@@ -62,39 +73,46 @@
             :item-value="'id'"
             :label="'Tags'"
             :eager="true"
-            class="w-full"
+            class="w-1/2 pl-2"
             multiple
+            attach
             chips
+            hide-details
             small-chips
             deletable-chips
             prepend-inner-icon="mdi-tag-multiple"
           />
-
-          <div class="w-full flex justify-between">
-            <Button :secondary="true" @click="onClickResetFilters">
-              Reset Filters
-            </Button>
-
-            <Button @click="onClickApplyFilters">
-              Search
-            </Button>
-          </div>
-        </ContentPanel>
-      </div>
-
-      <div class="builds-wrapper__builds-container">
-        <Loader class="mt-20" v-if="isSearching" :size="50" />
-        <div v-else class="w-full flex flex-wrap">
-          <BuildCard
-            class="builds-container__build-card"
-            v-for="(build, index) in visibleBuilds"
-            :key="`build-card-${index}`"
-            :build="build"
-          />
         </div>
-      </div>
+        <div
+          class="w-full flex justify-end items-center mt-4 uppercase text-xs font-bold -mb-4"
+        >
+          <div class="cursor-pointer mr-8" @click="onClickResetFilters">
+            <Icon tooltip="Reset Filters">mdi-refresh</Icon>
+            Reset
+          </div>
+          <div
+            class="cursor-pointer bg-dark-black6 p-2 rounded"
+            @click="onClickApplyFilters"
+          >
+            <Icon tooltip="Apply Filters">mdi-magnify</Icon>
+            Search
+          </div>
+        </div>
+      </ContentPanel>
     </div>
-  </NavigationLayout>
+
+    <div class="mt-2">
+      <Loader class="mt-20" v-if="isSearching" :size="50" />
+
+      <Grid v-else>
+        <WOTRBuildCard
+          v-for="(build, index) in visibleBuilds"
+          :key="`build-card-${build.id}-${index}`"
+          :build="build"
+        />
+      </Grid>
+    </div>
+  </NavigationLayout2>
 </template>
 
 <script lang="ts">
@@ -146,29 +164,6 @@ export default class PathfinderWOTR extends Vue {
     tags: [],
     mythic: []
   };
-
-  protected test = [
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16,
-    17,
-    18,
-    19,
-    20
-  ];
 
   // Lifecycle & Init
   protected mounted(): void {
@@ -282,46 +277,4 @@ export default class PathfinderWOTR extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
-.phaltz-wotr__builds-wrapper {
-  @media (min-width: 1024px) {
-    @apply flex;
-  }
-
-  .builds-wrapper__search-container {
-    @apply w-full;
-
-    @media (min-width: 1024px) {
-      @apply w-1/3;
-    }
-
-    @media (min-width: 1280px) {
-      @apply w-1/4;
-    }
-  }
-
-  .builds-wrapper__builds-container {
-    @apply w-full;
-
-    @media (min-width: 1024px) {
-      @apply w-2/3;
-    }
-
-    @media (min-width: 1280px) {
-      @apply w-3/4;
-    }
-
-    .builds-container__build-card {
-      @apply w-full;
-
-      @media (min-width: 640px) {
-        @apply w-1/2;
-      }
-
-      @media (min-width: 1280px) {
-        @apply w-1/3;
-      }
-    }
-  }
-}
-</style>
+<style lang="scss" scoped></style>

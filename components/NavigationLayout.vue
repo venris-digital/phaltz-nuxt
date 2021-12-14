@@ -2,24 +2,11 @@
   <v-app>
     <div v-if="!isLoading" class="w-full min-h-screen flex flex-col font-theme">
       <nav class="phaltz-navigation bg-phaltz-black">
-        <!-- <ul class="phaltz-navigation__navigation-list">
-          <li class="navigation-list__item">
-            Home
-          </li>
-          <li @click="onClickItem" class="navigation-list__item">
-            Home
-          </li>
-          <li class="navigation-list__item">
-            Home
-          </li>
-        </ul> -->
         <NuxtLink to="/">
-          <!-- <v-img :src="require(`~/assets/images/phaltz.svg`)" max-width="40" /> -->
           <span class="font-bold uppercase text-copy-text tracking-widest	"
             >Phaltz</span
           >
         </NuxtLink>
-
         <div>
           <div class="flex items-center">
             <Button v-if="!isSignedIn" @click="onClickSignIn" class="mr-2"
@@ -40,7 +27,7 @@
           </div>
         </div>
       </nav>
-      <div class="w-full flex-auto min-h bg-copy-black">
+      <div class="w-full flex-auto min-h bg-dark-dark">
         <div class="flex justify-end px-8 my-2">
           <div v-if="account" class="text-copy-text text-xs">
             Account:
@@ -178,5 +165,11 @@ interface NavigationItem {
   @apply border-t;
   @apply border-white;
   @apply border-opacity-5;
+}
+.test-class {
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 </style>

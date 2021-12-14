@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="phaltz-app">
     <NavigationLayout />
   </div>
 </template>
@@ -22,3 +22,15 @@ export default class Home extends Vue {
   }
 }
 </script>
+
+<style lang="scss">
+.phaltz-app {
+  ::v-deep a {
+    color: white;
+  }
+
+  ::v-deep.v-application {
+    color: white;
+  }
+}
+</style>

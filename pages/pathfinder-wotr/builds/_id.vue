@@ -487,6 +487,7 @@ import WOTRLevel from "@/models/WOTRLevel";
 import { YouTubeHelper } from "@/support/YouTubeHelper";
 import SpellLevel from "~/components/WOTRCreateBuild/SpellLevel.vue";
 import WOTRSpellLevel from "~/models/WOTRSpelllevel";
+import { WOTRLevelHelper } from "@/support/WOTRLevelHelper";
 
 @Component<PathfinderBuild>({
   head(): MetaInfo {
@@ -517,6 +518,8 @@ export default class PathfinderBuild extends Vue {
 
   protected youTubeHelper = new YouTubeHelper();
 
+  protected levelHelper = new WOTRLevelHelper();
+
   protected tabs = 0;
 
   // Lifecycle & Init
@@ -526,9 +529,11 @@ export default class PathfinderBuild extends Vue {
 
   protected async initialize(): Promise<void> {
     this.isLoading = true;
-    await this.fetchBuild();
-    await this.fetchLevels();
-    await this.fetchSpellLevels();
+    Promise.all([
+      await this.fetchBuild(),
+      await this.fetchLevels(),
+      await this.fetchSpellLevels()
+    ]);
     this.splitLevels();
     this.isLoading = false;
   }
@@ -538,47 +543,11 @@ export default class PathfinderBuild extends Vue {
     if (!this.levels) {
       return;
     }
-    this.levels.forEach(level => {
-      if (level.pet_level) {
-        this.petLevels.push(level);
-      } else if (level.mythic_level) {
-        this.mythicLevels.push(level);
-      } else {
-        this.traditionalLevels.push(level);
-      }
-    });
-    this.sortLevels();
-  }
+    this.levels = this.levelHelper.sortOnLevel(this.levels);
 
-  protected sortLevels(): void {
-    this.petLevels.sort((a, b) =>
-      Number(a.level) > Number(b.level)
-        ? 1
-        : Number(b.level) > Number(a.level)
-        ? -1
-        : 0
-    );
-    this.traditionalLevels.sort((a, b) =>
-      Number(a.level) > Number(b.level)
-        ? 1
-        : Number(b.level) > Number(a.level)
-        ? -1
-        : 0
-    );
-    this.mythicLevels.sort((a, b) =>
-      Number(a.level) > Number(b.level)
-        ? 1
-        : Number(b.level) > Number(a.level)
-        ? -1
-        : 0
-    );
-    this.spellLevels.sort((a, b) =>
-      Number(a.level) > Number(b.level)
-        ? 1
-        : Number(b.level) > Number(a.level)
-        ? -1
-        : 0
-    );
+    this.petLevels = this.levelHelper.getPetLevels(this.levels);
+    this.mythicLevels = this.levelHelper.getMythicLevels(this.levels);
+    this.traditionalLevels = this.levelHelper.getTraditionalLevels(this.levels);
   }
 
   // Async Methods

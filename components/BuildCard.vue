@@ -1,5 +1,5 @@
 <template>
-  <NuxtLink :to="{ path: `/pathfinder-wotr/builds/${build.id}` }">
+  <NuxtLink :to="{ path: cardLinksTo }">
     <!-- <div
       class="my-8 rounded-md p-8 bg-gradient-to-r from-theme-gray to-theme-gray-variant flex justify-start items-center cursor cursor-pointer"
     > -->
@@ -93,6 +93,15 @@ import WOTRBuild from "@/models/WOTRBuild";
 export default class BuildCard extends Vue {
   @Prop({ required: true })
   protected build!: WOTRBuild;
+
+  @Prop({ required: false })
+  protected to?: string;
+
+  protected get cardLinksTo(): string {
+    return this.to
+      ? `${this.to}/${this.build.id}`
+      : `/pathfinder-wotr/builds/${this.build.id}`;
+  }
 }
 </script>
 

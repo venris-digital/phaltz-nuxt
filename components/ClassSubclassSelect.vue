@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from "vue-property-decorator";
+import { Vue, Component, Prop, Watch, PropSync } from "vue-property-decorator";
 import Class from "@/models/Class";
 import Subclass from "~/models/Subclass";
 
@@ -39,6 +39,12 @@ import Subclass from "~/models/Subclass";
 })
 export default class ClassSubclassSelect extends Vue {
   // Props
+  @PropSync("existingClass")
+  protected internalExistingClass?: Class;
+
+  @PropSync("existingSubclass")
+  protected internalExistingSubclass?: Subclass;
+
   @Prop({ required: true })
   protected classes!: Class[];
 
@@ -52,6 +58,20 @@ export default class ClassSubclassSelect extends Vue {
   protected selectedClass: Class | null = null;
 
   protected selectedSubclass: Subclass | null = null;
+
+  // Lifecycle & Init
+  protected mounted(): void {
+    this.initialize();
+  }
+
+  protected initialize(): void {
+    if (this.internalExistingClass) {
+      this.selectedClass = this.internalExistingClass;
+    }
+    if (this.internalExistingSubclass) {
+      this.selectedSubclass = this.internalExistingSubclass;
+    }
+  }
 
   // Getters
   protected get filteredSubclasses(): Subclass[] {
@@ -69,10 +89,14 @@ export default class ClassSubclassSelect extends Vue {
     if (!value) {
       return;
     }
-    this.$emit("classSelected", {
-      item: this.selectedClass,
-      index: this.index
-    });
+    if (this.internalExistingClass && this.selectedClass) {
+      this.internalExistingClass = this.selectedClass;
+    } else {
+      this.$emit("classSelected", {
+        item: this.selectedClass,
+        index: this.index
+      });
+    }
   }
 
   @Watch("selectedSubclass")
@@ -80,15 +104,24 @@ export default class ClassSubclassSelect extends Vue {
     if (!value) {
       return;
     }
-    this.$emit("subclassSelected", {
-      item: this.selectedSubclass,
-      index: this.index
-    });
+    if (this.internalExistingSubclass && this.selectedSubclass) {
+      this.internalExistingSubclass = this.selectedSubclass;
+    } else {
+      this.$emit("subclassSelected", {
+        item: this.selectedSubclass,
+        index: this.index
+      });
+    }
   }
 }
 
-export interface IClassSubclassSelectEmit {
-  item: Class | Subclass;
+export interface IClassSelectEmit {
+  item: Class;
+  index: number;
+}
+
+export interface ISubclassSelectEmit {
+  item: Subclass;
   index: number;
 }
 </script>
