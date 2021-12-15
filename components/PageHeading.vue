@@ -1,6 +1,6 @@
 <template>
   <section class="phaltz-page-heading">
-    <div class="flex items-center w-full">
+    <div class="flex items-center w-full" style="align-items: stretch">
       <div class="test">
         <h1 class="inline-block">
           <div
@@ -16,11 +16,11 @@
           {{ supportingParagraph }}
         </p>
       </div>
-      <div class="w-1/2 pl-2 flex h-full items-center justify-center">
-        <img
-          class="w-full object-contain opacity-100"
-          src="~/assets/images/pathfinder-wotr-logo.png"
-        />
+      <div class="w-1/2 pl-2 background-image">
+        <!-- <img
+          class="object-cover max-w-xl"
+          src="~/assets/images/wotr-lich.png"
+        /> -->
       </div>
     </div>
   </section>
@@ -71,6 +71,12 @@ export default class PageHeading extends Vue {
     }
   }
 
+  .background-image {
+    background: url("~/assets/images/wotr-aeon.png");
+    @apply bg-cover;
+    background-position: top;
+  }
+
   min-height: 30vh;
   @apply w-full;
   @apply flex;
@@ -81,7 +87,7 @@ export default class PageHeading extends Vue {
 
   .phaltz-page-heading__highlighted {
     background-repeat: no-repeat;
-    background-size: 65% 0.05em;
+    background-size: 40% 0.05em;
     background-position: 0 88%;
 
     @apply pb-3;
