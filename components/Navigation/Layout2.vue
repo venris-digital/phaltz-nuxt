@@ -4,7 +4,7 @@
       <NavigationTopBar />
 
       <div class="w-full flex justify-center">
-        <section class="max-w-9xl w-full mb-32 mt-16 px-4">
+        <section class="max-w-9xl w-full mb-32 mt-24 px-4">
           <slot />
         </section>
       </div>
@@ -90,13 +90,16 @@ interface NavigationItem {
   }
 
   ::v-deep.v-text-field--outlined fieldset {
-    // @apply border-dark-black7;
     @apply border-white;
     @apply border-opacity-5;
   }
 
   ::v-deep.theme--dark.v-sheet {
     @apply bg-dark-black7;
+  }
+
+  ::v-deep a {
+    @apply text-white;
   }
 }
 </style>

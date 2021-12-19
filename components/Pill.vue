@@ -24,7 +24,5 @@ export default class Pill extends Vue {}
   @apply rounded-full;
   @apply text-dark-white;
   @apply font-theme;
-  @apply mr-2;
-  @apply mb-1;
 }
 </style>

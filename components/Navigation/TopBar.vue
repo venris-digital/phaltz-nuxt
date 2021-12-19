@@ -3,13 +3,6 @@
     <nav class="navigation-top-bar">
       <NuxtLink class="navigation-top-bar__logo" to="/">
         <div class="navigation-top-bar__logo">Phaltz</div>
-        <!-- <img
-          width="50"
-          height="50"
-          class="opacity-40 -mb-8 -ml-6"
-          style="z-index: -1"
-          src="~/assets/images/test.svg"
-        /> -->
       </NuxtLink>
 
       <div class="navigation-top-bar__actions-container">
@@ -76,7 +69,6 @@ export default class TopBar extends Vue {
   @apply border-b;
   @apply border-dark-white;
   @apply border-opacity-10;
-  // @apply bg-dark-dark;
   @apply bg-dark-black6;
 
   .navigation-top-bar__logo {

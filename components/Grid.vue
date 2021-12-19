@@ -20,18 +20,15 @@ export default class Grid extends Vue {}
   @apply w-full;
   @apply grid;
   @apply gap-4;
-  @apply px-4;
   @apply grid-cols-1;
 
   @media (min-width: 1024px) {
     @apply grid-cols-2;
-    @apply px-8;
     @apply gap-8;
   }
 
   @media (min-width: 1280px) {
     @apply grid-cols-3;
-    @apply px-8;
     @apply gap-8;
   }
 }

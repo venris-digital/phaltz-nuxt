@@ -60,7 +60,7 @@ export default class ClassSubclassSelect extends Vue {
   protected selectedSubclass: Subclass | null = null;
 
   // Lifecycle & Init
-  protected mounted(): void {
+  protected created(): void {
     this.initialize();
   }
 

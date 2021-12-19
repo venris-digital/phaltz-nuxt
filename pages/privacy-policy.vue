@@ -494,7 +494,7 @@ export default class PrivacyPolicy extends Vue {
   // Class Methods
   // Async Methods
 
-  protected mounted(): void {
+  protected created(): void {
     //
   }
 }

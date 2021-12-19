@@ -235,7 +235,7 @@ export default class CreateBuild extends Vue {
   // TODO: ^^^^^^ END
 
   // Lifecycle & Init
-  protected mounted(): void {
+  protected created(): void {
     this.initialize();
   }
 

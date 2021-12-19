@@ -1,5 +1,5 @@
 <template>
-  <div class="phaltz-heading-stylized" :class="color">
+  <div class="phaltz-heading-stylized" :class="color" :style="lineWidth">
     <h6>{{ text }}</h6>
   </div>
 </template>
@@ -20,6 +20,9 @@ export default class HeadingStylized extends Vue {
   @Prop({ default: 1 })
   protected colorKey!: number;
 
+  @Prop({ required: false })
+  protected customLineWidth!: number;
+
   //  Getters
   protected get color(): string {
     if (!(this.colorKey % 5)) {
@@ -34,13 +37,18 @@ export default class HeadingStylized extends Vue {
       return "phaltz-heading-stylized--purple";
     }
   }
+
+  protected get lineWidth(): string {
+    return this.customLineWidth
+      ? `background-size: ${this.customLineWidth}% 0.2em;`
+      : `background-size: 15% 0.2em;`;
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 .phaltz-heading-stylized {
   background-repeat: no-repeat;
-  background-size: 15% 0.2em;
   background-position: 0 88%;
 
   h6 {

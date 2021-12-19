@@ -69,7 +69,7 @@ export default class SpellLevel extends Vue implements IWOTRSpellLevel {
   protected numberOfLevels = 10;
 
   // Lifecycle & Init
-  protected mounted(): void {
+  protected created(): void {
     this.initialize();
   }
 

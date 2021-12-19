@@ -1,6 +1,6 @@
 <template>
   <div class="phaltz-app">
-    <NavigationLayout />
+    <NavigationLayout2 />
   </div>
 </template>
 
@@ -17,7 +17,7 @@ import MetaInfo from "vue-meta";
   }
 })
 export default class Home extends Vue {
-  protected mounted(): void {
+  protected created(): void {
     this.$router.push({ name: "pathfinder-wotr" });
   }
 }

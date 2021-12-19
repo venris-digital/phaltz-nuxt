@@ -229,7 +229,7 @@ export default class Level extends Vue implements IWOTRLevel {
   protected levels: Record<string, any>[] = [];
 
   // Lifecycle & Init
-  protected mounted(): void {
+  protected created(): void {
     this.initialize();
   }
 

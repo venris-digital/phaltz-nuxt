@@ -176,7 +176,7 @@ export default class BasicInformation extends Vue {
   protected isLoading = true;
 
   // Lifecycle & Init
-  protected mounted(): void {
+  protected created(): void {
     this.initialize();
   }
 

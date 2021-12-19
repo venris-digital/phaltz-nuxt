@@ -24,7 +24,7 @@ export default class Error extends Vue {
 
   protected layout = "error";
 
-  protected mounted(): void {
+  protected created(): void {
     setTimeout(() => {
       this.$router.push({ name: "pathfinder-wotr" });
     }, 1800);

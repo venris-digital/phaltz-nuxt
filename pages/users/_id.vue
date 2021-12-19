@@ -58,7 +58,7 @@ export default class User extends Vue {
   protected user: UserModel | null = null;
 
   // Lifecycle & Init
-  protected mounted(): void {
+  protected created(): void {
     this.initialize();
   }
 

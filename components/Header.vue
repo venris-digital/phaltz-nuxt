@@ -15,13 +15,11 @@
         <p>
           {{ supportingParagraph }}
         </p>
+        <NuxtLink to="pathfinder-wotr/create-build">
+          <Button icon="mdi-table-arrow-up" text="Create Build" />
+        </NuxtLink>
       </div>
-      <div class="w-1/2 pl-2 background-image">
-        <!-- <img
-          class="object-cover max-w-xl"
-          src="~/assets/images/wotr-lich.png"
-        /> -->
-      </div>
+      <div class="hidden lg:block w-1/2 pl-2 background-image"></div>
     </div>
   </section>
 </template>
@@ -53,20 +51,15 @@ export default class PageHeading extends Vue {
     @apply mt-4;
     @apply mb-8;
     @apply text-dark-white;
-    @apply w-1/2;
+    @apply w-full;
     @apply pr-2;
 
-    h1 {
-      @apply text-xl;
-      // @apply text-copy-text;
-      @media (min-width: 1024px) {
-        @apply text-7xl;
-      }
+    @media (min-width: 1024px) {
+      @apply w-1/2;
     }
 
     p {
       @apply mt-16;
-      @apply max-w-lg;
       @apply text-copy-text;
     }
   }
@@ -77,13 +70,12 @@ export default class PageHeading extends Vue {
     background-position: top;
   }
 
-  min-height: 30vh;
   @apply w-full;
   @apply flex;
   @apply flex-col;
   @apply items-start;
   @apply justify-center;
-  @apply px-8;
+  // @apply px-8;
 
   .phaltz-page-heading__highlighted {
     background-repeat: no-repeat;

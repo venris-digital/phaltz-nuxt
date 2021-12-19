@@ -173,7 +173,7 @@ export default class EditBuild extends Vue {
   protected tabs = TabItems.LevelsToTwenty;
 
   // Lifecycle & Init
-  protected mounted(): void {
+  protected created(): void {
     this.initialize();
   }
 
