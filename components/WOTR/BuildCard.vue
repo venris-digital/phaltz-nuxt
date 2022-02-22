@@ -8,10 +8,10 @@
           displayKey="name"
         />
 
-        <div class="flex items-center justify-end">
+        <!-- <div class="flex items-center justify-end">
           <Icon class="mr-1">mdi-swap-vertical-bold</Icon>
           <span class="font-bold text-dark-white">17</span>
-        </div>
+        </div> -->
       </div>
 
       <IconWithPills
@@ -20,7 +20,7 @@
         displayKey="name"
       />
 
-      <HeadingStylized :text="build.name" :colorKey="build.id" />
+      <HeadingStylized :text="build.name" :colorKey="build.id" customLineWidth="15" />
 
       <p v-if="build.summary" class="WOTR-build-card__build-summary">
         {{ build.summary }}

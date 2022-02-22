@@ -2,14 +2,14 @@
   <div>
     <ContentPanel
       v-for="(level, index) in levels"
-      :key="`level-traditional-${index}`"
+      :key="`level-pet-${index}`"
       class="my-4"
     >
       <Heading
         :text="`Level ${level.level}`"
       />
 
-      <div class="traditional-levels__grid">
+      <div class="pet-levels__grid">
         <IconWithPills
           icon="mdi-layers"
           :items="level.class"
@@ -50,19 +50,19 @@
 import { Vue, Component, Prop } from "vue-property-decorator";
 import WOTRLevel from "~/models/WOTRLevel";
 
-@Component<TraditionalLevels>({
+@Component<PetLevels>({
   components: {
     //
   }
 })
-export default class TraditionalLevels extends Vue {
+export default class PetLevels extends Vue {
   @Prop({ required: true })
   protected levels!: WOTRLevel[];
 }
 </script>
 
 <style lang="scss" scoped>
-.traditional-levels__grid {
+.pet-levels__grid {
   @apply grid;
   @apply grid-cols-1;
   @apply gap-4;

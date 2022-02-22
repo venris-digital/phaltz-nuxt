@@ -4,7 +4,7 @@
       <NavigationTopBar />
 
       <div class="w-full flex justify-center">
-        <section class="max-w-9xl w-full mb-32 mt-24 px-4">
+        <section class="max-w-9xl w-full mb-32 mt-12 px-4">
           <slot />
         </section>
       </div>
@@ -100,6 +100,14 @@ interface NavigationItem {
 
   ::v-deep a {
     @apply text-white;
+  }
+
+  ::v-deep.v-tab--active {
+    @apply text-white #{!important};
+  }
+
+  ::v-deep.v-tabs-slider-wrapper {
+    @apply text-white #{!important};
   }
 }
 </style>

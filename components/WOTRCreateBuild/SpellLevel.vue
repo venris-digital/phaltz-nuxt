@@ -5,8 +5,9 @@
       <ContentPanel
         v-for="(level, index) in levels"
         :key="`level-container-level${level.level}`"
+        class="mb-4"
       >
-        <Subtitle> Level {{ level.level }} </Subtitle>
+        <Heading :text="`Level ${level.level}`" />
 
         <div class="mt-8">
           <AutoComplete

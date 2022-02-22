@@ -81,7 +81,7 @@ export default class PathfinderWOTR extends Vue {
 
   protected async fetchGame(): Promise<void> {
     try {
-      this.game = await new Game().find(this.gameId);
+      // this.game = await new Game().find(this.gameId);
     } catch (error) {
       //
     }

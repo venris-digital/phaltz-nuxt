@@ -1,6 +1,10 @@
 <template>
-  <ContentPanel>
-    <Subtitle> Overview </Subtitle>
+  <ContentPanel class="mb-4">
+    <HeadingStylized 
+      text="Overview" 
+      :colorKey="0" 
+      class="-mb-6" 
+    />
 
     <Loader v-if="isLoading" />
 

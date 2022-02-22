@@ -2,27 +2,18 @@
   <div>
     <ContentPanel
       v-for="(level, index) in levels"
-      :key="`level-traditional-${index}`"
+      :key="`level-mythic-${index}`"
       class="my-4"
     >
       <Heading
         :text="`Level ${level.level}`"
       />
 
-      <div class="traditional-levels__grid">
-        <IconWithPills
-          icon="mdi-layers"
-          :items="level.class"
-          displayKey="name"
-          noItemText="No Class"
-        />
-
-        <IconWithPills
-          icon="mdi-layers-outline"
-          :items="level.subclass"
-          displayKey="name"
-          noItemText="No Subclass"
-        />
+      <div class="mythic-levels__grid">
+        <div class="flex items-center">
+          <Icon size="16" class="mr-1 mb">mdi-state-machine</Icon>
+          <Pill>{{ level.mythic.name }}</Pill>
+        </div>
 
         <IconWithPills
           icon="mdi-dlna"
@@ -30,13 +21,6 @@
           displayKey="name"
           noItemText="No Feats"
         />
-
-        <div class="flex items-center">
-          <Icon size="16" class="mr-1 mb">mdi-plus-circle</Icon>
-          <Pill>
-            {{ level.ability_score_increase || "No Attribute Increase" }}
-          </Pill>
-        </div>
       </div>
 
       <div class="w-full mt-4 text-xs">
@@ -50,19 +34,19 @@
 import { Vue, Component, Prop } from "vue-property-decorator";
 import WOTRLevel from "~/models/WOTRLevel";
 
-@Component<TraditionalLevels>({
+@Component<MythicLevels>({
   components: {
     //
   }
 })
-export default class TraditionalLevels extends Vue {
+export default class MythicLevels extends Vue {
   @Prop({ required: true })
   protected levels!: WOTRLevel[];
 }
 </script>
 
 <style lang="scss" scoped>
-.traditional-levels__grid {
+.mythic-levels__grid {
   @apply grid;
   @apply grid-cols-1;
   @apply gap-4;

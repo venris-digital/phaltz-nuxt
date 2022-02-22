@@ -1,5 +1,9 @@
 <template>
-  <span class="phaltz-pill">
+  <span
+    v-bind="$attrs"
+    v-on="$listeners" 
+    class="phaltz-pill"
+  >
     <slot />
   </span>
 </template>

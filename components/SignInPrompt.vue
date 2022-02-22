@@ -4,9 +4,6 @@
     class="sign-in-prompt"
   >
     <div class="flex flex-col items-center">
-      <Icon size="250" class="opacity-10" @click="onClickSignUp"
-        >mdi-login-variant</Icon
-      >
       <div class="sign-in-prompt__sign-in-container">
         {{ text ? text : "Sorry, but you must be signed in to do this." }}
         <p class="sign-in-container__secondary-text">

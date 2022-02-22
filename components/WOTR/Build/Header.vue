@@ -1,6 +1,5 @@
 <template>
   <section class="phaltz-page-heading">
-    <div class="test">
       <h1 class="inline-block">
         <div
           class="phaltz-page-heading__highlighted phaltz-page-heading__highlighted--blue"
@@ -18,12 +17,12 @@
       </p>
 
       <IconWithPills
+        v-if="tags.length"
         icon="mdi-tag-multiple"
         :items="tags"
         displayKey="name"
         class="mt-4"
       />
-    </div>
   </section>
 </template>
 
@@ -31,12 +30,12 @@
 import { Vue, Component, Prop } from "vue-property-decorator";
 import BuildTag from "~/models/BuildTag";
 
-@Component<PageHeadingSimple>({
+@Component<Header>({
   components: {
     //
   }
 })
-export default class PageHeadingSimple extends Vue {
+export default class Header extends Vue {
   @Prop({ required: true })
   protected title!: string;
 
@@ -53,23 +52,27 @@ export default class PageHeadingSimple extends Vue {
 
 <style lang="scss" scoped>
 .phaltz-page-heading {
+  @apply mt-8;
+  @apply mb-4;
+
   p {
-    @apply mt-8;
+    @apply my-8;
     @apply text-copy-text;
-    @apply text-xs;
+    @apply text-sm;
+    
+    @media (min-width: 768px) {
+      // @apply w-1/2;
+    }
   }
 
   .phaltz-page-heading__highlighted {
     background-repeat: no-repeat;
-    background-size: 40% 0.05em;
+    background-size: 15% 0.05em;
     background-position: 0 88%;
 
     @apply pb-3;
-    font-size: 4vh;
+    @apply text-5xl;
     @apply mb-8;
-    @apply font-bold;
-    @apply uppercase;
-    @apply tracking-widest;
     @apply text-dark-white;
     background-image: linear-gradient(120deg, #ca8012 0%, #fcf417 100%);
 
@@ -97,8 +100,7 @@ export default class PageHeadingSimple extends Vue {
   .phaltz-page-heading__text {
     @apply block;
     @apply -mt-6;
-    @apply font-bold;
-    font-size: 3vh;
+    @apply text-3xl;
   }
 }
 </style>

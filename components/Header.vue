@@ -79,16 +79,13 @@ export default class PageHeading extends Vue {
 
   .phaltz-page-heading__highlighted {
     background-repeat: no-repeat;
-    background-size: 40% 0.05em;
+    background-size: 15% 0.05em;
     background-position: 0 88%;
 
     @apply pb-3;
-    font-size: 5vh;
+    @apply text-5xl;
     @apply mt-4;
     @apply mb-8;
-    @apply font-bold;
-    @apply uppercase;
-    @apply tracking-widest;
     @apply text-dark-white;
     background-image: linear-gradient(120deg, #ca8012 0%, #fcf417 100%);
 
@@ -116,8 +113,7 @@ export default class PageHeading extends Vue {
   .phaltz-page-heading__text {
     @apply block;
     @apply -mt-6;
-    @apply font-bold;
-    font-size: 3vh;
+    @apply text-3xl;
   }
 }
 </style>

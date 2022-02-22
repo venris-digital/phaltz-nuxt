@@ -2,22 +2,24 @@
   <div class="navigation-drawer">
     <div class="navigation-drawer__inner-container">
       <ul>
-        <li class="inner-container__list-item">
+        <li
+          @click="onClickLogin" 
+          class="inner-container__list-item"
+        >
           <Icon class="mr-2" size="30">mdi-login-variant</Icon>
           <span class="list-item__text">Login</span>
         </li>
-        <li class="inner-container__list-item">
-          <Icon class="mr-2" size="30">mdi-account-plus-outline</Icon>
-          <span class="list-item__text">
-            Create Account
-          </span>
-        </li>
-        <li class="inner-container__list-item">
+
+        <li
+          @click="onClickSubmitBuild" 
+          class="inner-container__list-item"
+        >
           <Icon class="mr-2" size="30">mdi-table-arrow-up</Icon>
           <span class="list-item__text">
             Submit A Build
           </span>
         </li>
+
       </ul>
     </div>
   </div>
@@ -31,7 +33,15 @@ import { Component, Vue } from "vue-property-decorator";
     //
   }
 })
-export default class Drawer extends Vue {}
+export default class Drawer extends Vue {
+  protected onClickLogin(): void {
+    this.$store.dispatch("openSignUpDialog");
+  }
+
+  protected onClickSubmitBuild(): void {
+    this.$router.push({ path: '/pathfinder-wotr/create-build' });
+  }
+}
 </script>
 
 <style lang="scss" scoped>

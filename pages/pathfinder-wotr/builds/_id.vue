@@ -2,7 +2,7 @@
   <NavigationLayout2>
     <Loader v-if="isLoading" :size="50" />
     <div v-else>
-      <ContentPanel class="mb-4">
+      <ContentPanel class="mb-8">
         <WOTRBuildHeader
           :title="build.name || ''"
           text="Pathfinder: WOTR Build Guide"
@@ -24,7 +24,12 @@
 
         <div class="build-wrapper__levels-container">
           <ContentPanel class="mb-2">
-            <v-tabs class="tabs">
+            <v-tabs 
+              class="tabs" 
+              next-icon="mdi-chevron-right"
+              prev-icon="mdi-chevron-left"
+              show-arrows
+            >
               <v-tab @click="tabs = 0">
                 <v-icon class="mr-2">mdi-layers</v-icon> Levels
               </v-tab>
@@ -41,139 +46,24 @@
           </ContentPanel>
 
           <WOTRBuildTraditionalLevels
-            v-show="tabs === 0"
+            v-if="tabs === 0"
             :levels="traditionalLevels"
           />
 
-          <!-- Mythic Levels -->
+          <WOTRBuildMythicLevels
+            v-if="tabs === 1"
+            :levels="mythicLevels"
+          />
 
-          <ContentPanel
-            v-show="tabs === 1"
-            v-for="(level, index) in mythicLevels"
-            :key="`level-mythic-${index}`"
-          >
-            <div>
-              <Subtitle> Level {{ level.level }} </Subtitle>
-              <div class="levels-container__level-container">
-                <div class="w-full mt-4 flex flex-wrap items-center">
-                  <v-icon class="mr-2">mdi-state-machine</v-icon>
-                  <v-chip
-                    v-if="level.mythic"
-                    class="mr-1 mt-1"
-                    small
-                    color="#282a2e"
-                    exact-active-class="#282a2e"
-                    >{{ level.mythic.name }}</v-chip
-                  >
-                </div>
+          <WOTRBuildSpellLevels
+            v-if="tabs === 2"
+            :levels="spellLevels"
+          />
 
-                <div class="level-container__item">
-                  <v-icon class="mr-2">mdi-dlna</v-icon>
-                  <v-chip
-                    v-for="(feat, featIndex) in level.feats"
-                    :key="`level-${index}-feat-${featIndex}`"
-                    class="mr-1 mt-1"
-                    small
-                    color="#282a2e"
-                    exact-active-class="#282a2e"
-                    >{{ feat.name }}</v-chip
-                  >
-                </div>
-
-                <div
-                  class="w-full mt-4 text-xs"
-                  :class="{ 'py-2 px-6': level.notes }"
-                >
-                  {{ level.notes || "" }}
-                </div>
-              </div>
-            </div>
-          </ContentPanel>
-
-          <!-- Spell Book -->
-          <ContentPanel
-            v-show="tabs === 2"
-            v-for="(level, index) in spellLevels"
-            :key="`spell-level-${index}`"
-          >
-            <div>
-              <Subtitle> Level {{ level.level }} </Subtitle>
-              <div class="levels-container__level-container">
-                <div class="level-container__item level-container__item--full">
-                  <v-icon class="mr-2">mdi-fire-circle</v-icon>
-                  <v-chip
-                    v-for="(spell, spellIndex) in level.spells"
-                    :key="`level-${index}-spell-${spellIndex}`"
-                    class="mr-1 mt-1"
-                    small
-                    color="#282a2e"
-                    exact-active-class="#282a2e"
-                    >{{ spell.name }}</v-chip
-                  >
-                </div>
-
-                <div
-                  class="w-full mt-4 text-xs"
-                  :class="{ 'py-2 px-6': level.notes }"
-                >
-                  {{ level.notes || "" }}
-                </div>
-              </div>
-            </div>
-          </ContentPanel>
-
-          <!-- Pet Levels -->
-          <ContentPanel
-            v-show="tabs === 3"
-            v-for="(level, index) in petLevels"
-            :key="`level-pet-${index}`"
-          >
-            <div>
-              <Subtitle> Level {{ level.level }} </Subtitle>
-              <div class="levels-container__level-container">
-                <div class="level-container__item">
-                  <v-icon class="mr-2">mdi-layers</v-icon>
-                  <v-chip
-                    v-if="level.class.length"
-                    class="mr-1 mt-1"
-                    small
-                    color="#282a2e"
-                    exact-active-class="#282a2e"
-                    >{{ level.class[0].name }}</v-chip
-                  >
-                </div>
-
-                <div class="level-container__item">
-                  <v-icon class="mr-2">mdi-layers-outline</v-icon>
-                  <v-chip
-                    v-if="level.subclass.length"
-                    class="mr-1 mt-1"
-                    small
-                    color="#282a2e"
-                    exact-active-class="#282a2e"
-                    >{{ level.subclass[0].name }}</v-chip
-                  >
-                </div>
-
-                <div class="level-container__item">
-                  <v-icon class="mr-2">mdi-dlna</v-icon>
-                  <v-chip
-                    v-for="(feat, featIndex) in level.feats"
-                    :key="`level-${index}-feat-${featIndex}`"
-                    class="mr-1 mt-1"
-                    small
-                    color="#282a2e"
-                    exact-active-class="#282a2e"
-                    >{{ feat.name }}</v-chip
-                  >
-                </div>
-
-                <div class="w-full mt-4 text-xs">
-                  {{ level.notes || "" }}
-                </div>
-              </div>
-            </div>
-          </ContentPanel>
+          <WOTRBuildPetLevels
+            v-if="tabs === 3"
+            :levels="petLevels"
+          />
         </div>
       </div>
     </div>
@@ -186,11 +76,10 @@ import MetaInfo from "vue-meta";
 import WOTRBuild from "@/models/WOTRBuild";
 import WOTRLevel from "@/models/WOTRLevel";
 import { YouTubeHelper } from "@/support/YouTubeHelper";
-import SpellLevel from "~/components/WOTRCreateBuild/SpellLevel.vue";
 import WOTRSpellLevel from "~/models/WOTRSpelllevel";
 import { WOTRLevelHelper } from "@/support/WOTRLevelHelper";
 
-@Component<PathfinderBuild>({
+@Component<PathfinderWOTRBuild>({
   head(): MetaInfo {
     return {
       title: `Phaltz: ${this.build?.name ||
@@ -201,7 +90,7 @@ import { WOTRLevelHelper } from "@/support/WOTRLevelHelper";
     //
   }
 })
-export default class PathfinderBuild extends Vue {
+export default class PathfinderWOTRBuild extends Vue {
   // Class properties
   protected isLoading = true;
 
@@ -230,10 +119,10 @@ export default class PathfinderBuild extends Vue {
 
   protected async initialize(): Promise<void> {
     this.isLoading = true;
-    Promise.all([
-      await this.fetchBuild(),
-      await this.fetchLevels(),
-      await this.fetchSpellLevels()
+    await Promise.all([
+      this.fetchBuild(),
+      this.fetchLevels(),
+      this.fetchSpellLevels()
     ]);
     this.splitLevels();
     this.isLoading = false;
@@ -244,7 +133,9 @@ export default class PathfinderBuild extends Vue {
     if (!this.levels) {
       return;
     }
-    this.levels = this.levelHelper.sortOnLevel(this.levels);
+
+    this.levels = this.levelHelper.sortByLevel(this.levels);
+    this.spellLevels = this.levelHelper.sortByLevel(this.spellLevels);
 
     this.petLevels = this.levelHelper.getPetLevels(this.levels);
     this.mythicLevels = this.levelHelper.getMythicLevels(this.levels);
@@ -254,31 +145,26 @@ export default class PathfinderBuild extends Vue {
   // Async Methods
   protected async fetchBuild(): Promise<void> {
     try {
-      this.build = await new WOTRBuild().find(this.$route.params.id);
+      this.build = await new WOTRBuild()
+        .find(this.$route.params.id);
     } catch (error) {
       //
     }
   }
 
   protected async fetchLevels(): Promise<void> {
-    if (!this.build) {
-      return;
-    }
     try {
-      this.levels = await new WOTRLevel().getAllByBuildId(this.build!.id);
+      this.levels = await new WOTRLevel()
+        .getAllByBuildId(this.$route.params.id);
     } catch (error) {
       //
     }
   }
 
   protected async fetchSpellLevels(): Promise<void> {
-    if (!this.build) {
-      return;
-    }
     try {
-      this.spellLevels = await new WOTRSpellLevel().getAllByBuildId(
-        this.build!.id
-      );
+      this.spellLevels = await new WOTRSpellLevel()
+        .getAllByBuildId(this.$route.params.id);
     } catch (error) {
       //
     }
@@ -292,6 +178,7 @@ export default class PathfinderBuild extends Vue {
 }
 
 .phaltz-wotr__build-wrapper {
+  @apply mt-2;
   @media (min-width: 1024px) {
     @apply flex;
   }
@@ -303,7 +190,7 @@ export default class PathfinderBuild extends Vue {
     @media (min-width: 1024px) {
       @apply w-1/2;
       @apply mb-0;
-      @apply mr-2;
+      @apply mr-4;
     }
 
     @media (min-width: 1280px) {
@@ -312,24 +199,6 @@ export default class PathfinderBuild extends Vue {
 
     @media (min-width: 1400px) {
       @apply w-4/12;
-    }
-
-    .overview-container__basic-details-wrapper {
-      @apply flex;
-      @apply flex-wrap;
-      @apply w-full;
-
-      .basic-details-wrapper__item {
-        @apply w-full;
-        @apply mt-4;
-        @apply flex;
-        @apply flex-wrap;
-        @apply items-center;
-
-        @media (min-width: 640px) {
-          @apply w-1/2;
-        }
-      }
     }
   }
 
@@ -340,7 +209,7 @@ export default class PathfinderBuild extends Vue {
     @media (min-width: 1024px) {
       @apply w-1/2;
       @apply mt-0;
-      @apply ml-2;
+      @apply ml-4;
     }
 
     @media (min-width: 1280px) {
@@ -349,37 +218,6 @@ export default class PathfinderBuild extends Vue {
 
     @media (min-width: 1400px) {
       @apply w-8/12;
-    }
-  }
-
-  .levels-container__level-container {
-    @apply w-full;
-    @apply flex;
-    @apply flex-wrap;
-    @apply text-copy-text;
-
-    .level-container__item {
-      @apply w-full;
-      @apply mt-4;
-      @apply flex;
-      @apply flex-wrap;
-      @apply items-center;
-
-      @media (min-width: 640px) {
-        @apply w-1/2;
-      }
-
-      @media (min-width: 1024px) {
-        @apply w-full;
-      }
-
-      @media (min-width: 1280px) {
-        @apply w-1/2;
-      }
-
-      &--full {
-        @apply w-full;
-      }
     }
   }
 }

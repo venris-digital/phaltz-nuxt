@@ -7,7 +7,7 @@
           v-for="(level, index) in internalExistingLevels"
           :key="`level-container-level${level.level}`"
         >
-          <Subtitle> Level {{ level.level }} poo </Subtitle>
+          <Subtitle> Cats {{ level.level }} </Subtitle>
 
           <div class="wotr-level__input-container">
             <AutoComplete
@@ -80,8 +80,9 @@
         <ContentPanel
           v-for="(level, index) in levels"
           :key="`level-container-level${level.level}`"
+          class="mb-4"
         >
-          <Subtitle> Level {{ level.level }} </Subtitle>
+          <Heading :text="`Level ${level.level}`" />
 
           <div class="wotr-level__input-container">
             <AutoComplete

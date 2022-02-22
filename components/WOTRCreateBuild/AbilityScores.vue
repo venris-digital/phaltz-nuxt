@@ -1,6 +1,10 @@
 <template>
   <ContentPanel class="WOTR-ability-scores">
-    <Subtitle> Base Ability Scores </Subtitle>
+    <HeadingStylized 
+      text="Base Ability Scores" 
+      :colorKey="0" 
+      class="-mb-6" 
+    />
 
     <div class="WOTR-ability-scores__input-container">
       <AutoComplete
@@ -99,6 +103,8 @@ export default class AbilityScores extends Vue {
 
 <style lang="scss" scoped>
 .WOTR-ability-scores {
+  @apply mb-4;
+  
   .WOTR-ability-scores__input-container {
     @apply flex;
     @apply flex-wrap;

@@ -1,11 +1,13 @@
 <template>
   <v-tooltip v-if="tooltip" :top="top" :bottom="!top">
-    <template v-slot:activator="{ on, attrs }">
+    <template v-slot:activator="{ on }">
       <v-icon
         :color="color ? color : undefined"
-        v-bind="attrs"
+        v-bind="$attrs"
         v-on="on"
+        @click="$listeners.click"
         :size="size"
+        class="remove-background"
       >
         <slot />
       </v-icon>
@@ -29,12 +31,12 @@
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
 
-@Component<SignInPrompt>({
+@Component<Icon>({
   components: {
     //
   }
 })
-export default class SignInPrompt extends Vue {
+export default class Icon extends Vue {
   @Prop({ required: false })
   protected tooltip!: string;
 

@@ -22,14 +22,18 @@ export class WOTRLevelHelper {
     return traditionalLevels.length ? traditionalLevels : [];
   }
 
-  // Sort levels
-  public sortOnLevel(levels: WOTRLevel[]): WOTRLevel[] {
+  // Sort Levels
+  public sortByLevel<T extends ILevel>(levels: T[]): T[] {
     return levels.sort((a, b) =>
       Number(a.level) > Number(b.level)
         ? 1
         : Number(b.level) > Number(a.level)
-        ? -1
-        : 0
+          ? -1
+          : 0
     );
   }
+}
+
+interface ILevel {
+  level: string;
 }

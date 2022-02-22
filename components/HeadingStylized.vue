@@ -25,15 +25,22 @@ export default class HeadingStylized extends Vue {
 
   //  Getters
   protected get color(): string {
+    if (this.colorKey === 0) {
+      return '';
+    }
     if (!(this.colorKey % 5)) {
       return "phaltz-heading-stylized--green";
-    } else if (!(this.colorKey % 4)) {
+    } 
+    else if (!(this.colorKey % 4)) {
       return "phaltz-heading-stylized--red";
-    } else if (!(this.colorKey % 3)) {
+    } 
+    else if (!(this.colorKey % 3)) {
       return "phaltz-heading-stylized--blue";
-    } else if (!(this.colorKey % 2)) {
+    } 
+    else if (!(this.colorKey % 2)) {
       return "phaltz-heading-stylized--orange";
-    } else {
+    } 
+    else {
       return "phaltz-heading-stylized--purple";
     }
   }
@@ -41,7 +48,7 @@ export default class HeadingStylized extends Vue {
   protected get lineWidth(): string {
     return this.customLineWidth
       ? `background-size: ${this.customLineWidth}% 0.2em;`
-      : `background-size: 15% 0.2em;`;
+      : `background-size: 10% 0.2em;`;
   }
 }
 </script>

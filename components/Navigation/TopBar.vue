@@ -1,38 +1,64 @@
 <template>
-  <div class="relative">
+  <div class="relative w-full">
     <nav class="navigation-top-bar">
       <NuxtLink class="navigation-top-bar__logo" to="/">
         <div class="navigation-top-bar__logo">Phaltz</div>
       </NuxtLink>
 
-      <div class="navigation-top-bar__actions-container">
+
+      <!-- <div class="navigation-top-bar__actions-container">
         <Icon @click="onClickMenu">{{ menuIcon }}</Icon>
+      </div> -->
+
+      <div class="navigation-top-bar__actions-container">
+        <Icon 
+          @click="onClickMenu"
+          :top="false"
+          :tooltip="toolTipText" 
+        >
+          {{ menuIcon }}
+        </Icon>
       </div>
 
       <transition name="fade">
         <NavigationDrawer v-if="isShowingNavigationDrawer" />
       </transition>
     </nav>
+    <div class="mt-14 px-4">
+      <NavigationUserDetails v-if="isSignedIn" />
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import AbstractAuthAware from "../AbstractAuthAware.vue";
 
 @Component<TopBar>({
   components: {
     //
   }
 })
-export default class TopBar extends Vue {
+export default class TopBar extends AbstractAuthAware {
   // Class properties
   protected isShowingNavigationDrawer = false;
 
   // Class methods
   protected onClickMenu(): void {
-    this.isShowingNavigationDrawer
-      ? this.closeNavigationDrawer()
-      : this.openNavigationDrawer();
+    // this.isShowingNavigationDrawer
+    //   ? this.closeNavigationDrawer()
+    //   : this.openNavigationDrawer();
+    this.isSignedIn
+      ? this.onClickSignOut()
+      : this.onClickSignIn();
+  }
+
+  protected onClickSignIn(): void {
+    this.$store.dispatch("openSignUpDialog");
+  }
+
+  protected onClickSignOut(): void {
+    this.logout();
   }
 
   protected closeNavigationDrawer(): void {
@@ -49,7 +75,12 @@ export default class TopBar extends Vue {
   }
 
   protected get menuIcon(): string {
-    return this.isShowingNavigationDrawer ? "mdi-close" : "mdi-menu";
+    // return this.isShowingNavigationDrawer ? "mdi-close" : "mdi-menu";
+    return this.isSignedIn ? "mdi-logout-variant" : "mdi-login-variant";
+  }
+
+  protected get toolTipText(): string {
+    return this.isSignedIn ? "Logout" : "Login";
   }
 }
 </script>

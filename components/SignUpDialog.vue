@@ -1,5 +1,5 @@
 <template>
-  <v-row justify="center">
+  <v-row justify="center" class="sign-up-dialog">
     <v-dialog v-model="display" persistent max-width="600px">
       <template v-slot:activator="{ on, attrs }">
         <v-btn color="primary" dark v-bind="attrs" v-on="on">
@@ -95,12 +95,8 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <div v-if="!isUploading">
-            <Button :secondary="true" @click="closeDialog()">
-              Cancel
-            </Button>
-            <Button @click="handleSubmit">
-              Submit
-            </Button>
+            <Button text="Cancel" @click="closeDialog" />
+            <Button text="Submit" @click="handleSubmit" />
           </div>
         </v-card-actions>
       </v-card>
@@ -223,3 +219,7 @@ interface IVuetifyForm {
   resetValidation: () => void;
 }
 </script>
+
+<style lang="scss" scoped>
+.sign-up-dialog {}
+</style>
