@@ -1,112 +1,27 @@
 <template>
-  <NavigationLayout>
-    <PageHeading
-      title="Character Builds"
-      text="Pathfinder: Wrath of the Righteous"
-    />
+  <NavigationLayout2>
+    <WOTRIndexHero @applyFilters="onClickApplyFilters" />
 
-    <Loader v-if="isLoading" :size="50" />
-    <div class="phaltz-wotr__builds-wrapper" v-else>
-      <div class="builds-wrapper__search-container">
-        <ContentPanel>
-          <Subtitle class="mb-8">
-            Search Filters
-          </Subtitle>
+    <div class="mt-2">
+      <Loader class="mt-20" v-if="isSearching" :size="50" />
 
-          <AutoComplete
-            v-model="filters.characters"
-            :items="characters"
-            :item-text="'name'"
-            :item-value="'id'"
-            :label="'Character'"
-            :eager="true"
-            multiple
-            chips
-            small-chips
-            deletable-chips
-            prepend-inner-icon="mdi-account"
-          />
-
-          <AutoComplete
-            v-model="filters.classes"
-            :items="searchableClasses"
-            :item-text="'name'"
-            :item-value="'id'"
-            :label="'Classes'"
-            :eager="true"
-            multiple
-            chips
-            small-chips
-            deletable-chips
-            prepend-inner-icon="mdi-layers"
-          />
-
-          <AutoComplete
-            v-model="filters.mythic"
-            :items="mythicPaths"
-            :item-text="'name'"
-            :item-value="'id'"
-            :label="'Mythic Path'"
-            :eager="true"
-            multiple
-            chips
-            small-chips
-            deletable-chips
-            prepend-inner-icon="mdi-state-machine"
-          />
-
-          <AutoComplete
-            v-model="filters.tags"
-            :items="buildTags"
-            :item-text="'name'"
-            :item-value="'id'"
-            :label="'Tags'"
-            :eager="true"
-            class="w-full"
-            multiple
-            chips
-            small-chips
-            deletable-chips
-            prepend-inner-icon="mdi-tag-multiple"
-          />
-
-          <div class="w-full flex justify-between">
-            <Button :secondary="true" @click="onClickResetFilters">
-              Reset Filters
-            </Button>
-
-            <Button @click="onClickApplyFilters">
-              Search
-            </Button>
-          </div>
-        </ContentPanel>
-      </div>
-
-      <div class="builds-wrapper__builds-container">
-        <Loader class="mt-20" v-if="isSearching" :size="50" />
-        <div v-else class="w-full flex flex-wrap">
-          <BuildCard
-            class="builds-container__build-card"
-            v-for="(build, index) in visibleBuilds"
-            :key="`build-card-${index}`"
-            :build="build"
-          />
-        </div>
-      </div>
+      <Grid v-else>
+        <WOTRBuildCard
+          v-for="(build, index) in builds"
+          :key="`build-card-${build.id}-${index}`"
+          :build="build"
+        />
+      </Grid>
     </div>
-  </NavigationLayout>
+  </NavigationLayout2>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
 import MetaInfo from "vue-meta";
 import Game from "@/models/Game";
-import Class from "@/models/Class";
-import Character from "@/models/Character";
-import BuildTag from "@/models/BuildTag";
-import MythicPath from "@/models/MythicPath";
 import WOTRBuild, { BuildFilters } from "@/models/WOTRBuild";
-import Build from "@/models/WOTRBuild";
+import { FilterEmitPayload } from "~/components/WOTR/IndexHero.vue";
 
 @Component<PathfinderWOTR>({
   head(): MetaInfo {
@@ -117,10 +32,6 @@ import Build from "@/models/WOTRBuild";
   }
 })
 export default class PathfinderWOTR extends Vue {
-  // Refs
-  // @Ref("characterSelect")
-  // protected characterSelect!: ICharacterSelection;
-
   // Class properties
   protected isLoading = true;
 
@@ -132,14 +43,6 @@ export default class PathfinderWOTR extends Vue {
 
   protected game: Game | null = null;
 
-  protected characters: Character[] = [];
-
-  protected classes: Class[] = [];
-
-  protected mythicPaths: MythicPath[] = [];
-
-  protected buildTags: BuildTag[] = [];
-
   protected filters: BuildFilters = {
     characters: [],
     classes: [],
@@ -147,111 +50,38 @@ export default class PathfinderWOTR extends Vue {
     mythic: []
   };
 
-  protected test = [
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16,
-    17,
-    18,
-    19,
-    20
-  ];
-
   // Lifecycle & Init
-  protected mounted(): void {
+  protected created(): void {
     this.initialize();
   }
 
   protected async initialize(): Promise<void> {
     this.isLoading = true;
     this.isSearching = true;
-    await Promise.all([
-      this.fetchGame(),
-      this.fetchCharacters(),
-      this.fetchClasses(),
-      this.fetchBuildTags(),
-      this.fetchMythicPaths(),
-      this.fetchBuilds()
-    ]);
+    await Promise.all([this.fetchGame(), this.fetchBuilds()]);
     this.isLoading = false;
     this.isSearching = false;
   }
 
   // Click Handlers
   protected onClickCreateBuild(): void {
-    //
     this.$router.push({ path: "pathfinder-wotr/create-build" });
   }
-
-  protected onClickResetFilters(): void {
-    this.filters = {
-      // game: this.gameId,
-      characters: [],
-      classes: [],
-      tags: [],
-      mythic: []
-    };
-    // (this.$refs.characterSelect as ICharacterSelection).selectedCharacter = 0;
-    this.onClickApplyFilters();
-  }
-
   // Class Methods
 
   // Async Methods
-  protected async onClickApplyFilters(): Promise<void> {
+  protected async onClickApplyFilters(
+    payload: FilterEmitPayload
+  ): Promise<void> {
     this.isSearching = true;
+    this.filters = payload;
     await this.fetchBuilds();
     this.isSearching = false;
   }
 
   protected async fetchGame(): Promise<void> {
     try {
-      this.game = await new Game().find(this.gameId);
-    } catch (error) {
-      //
-    }
-  }
-
-  protected async fetchCharacters(): Promise<void> {
-    try {
-      this.characters = await new Character().getAllByGameId(this.gameId);
-    } catch (error) {
-      //
-    }
-  }
-
-  protected async fetchClasses(): Promise<void> {
-    try {
-      this.classes = await new Class().getAllByGameId(this.gameId);
-    } catch (error) {
-      //
-    }
-  }
-
-  protected async fetchBuildTags(): Promise<void> {
-    try {
-      this.buildTags = await new BuildTag().all();
-    } catch (error) {
-      //
-    }
-  }
-
-  protected async fetchMythicPaths(): Promise<void> {
-    try {
-      this.mythicPaths = await new MythicPath().all();
+      // this.game = await new Game().find(this.gameId);
     } catch (error) {
       //
     }
@@ -269,59 +99,6 @@ export default class PathfinderWOTR extends Vue {
   protected get areClassesSelected(): boolean {
     return !!this.filters.classes.length;
   }
-
-  protected get searchableClasses(): Class[] {
-    return this.classes.filter(characterClass => characterClass.id !== 39);
-  }
-
-  protected get visibleBuilds(): Build[] {
-    return this.builds.filter(build => build.id !== 1);
-  }
-
   // Watchers
 }
 </script>
-
-<style lang="scss" scoped>
-.phaltz-wotr__builds-wrapper {
-  @media (min-width: 1024px) {
-    @apply flex;
-  }
-
-  .builds-wrapper__search-container {
-    @apply w-full;
-
-    @media (min-width: 1024px) {
-      @apply w-1/3;
-    }
-
-    @media (min-width: 1280px) {
-      @apply w-1/4;
-    }
-  }
-
-  .builds-wrapper__builds-container {
-    @apply w-full;
-
-    @media (min-width: 1024px) {
-      @apply w-2/3;
-    }
-
-    @media (min-width: 1280px) {
-      @apply w-3/4;
-    }
-
-    .builds-container__build-card {
-      @apply w-full;
-
-      @media (min-width: 640px) {
-        @apply w-1/2;
-      }
-
-      @media (min-width: 1280px) {
-        @apply w-1/3;
-      }
-    }
-  }
-}
-</style>

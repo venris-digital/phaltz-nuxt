@@ -1,5 +1,5 @@
 <template>
-  <NavigationLayout>
+  <NavigationLayout2>
     <div class="flex justify-center">
       <ContentPanel
         title="Privacy Policy"
@@ -473,7 +473,7 @@
         </div>
       </ContentPanel>
     </div>
-  </NavigationLayout>
+  </NavigationLayout2>
 </template>
 
 <script lang="ts">
@@ -494,7 +494,7 @@ export default class PrivacyPolicy extends Vue {
   // Class Methods
   // Async Methods
 
-  protected mounted(): void {
+  protected created(): void {
     //
   }
 }

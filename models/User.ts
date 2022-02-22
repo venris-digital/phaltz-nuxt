@@ -13,7 +13,10 @@ export default class User extends Model {
   public builds?: WOTRBuild;
 
   public async createSession(): Promise<this[]> {
-    const response = await new Http().baseServer().get("/sanctum/csrf-cookie");
+    const response = await new Http()
+      .baseServer()
+      .get("/sanctum/csrf-cookie");
+    
     return response.data;
   }
 
@@ -29,7 +32,6 @@ export default class User extends Model {
 
   public async logout(token: IToken): Promise<void> {
     const response = await axios.post(
-      // "http://localhost:8000/api/logout",
       `${process.env.apiServer}/logout`,
       undefined,
       {
@@ -45,7 +47,6 @@ export default class User extends Model {
   }
 
   public async fetchUser(token: IToken): Promise<this> {
-    // "http://localhost:8000/api/user"
     const user = await axios.get(`${process.env.apiServer}/user`, {
       headers: {
         Authorization: `Bearer ${token.token}`

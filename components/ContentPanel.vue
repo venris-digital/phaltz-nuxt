@@ -1,21 +1,8 @@
 <template>
   <section
-    v-bind="$attrs"
-    v-on="$listeners"
-    class="m-4 p-4 rounded-sm "
-    :class="
-      transparent
-        ? 'bg-transparent'
-        : [
-            'border',
-            'border-white',
-            'border-opacity-5',
-            'bg-copy-darkest-gray',
-            'shadow-md'
-          ]
-    "
+    class="phaltz-content-panel"
+    :class="[backgroundColor, { border: !transparent }]"
   >
-    <Subtitle v-if="title">{{ title }}</Subtitle>
     <slot />
   </section>
 </template>
@@ -29,12 +16,24 @@ import { Vue, Component, Prop } from "vue-property-decorator";
   }
 })
 export default class ContentPanel extends Vue {
+  // Props
   @Prop({ default: false })
   protected transparent?: boolean;
 
-  @Prop({ default: null })
-  protected title?: string | null;
+  // Getters
+  protected get backgroundColor(): string {
+    // return this.transparent ? "bg-transparent" : "bg-dark-black3";
+    return this.transparent ? "bg-transparent" : "bg-dark-black6";
+  }
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.phaltz-content-panel {
+  @apply w-full;
+  @apply rounded-md;
+  @apply p-6;
+  @apply border-white;
+  @apply border-opacity-5;
+}
+</style>

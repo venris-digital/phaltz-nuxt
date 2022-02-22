@@ -1,14 +1,13 @@
 <template>
-  <v-btn
+  <button
+    class="phaltz-button"
+    :class="buttonColor"
     v-bind="$attrs"
     v-on="$listeners"
-    class="phaltz-button p-4"
-    :class="{ 'text-black': white }"
-    small
-    :color="color"
   >
-    <slot />
-  </v-btn>
+    <Icon>{{ icon }}</Icon>
+    {{ text }}
+  </button>
 </template>
 
 <script lang="ts">
@@ -20,28 +19,26 @@ import { Vue, Component, Prop } from "vue-property-decorator";
   }
 })
 export default class Button extends Vue {
-  @Prop({ default: false })
-  protected secondary!: boolean;
+  @Prop({ required: false })
+  protected icon!: string;
 
   @Prop({ default: false })
-  protected white!: boolean;
+  protected text!: string;
 
-  protected get color(): string {
-    if (this.secondary) {
-      return "accent";
-    }
-    if (this.white) {
-      return "#CFCFCF";
-    }
-    return "primary";
+  @Prop({ default: "black7" })
+  protected color!: string;
+
+  protected get buttonColor(): string {
+    return `bg-dark-${this.color}`;
   }
 }
 </script>
 
 <style lang="scss" scoped>
 .phaltz-button {
-  ::v-deep .v-btn__content {
-    @apply text-xs;
-  }
+  @apply cursor-pointer;
+  @apply p-2;
+  @apply pr-3;
+  @apply rounded;
 }
 </style>

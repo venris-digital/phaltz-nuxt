@@ -1,6 +1,10 @@
 <template>
-  <ContentPanel>
-    <Subtitle> Overview </Subtitle>
+  <ContentPanel class="mb-4">
+    <HeadingStylized 
+      text="Overview" 
+      :colorKey="0" 
+      class="-mb-6" 
+    />
 
     <Loader v-if="isLoading" />
 
@@ -21,7 +25,7 @@
       />
 
       <TextInput
-        v-model="internalBuild.build_name"
+        v-model="internalBuild.name"
         label="Build Name"
         required
         class="input-container__half-input input-container__half-input--right"
@@ -176,7 +180,7 @@ export default class BasicInformation extends Vue {
   protected isLoading = true;
 
   // Lifecycle & Init
-  protected mounted(): void {
+  protected created(): void {
     this.initialize();
   }
 

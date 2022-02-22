@@ -1,10 +1,14 @@
 <template>
   <ContentPanel class="WOTR-ability-scores">
-    <Subtitle> Base Ability Scores </Subtitle>
+    <HeadingStylized 
+      text="Base Ability Scores" 
+      :colorKey="0" 
+      class="-mb-6" 
+    />
 
     <div class="WOTR-ability-scores__input-container">
       <AutoComplete
-        v-model="internalBuild.base_ability_scores.strength"
+        v-model="internalBuild.strength"
         :items="numbers"
         label="Strength"
         :rules="selectRules"
@@ -14,7 +18,7 @@
       />
 
       <AutoComplete
-        v-model="internalBuild.base_ability_scores.dexterity"
+        v-model="internalBuild.dexterity"
         :items="numbers"
         label="Dexterity"
         :rules="selectRules"
@@ -26,7 +30,7 @@
       />
 
       <AutoComplete
-        v-model="internalBuild.base_ability_scores.constitution"
+        v-model="internalBuild.constitution"
         :items="numbers"
         label="Constitution"
         :rules="selectRules"
@@ -36,7 +40,7 @@
       />
 
       <AutoComplete
-        v-model="internalBuild.base_ability_scores.intelligence"
+        v-model="internalBuild.intelligence"
         :items="numbers"
         label="Intelligence"
         :rules="selectRules"
@@ -46,7 +50,7 @@
       />
 
       <AutoComplete
-        v-model="internalBuild.base_ability_scores.wisdom"
+        v-model="internalBuild.wisdom"
         :items="numbers"
         label="Wisdom"
         :rules="selectRules"
@@ -58,7 +62,7 @@
       />
 
       <AutoComplete
-        v-model="internalBuild.base_ability_scores.charisma"
+        v-model="internalBuild.charisma"
         :items="numbers"
         label="Charisma"
         :rules="selectRules"
@@ -91,7 +95,7 @@ export default class AbilityScores extends Vue {
     return selectRules;
   }
 
-  protected get numbers(): number[] {
+  protected get numbers(): string[] {
     return numbersInRange;
   }
 }
@@ -99,6 +103,8 @@ export default class AbilityScores extends Vue {
 
 <style lang="scss" scoped>
 .WOTR-ability-scores {
+  @apply mb-4;
+  
   .WOTR-ability-scores__input-container {
     @apply flex;
     @apply flex-wrap;

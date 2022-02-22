@@ -1,5 +1,5 @@
 <template>
-  <NavigationLayout>
+  <NavigationLayout2>
     <div class="flex justify-center">
       <ContentPanel
         title="Terms of Use"
@@ -227,7 +227,7 @@
         </p>
       </ContentPanel>
     </div>
-  </NavigationLayout>
+  </NavigationLayout2>
 </template>
 
 <script lang="ts">

@@ -7,9 +7,8 @@ import { AxiosError } from "axios";
 
 @Component({})
 export default class AbstractAuthAware extends Vue {
-  // INCLUDE HTTP CLIENT HERE, WHICH USES THE TOKEN.
   protected error: AxiosError | null = null;
-  // Store token
+  
   protected get token(): IToken | null {
     return this.$store.getters.token;
   }
@@ -19,17 +18,15 @@ export default class AbstractAuthAware extends Vue {
     try {
       return await new User().login(payload);
     } catch (error) {
-      this.error = (error as AxiosError).response?.data?.message;
+      this.error = (error as AxiosError).response?.data?.message || 'Unknown Error';;
     }
   }
 
-  protected async register(
-    payload: RegistrationPayload
-  ): Promise<IToken | void> {
+  protected async register(payload: RegistrationPayload): Promise<IToken | void> {
     try {
       return await new User().register(payload);
     } catch (error) {
-      this.error = (error as AxiosError).response?.data?.message;
+      this.error = (error as AxiosError).response?.data?.message || 'Unknown Error';
     }
   }
 

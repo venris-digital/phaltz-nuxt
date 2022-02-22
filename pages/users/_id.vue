@@ -1,37 +1,32 @@
 <template>
-  <NavigationLayout>
+  <NavigationLayout2>
     <Loader v-if="isLoading" :size="50" />
 
     <div v-else>
       <PageHeading title="User" text="Profile and build guides" />
 
-      <ContentPanel class="mt-8" :title="user.display_name || ''">
-        <!-- <div>
-          <span class="text-xs">
-            <a
-              href="https://www.youtube.com/channel/UCyQC7K1wHxYeBhuViUeSriA"
-              target="_blank"
-              >https://www.youtube.com/channel/UCyQC7K1wHxYeBhuViUeSriA</a
-            >
-          </span>
-        </div> -->
+      <ContentPanel class="mb-8">
+        <WOTRBuildHeader
+          :title="user.display_name || ''"
+          text="User Page"
+          supportingParagraph="Lorem aliqua fugiat amet laborum fugiat Lorem in ad amet est labore ullamco. Fugiat in magna dolore eiusmod proident. Proident sunt amet exercitation et cupidatat deserunt voluptate cillum ullamco ut pariatur. Velit pariatur amet ad do consequat reprehenderit et esse. Excepteur tempor ipsum ad est Lorem aliqua enim laboris sit in ea."
+        />
       </ContentPanel>
 
-      <!-- <ContentPanel :title="'Builds'"> -->
-      <div class="flex justify-center w-full">
-        <div v-if="builds.length" class="w-full flex flex-wrap">
-          <BuildCard
-            class="w-full"
-            v-for="(build, index) in builds"
-            :key="`build-card-${index}`"
-            :build="build"
-          />
-        </div>
-        <span class="px-4" v-else>This user has not created any builds</span>
-      </div>
-      <!-- </ContentPanel> -->
+      <Grid v-if="builds.length">
+        <WOTRBuildCard
+          v-for="(build, index) in builds"
+          :key="`build-card-${build.id}-${index}`"
+          :build="build"
+        />
+      </Grid>
+
+      <ContentPanel v-else class="mb-8 text-copy-text">
+        This user has not created any builds...
+      </ContentPanel>
+
     </div>
-  </NavigationLayout>
+  </NavigationLayout2>
 </template>
 
 <script lang="ts">
@@ -57,7 +52,7 @@ export default class User extends Vue {
   protected user: UserModel | null = null;
 
   // Lifecycle & Init
-  protected mounted(): void {
+  protected created(): void {
     this.initialize();
   }
 
@@ -85,6 +80,13 @@ export default class User extends Vue {
     } catch (error) {
       //
     }
+  }
+
+  // Getters
+  protected get buildCardLink(): string | undefined {
+    return this.$route.params.id === this.$store.getters.user.id.toString()
+      ? `/pathfinder-wotr/edit-build`
+      : undefined;
   }
 }
 </script>

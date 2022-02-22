@@ -21,16 +21,17 @@ export default class Build extends Model {
 
   public character!: Character;
 
-  public base_ability_scores!: {
-    strength: number;
-    dexterity: number;
-    constitution: number;
-    intelligence: number;
-    wisdom: number;
-    charisma: number;
-  };
+  public strength!: number;
 
-  public build_name!: string;
+  public dexterity!: number;
+
+  public constitution!: number;
+
+  public intelligence!: number;
+
+  public wisdom!: number;
+
+  public charisma!: number;
 
   public deity!: string;
 
@@ -40,13 +41,15 @@ export default class Build extends Model {
 
   public spellLevels!: WOTRSpellLevel[];
 
-  public mythic!: MythicPath;
+  public mythic_path!: MythicPath[];
 
   public race!: Race;
 
   public summary?: string;
 
   public tags!: BuildTag[];
+
+  public user?: BuildUser;
 
   public filterBuilds(payload: BuildFilters): Promise<this[]> {
     this.endpoint = `${
@@ -77,4 +80,9 @@ export interface BuildFilters {
   classes: number[];
   mythic: number[];
   characters: number[];
+}
+
+export interface BuildUser {
+  display_name: string;
+  id: number;
 }

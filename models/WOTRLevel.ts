@@ -1,11 +1,17 @@
 import Model from "@/models/Model";
+import Class from "./Class";
+import Subclass from "./Subclass";
 
 export default class WOTRLevel extends Model {
   protected endpoint = "/wotr/levels";
 
-  public class!: number;
+  public class?: Class;
 
-  public subclass!: number;
+  public class_id!: number;
+
+  public subclass?: Subclass;
+
+  public subclass_id!: number;
 
   // TODO: This should be a model also really.
   public ability_score_increase!: string;

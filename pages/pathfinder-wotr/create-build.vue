@@ -1,10 +1,13 @@
 <template>
-  <NavigationLayout class="phaltz-create-build__page-wrapper">
-    <!-- Intro -->
-    <PageHeading
-      title="Create Build"
-      text="Pathfinder: Wrath of the Righteous"
-    />
+  <NavigationLayout2 class="phaltz-create-build__page-wrapper">
+
+    <ContentPanel class="mb-8">
+      <WOTRBuildHeader
+        title="Create A Build"
+        text="Pathfinder: Wrath of the Righteous"
+        supportingParagraph="In pariatur dolor ex nulla. Mollit id mollit ipsum aute. Est nostrud ad aliquip cupidatat in quis exercitation labore ipsum aliquip excepteur. Duis consectetur et esse ipsum. Adipisicing aliquip ullamco adipisicing in excepteur occaecat anim ex. Consectetur et esse mollit quis ullamco incididunt dolore. Nisi Lorem veniam ex eiusmod irure culpa sunt quis id qui. Incididunt cillum deserunt qui dolore eu qui. Ipsum nulla tempor et excepteur dolor deserunt. Lorem cillum veniam mollit aliqua sit est sint Lorem. Adipisicing eu consequat cillum sit Lorem laboris pariatur."
+      />
+    </ContentPanel>
 
     <Loader v-if="isLoading" :size="50" />
 
@@ -17,7 +20,7 @@
         <WOTRCreateBuildAbilityScores :build="build" />
       </v-form>
 
-      <ContentPanel :transparent="true">
+      <ContentPanel class="mb-4 mt-8">
         <v-tabs class="tabs">
           <v-tab @click="tabs = 0">
             <v-icon class="mr-2">mdi-layers</v-icon>
@@ -137,7 +140,13 @@
         class="flex justify-center text-copy-text"
       >
         <div class="flex flex-col items-center">
-          <Button @click="onClickSubmit">Submit</Button>
+          <!-- <InputButton @click="onClickSubmit">Submit</InputButton> -->
+          <Button 
+            icon="mdi-table-arrow-up" 
+            text="Submit Build"
+            color="black6" 
+            @click="onClickSubmit" 
+          />
           <p class="my-4" v-if="isShowingIncompleteMessage">
             Cannot submit as some required inputs are not filled; see flagged
             items above.
@@ -145,7 +154,7 @@
         </div>
       </ContentPanel>
     </div>
-  </NavigationLayout>
+  </NavigationLayout2>
 </template>
 
 <script lang="ts">
@@ -205,11 +214,10 @@ export default class CreateBuild extends Vue {
     game_id: 1,
     alignment: {},
     mythic_path: [],
-    base_ability_scores: {},
-    build_name: ""
+    name: ""
   };
 
-  // TODO: Delete and  replace as getters
+  // TODO: Delete and use support class.
   protected textFieldRules = [
     (v: string) => !!v || "Required: enter a value",
     (v: string) => (v && v.length >= 10) || "Must be at least 10 characters"
@@ -236,7 +244,7 @@ export default class CreateBuild extends Vue {
   // TODO: ^^^^^^ END
 
   // Lifecycle & Init
-  protected mounted(): void {
+  protected created(): void {
     this.initialize();
   }
 
@@ -505,25 +513,19 @@ export default class CreateBuild extends Vue {
 
   protected createBuildPayload(): any {
     return {
-      name: this.build.build_name || "",
-      strength: this.build.base_ability_scores?.strength
-        ? this.build.base_ability_scores?.strength.toString()
+      name: this.build.name || "",
+      strength: this.build?.strength ? this.build?.strength.toString() : null,
+      dexterity: this.build?.dexterity
+        ? this.build?.dexterity.toString()
         : null,
-      dexterity: this.build.base_ability_scores?.dexterity
-        ? this.build.base_ability_scores?.dexterity.toString()
+      constitution: this.build?.constitution
+        ? this.build?.constitution.toString()
         : null,
-      constitution: this.build.base_ability_scores?.constitution
-        ? this.build.base_ability_scores?.constitution.toString()
+      intelligence: this.build?.intelligence
+        ? this.build?.intelligence.toString()
         : null,
-      intelligence: this.build.base_ability_scores?.intelligence
-        ? this.build.base_ability_scores?.intelligence.toString()
-        : null,
-      wisdom: this.build.base_ability_scores?.wisdom
-        ? this.build.base_ability_scores?.wisdom.toString()
-        : null,
-      charisma: this.build.base_ability_scores?.charisma
-        ? this.build.base_ability_scores?.charisma.toString()
-        : null,
+      wisdom: this.build?.wisdom ? this.build?.wisdom.toString() : null,
+      charisma: this.build?.charisma ? this.build?.charisma.toString() : null,
       game_id: "1",
       user_id: this.$store.getters.user.id.toString(),
       tags: this.build.tags || [],
@@ -568,7 +570,7 @@ interface IVuetifyForm {
   resetValidation: () => void;
 }
 
-enum TabItems {
+export enum TabItems {
   LevelsToTwenty = 0,
   LevelsTwentyToForty = 1,
   MYTHIC = 2,
