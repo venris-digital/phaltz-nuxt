@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="bg-theme-background">
     <h1 v-if="error.statusCode === 404">Page not found</h1>
     <h1 v-else>An error occurred</h1>
     <p class="mt-8">You are being redirected...</p>
