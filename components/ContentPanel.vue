@@ -23,7 +23,7 @@ export default class ContentPanel extends Vue {
   // Getters
   protected get backgroundColor(): string {
     // return this.transparent ? "bg-transparent" : "bg-dark-black3";
-    return this.transparent ? "bg-transparent" : "bg-dark-black6";
+    return this.transparent ? "bg-transparent" : "bg-theme-foreground";
   }
 }
 </script>

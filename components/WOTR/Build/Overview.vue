@@ -2,7 +2,7 @@
   <ContentPanel class="phaltz-WOTR-build__overview">
     <HeadingStylized text="Overview" colorKey="2" class="-mb-6" />
 
-    <span class="text-copy-text text-xs">
+    <span class="text-theme-text text-xs">
       Author:
       <NuxtLink :to="`/users/${build.user_id}`">{{
         build.user.display_name
@@ -65,7 +65,7 @@ export default class Overview extends Vue {
 <style lang="scss" scoped>
 .phaltz-WOTR-build__overview {
   ::v-deep a {
-    @apply text-dark-blue;
+    @apply text-theme-title;
   }
 
   @apply mb-2;

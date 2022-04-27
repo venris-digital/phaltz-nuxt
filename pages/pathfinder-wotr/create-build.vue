@@ -118,7 +118,7 @@
       />
 
       <!-- Submission -->
-      <ContentPanel v-if="isUploading" class="text-copy-text">
+      <ContentPanel v-if="isUploading" class="text-theme-text">
         <PageHeading title="Submitting Build" />
 
         <p class="text-sm flex items-center">
@@ -137,7 +137,7 @@
       <ContentPanel
         v-else
         :transparent="true"
-        class="flex justify-center text-copy-text"
+        class="flex justify-center text-theme-text"
       >
         <div class="flex flex-col items-center">
           <!-- <InputButton @click="onClickSubmit">Submit</InputButton> -->
@@ -595,7 +595,7 @@ export enum TabItems {
 .phaltz-create-build__page-wrapper {
   .page-wrapper__intro-text {
     @apply text-sm;
-    @apply text-copy-text;
+    @apply text-theme-text;
   }
 
   .page-wrapper__input-container {

@@ -25,11 +25,11 @@ export default class Button extends Vue {
   @Prop({ default: false })
   protected text!: string;
 
-  @Prop({ default: "black7" })
+  @Prop({ default: "background" })
   protected color!: string;
 
   protected get buttonColor(): string {
-    return `bg-dark-${this.color}`;
+    return `bg-theme-${this.color}`;
   }
 }
 </script>

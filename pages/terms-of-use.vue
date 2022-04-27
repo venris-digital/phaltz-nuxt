@@ -3,7 +3,7 @@
     <div class="flex justify-center">
       <ContentPanel
         title="Terms of Use"
-        class="text-copy-text font-theme mt-4 text-sm max-w-screen-lg"
+        class="text-theme-text font-theme mt-4 text-sm max-w-screen-lg"
       >
         <Subtitle class="mt-8">Introduction</Subtitle>
         <p>

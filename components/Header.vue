@@ -33,13 +33,13 @@ import { Vue, Component, Prop } from "vue-property-decorator";
   }
 })
 export default class PageHeading extends Vue {
-  @Prop({ required: true })
+  @Prop({ required: true, default: '' })
   protected title!: string;
 
-  @Prop({ required: false })
+  @Prop({ required: false, default: '' })
   protected text!: string;
 
-  @Prop({ required: false })
+  @Prop({ required: false, default: '' })
   protected supportingParagraph!: string;
 }
 </script>
@@ -50,7 +50,7 @@ export default class PageHeading extends Vue {
     @apply pb-3;
     @apply mt-4;
     @apply mb-8;
-    @apply text-dark-white;
+    @apply text-theme-title;
     @apply w-full;
     @apply pr-2;
 
@@ -60,14 +60,16 @@ export default class PageHeading extends Vue {
 
     p {
       @apply mt-16;
-      @apply text-copy-text;
+      @apply text-theme-text;
     }
   }
 
   .background-image {
+    @apply -mt-48;
     background: url("~/assets/images/wotr-aeon.png");
     @apply bg-cover;
-    background-position: top;
+    @apply bg-no-repeat;
+    @apply bg-top;
   }
 
   @apply w-full;
@@ -86,7 +88,7 @@ export default class PageHeading extends Vue {
     @apply text-5xl;
     @apply mt-4;
     @apply mb-8;
-    @apply text-dark-white;
+    @apply text-theme-title;
     background-image: linear-gradient(120deg, #ca8012 0%, #fcf417 100%);
 
     &--purple {

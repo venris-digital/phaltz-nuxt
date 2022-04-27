@@ -21,7 +21,7 @@
         />
       </Grid>
 
-      <ContentPanel v-else class="mb-8 text-copy-text">
+      <ContentPanel v-else class="mb-8 text-theme-text">
         This user has not created any builds...
       </ContentPanel>
 

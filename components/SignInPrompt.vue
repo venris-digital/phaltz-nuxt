@@ -41,7 +41,7 @@ export default class SignInPrompt extends Vue {
 <style lang="scss" scoped>
 .sign-in-prompt {
   .sign-in-prompt__sign-in-container {
-    @apply text-copy-text;
+    @apply text-theme-text;
     @apply text-sm;
     @apply mt-8;
     @apply text-center;
@@ -50,7 +50,7 @@ export default class SignInPrompt extends Vue {
       @apply mt-4;
 
       .sign-in-container__highlight-text {
-        @apply text-theme-blue;
+        @apply text-theme-background;
         @apply cursor-pointer;
       }
     }

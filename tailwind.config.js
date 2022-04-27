@@ -28,78 +28,12 @@ module.exports = {
       pink: colors.pink,
 
       theme: {
-        black: "#111827",
-        "test-black-variant-1": "#151d2e",
-        "test-black-variant-2": "#131c2e",
-        "black-variant": "#19191c",
-        white: "#ffffff",
-        blue: "#0076ed",
-        gray: "#2a2a2a",
-        "gray-variant": "#363636",
-        "gray-variant-lighter": "#424242"
+        background: "#16171b",
+        foreground: "#202125",
+        highlight: "282A2E",
+        text: "#CFCFCF",
+        title: "#FFFFFF",
       },
-
-      dark: {
-        dark: "#24252D",
-        white: "#FFFFFF",
-        grey1: "#E3E1E3",
-        grey2: "#888888",
-        grey3: "#4F4F4F",
-        black1: "#2D2E36",
-        black2: "#1B1A21",
-        black3: "#2A2D3A",
-        black4: "#24252D",
-        black5: "#282a2e",
-        black6: "#202125",
-        black7: "#16171b",
-        blue: "#0076ed",
-        bluedark: "#006cda"
-      },
-
-      test: {
-        black: {
-          dark: "#0a0a0c",
-          medium: "#111111",
-          light: "#111"
-        },
-        blue: {
-          darkest: "#0f0f0f",
-          variant: "#0e1114",
-          dark: "#131315",
-          medium: "#16171b",
-          light: "#14181d"
-        },
-        white: "#f9f9f9",
-        grey: "#7e7e7e",
-        cream: "#d3c7aa"
-      },
-
-      // copy: {
-      //   black: "#000000",
-      //   "dark-gray": "#2A3038",
-      //   "darker-gray": "#212529",
-      //   "darkest-gray": "#191C24",
-      //   highlight: "#12151E",
-      //   text: "#6C7293"
-      // },
-
-      copy: {
-        black: "#111111",
-        "dark-gray": "#2A3038",
-        "darker-gray": "#212529",
-        "darkest-gray": "#151515",
-        highlight: "#12151E",
-        text: "#CFCFCF"
-      },
-
-      phaltz: {
-        black: "#121212",
-        background: "#212121",
-        foreground: "#323232",
-        highlight: "#12151E",
-        text: "#EEEEEE",
-        action: "#0076ed"
-      }
     },
     spacing: {
       px: "1px",

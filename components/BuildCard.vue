@@ -4,7 +4,7 @@
       class="my-8 rounded-md p-8 bg-gradient-to-r from-theme-gray to-theme-gray-variant flex justify-start items-center cursor cursor-pointer"
     > -->
     <ContentPanel>
-      <h3 class="font-bold text-sm block font-theme text-copy-text">
+      <h3 class="font-bold text-sm block font-theme text-theme-text">
         {{ build.name }}
       </h3>
 
@@ -67,11 +67,11 @@
       <v-divider class="my-2 opacity-25"></v-divider>
 
       <div class="w-full flex justify-between flex-wrap items-center">
-        <span class="text-copy-text text-xs">
+        <span class="text-theme-text text-xs">
           Author: {{ build.user.display_name }}
         </span>
 
-        <span class="text-copy-text text-xs">
+        <span class="text-theme-text text-xs">
           <!-- <v-icon x-small>mdi-thumb-up</v-icon>
           17 -->
         </span>

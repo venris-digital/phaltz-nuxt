@@ -57,7 +57,7 @@ export default class Header extends Vue {
 
   p {
     @apply my-8;
-    @apply text-copy-text;
+    @apply text-theme-text;
     @apply text-sm;
     
     @media (min-width: 768px) {
@@ -73,7 +73,7 @@ export default class Header extends Vue {
     @apply pb-3;
     @apply text-5xl;
     @apply mb-8;
-    @apply text-dark-white;
+    @apply text-theme-title;
     background-image: linear-gradient(120deg, #ca8012 0%, #fcf417 100%);
 
     &--purple {

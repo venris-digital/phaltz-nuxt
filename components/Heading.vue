@@ -26,7 +26,7 @@ export default class Heading extends Vue {
     @apply text-2xl;
     // @apply mt-4;
     // @apply mb-8;
-    @apply text-dark-white;
+    @apply text-theme-title;
   }
 }
 </style>

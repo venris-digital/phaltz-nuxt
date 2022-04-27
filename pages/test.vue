@@ -11,27 +11,27 @@
         :class="setColor(index)"
       >
         <h6
-          class="text-dark-white text-lg font-semibold border-b border-white border-opacity-20 pb-4 pl-8 mb-4"
+          class="text-theme-title text-lg font-semibold border-b border-white border-opacity-20 pb-4 pl-8 mb-4"
         >
           Aldori Swordmaster
         </h6>
 
         <div class="px-4">
           <div
-            class="flex items-center p-2  border-b border-opacity-5 border-copy-text pb-5"
+            class="flex items-center p-2  border-b border-opacity-5 border-theme-text pb-5"
           >
             <Icon backgroundColor="purple-500" class="mr-4 mb-2"
               >mdi-layers</Icon
             >
             <div class="flex flex-wrap">
               <span
-                class="bg-dark-black5 text-xs px-5 py-2 rounded-full text-dark-white font-theme"
+                class="bg-theme-highlight text-xs px-5 py-2 rounded-full text-theme-title font-theme"
                 :class="'mr-2 mb-2'"
               >
                 Alchemist
               </span>
               <span
-                class="bg-dark-black5 text-xs px-5 py-2 rounded-full text-dark-white font-theme"
+                class="bg-theme-highlight text-xs px-5 py-2 rounded-full text-theme-title font-theme"
                 :class="'mr-2 mb-2'"
               >
                 Fighter
@@ -40,39 +40,39 @@
           </div>
 
           <div
-            class="flex items-center p-2  border-b border-opacity-5 border-copy-text pb-5 mt-4"
+            class="flex items-center p-2  border-b border-opacity-5 border-theme-text pb-5 mt-4"
           >
             <Icon backgroundColor="yellow-600" class="mr-4 mb-2"
               >mdi-layers</Icon
             >
             <div class="flex flex-wrap">
               <span
-                class="bg-dark-black5 text-xs px-5 py-2 rounded-full text-dark-white font-theme"
+                class="bg-theme-highlight text-xs px-5 py-2 rounded-full text-theme-title font-theme"
                 :class="'mr-2 mb-2'"
               >
                 Alchemist
               </span>
               <span
-                class="bg-dark-black5 text-xs px-5 py-2 rounded-full text-dark-white font-theme"
+                class="bg-theme-highlight text-xs px-5 py-2 rounded-full text-theme-title font-theme"
                 :class="'mr-2 mb-2'"
               >
                 Fighter
               </span>
               <span
-                class="bg-dark-black5 text-xs px-5 py-2 rounded-full text-dark-white font-theme"
+                class="bg-theme-highlight text-xs px-5 py-2 rounded-full text-theme-title font-theme"
                 :class="'mr-2 mb-2'"
               >
                 Wizard
               </span>
 
               <span
-                class="bg-dark-black5 text-xs px-5 py-2 rounded-full text-dark-white font-theme"
+                class="bg-theme-highlight text-xs px-5 py-2 rounded-full text-theme-title font-theme"
                 :class="'mr-2 mb-2'"
               >
                 Witch
               </span>
               <span
-                class="bg-dark-black5 text-xs px-5 py-2 rounded-full text-dark-white font-theme"
+                class="bg-theme-highlight text-xs px-5 py-2 rounded-full text-theme-title font-theme"
                 :class="'mr-2 mb-2'"
               >
                 Barbarian
@@ -81,37 +81,37 @@
           </div>
 
           <div
-            class="flex items-center p-2  border-b border-opacity-5 border-copy-text pb-5 mt-4"
+            class="flex items-center p-2  border-b border-opacity-5 border-theme-text pb-5 mt-4"
           >
             <Icon backgroundColor="blue-500" class="mr-4 mb-2">mdi-layers</Icon>
             <div class="flex flex-wrap">
               <span
-                class="bg-dark-black5 text-xs px-5 py-2 rounded-full text-dark-white font-theme"
+                class="bg-theme-highlight text-xs px-5 py-2 rounded-full text-theme-title font-theme"
                 :class="'mr-2 mb-2'"
               >
                 Alchemist
               </span>
               <span
-                class="bg-dark-black5 text-xs px-5 py-2 rounded-full text-dark-white font-theme"
+                class="bg-theme-highlight text-xs px-5 py-2 rounded-full text-theme-title font-theme"
                 :class="'mr-2 mb-2'"
               >
                 Fighter
               </span>
               <span
-                class="bg-dark-black5 text-xs px-5 py-2 rounded-full text-dark-white font-theme"
+                class="bg-theme-highlight text-xs px-5 py-2 rounded-full text-theme-title font-theme"
                 :class="'mr-2 mb-2'"
               >
                 Wizard
               </span>
 
               <span
-                class="bg-dark-black5 text-xs px-5 py-2 rounded-full text-dark-white font-theme"
+                class="bg-theme-highlight text-xs px-5 py-2 rounded-full text-theme-title font-theme"
                 :class="'mr-2 mb-2'"
               >
                 Witch
               </span>
               <span
-                class="bg-dark-black5 text-xs px-5 py-2 rounded-full text-dark-white font-theme"
+                class="bg-theme-highlight text-xs px-5 py-2 rounded-full text-theme-title font-theme"
                 :class="'mr-2 mb-2'"
               >
                 Barbarian
@@ -125,32 +125,32 @@
             >
             <div class="flex flex-wrap">
               <span
-                class="bg-dark-black5 text-xs px-5 py-2 rounded-full text-dark-white font-theme"
+                class="bg-theme-highlight text-xs px-5 py-2 rounded-full text-theme-title font-theme"
                 :class="'mr-2 mb-2'"
               >
                 Alchemist
               </span>
               <span
-                class="bg-dark-black5 text-xs px-5 py-2 rounded-full text-dark-white font-theme"
+                class="bg-theme-highlight text-xs px-5 py-2 rounded-full text-theme-title font-theme"
                 :class="'mr-2 mb-2'"
               >
                 Fighter
               </span>
               <span
-                class="bg-dark-black5 text-xs px-5 py-2 rounded-full text-dark-white font-theme"
+                class="bg-theme-highlight text-xs px-5 py-2 rounded-full text-theme-title font-theme"
                 :class="'mr-2 mb-2'"
               >
                 Wizard
               </span>
 
               <span
-                class="bg-dark-black5 text-xs px-5 py-2 rounded-full text-dark-white font-theme"
+                class="bg-theme-highlight text-xs px-5 py-2 rounded-full text-theme-title font-theme"
                 :class="'mr-2 mb-2'"
               >
                 Witch
               </span>
               <span
-                class="bg-dark-black5 text-xs px-5 py-2 rounded-full text-dark-white font-theme"
+                class="bg-theme-highlight text-xs px-5 py-2 rounded-full text-theme-title font-theme"
                 :class="'mr-2 mb-2'"
               >
                 Barbarian
@@ -642,12 +642,12 @@ export default class Test extends Vue {
 
 <style lang="scss" scoped>
 .WOTR-card-row__pill {
-  @apply bg-dark-black5;
+  @apply bg-theme-highlight;
   @apply text-xs;
   @apply px-4;
   @apply py-1;
   @apply rounded-full;
-  @apply text-dark-white;
+  @apply text-theme-title;
   @apply font-theme;
   @apply mr-2;
   @apply mb-1;

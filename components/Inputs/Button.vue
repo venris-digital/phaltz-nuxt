@@ -9,7 +9,7 @@
       color ? `text-${color}` : 'text-dark-blue'
     ]"
   >
-    <button class="input-button__button group-hover:text-dark-white">
+    <button class="input-button__button group-hover:text-theme-title">
       <slot />
     </button>
   </div>

@@ -10,7 +10,7 @@
 
         <!-- <div class="flex items-center justify-end">
           <Icon class="mr-1">mdi-swap-vertical-bold</Icon>
-          <span class="font-bold text-dark-white">17</span>
+          <span class="font-bold text-theme-title">17</span>
         </div> -->
       </div>
 
@@ -71,7 +71,7 @@ export default class BuildCard extends Vue {
     @apply text-xs;
     @apply mt-4;
     @apply mb-8;
-    @apply text-dark-white;
+    @apply text-theme-title;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;

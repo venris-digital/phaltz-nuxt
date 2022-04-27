@@ -1,11 +1,11 @@
 <template>
   <section
-    class="min-h-block border-t border-white border-opacity-10 w-full bg-dark-black6"
+    class="min-h-block border-t border-white border-opacity-10 w-full bg-theme-foreground"
   >
     <div class="flex w-full h-full justify-center items-center">
       <div class="flex flex-col items-center my-16">
         <span
-          class="font-bold uppercase text-copy-text tracking-widest text-6xl"
+          class="font-bold uppercase text-theme-text tracking-widest text-6xl"
           >Phaltz</span
         >
         <div class="flex w-52 justify-between items-center text-xs mt-2">

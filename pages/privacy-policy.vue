@@ -3,7 +3,7 @@
     <div class="flex justify-center">
       <ContentPanel
         title="Privacy Policy"
-        class="max-w-screen-lg text-copy-text font-theme mt-4 text-sm"
+        class="max-w-screen-lg text-theme-text font-theme mt-4 text-sm"
       >
         <p>
           This privacy policy applies between you, the User of this Website, and

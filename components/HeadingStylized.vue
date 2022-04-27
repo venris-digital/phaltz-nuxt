@@ -63,7 +63,7 @@ export default class HeadingStylized extends Vue {
     @apply text-3xl;
     @apply mt-4;
     @apply mb-8;
-    @apply text-dark-white;
+    @apply text-theme-title;
   }
 
   &--purple {

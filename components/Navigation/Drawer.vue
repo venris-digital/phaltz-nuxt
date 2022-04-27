@@ -52,14 +52,14 @@ export default class Drawer extends Vue {
   @apply right-0;
   @apply w-96;
   @apply h-screen;
-  @apply bg-dark-black6;
+  @apply bg-theme-foreground;
   @apply pt-24;
   @apply pl-8;
   @apply flex;
   @apply flex-col;
   @apply items-start;
   @apply border-l;
-  @apply border-dark-white;
+  @apply border-theme-title;
   @apply border-opacity-20;
 
   .navigation-drawer__inner-container {
@@ -73,7 +73,7 @@ export default class Drawer extends Vue {
       @apply rounded;
       @apply border;
       @apply border-transparent;
-      @apply hover:border-dark-white;
+      @apply hover:border-theme-title;
       @apply pr-8;
 
       .list-item__text {

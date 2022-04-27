@@ -3,7 +3,7 @@
     <div v-if="!isLoading" class="w-full min-h-screen flex flex-col font-theme">
       <nav class="phaltz-navigation bg-phaltz-black">
         <NuxtLink to="/">
-          <span class="font-bold uppercase text-copy-text tracking-widest	"
+          <span class="font-bold uppercase text-theme-text tracking-widest	"
             >Phaltz</span
           >
         </NuxtLink>
@@ -29,7 +29,7 @@
       </nav>
       <div class="w-full flex-auto min-h bg-dark-dark">
         <div class="flex justify-end px-8 my-2">
-          <div v-if="account" class="text-copy-text text-xs">
+          <div v-if="account" class="text-theme-text text-xs">
             Account:
             <span class="font-bold">
               <NuxtLink :to="`/users/${account.id}`">{{
@@ -46,7 +46,7 @@
         <div class="flex w-full h-full justify-center items-center">
           <div class="flex flex-col items-center my-16">
             <span
-              class="font-bold uppercase text-copy-text tracking-widest text-6xl"
+              class="font-bold uppercase text-theme-text tracking-widest text-6xl"
               >Phaltz</span
             >
             <div class="flex w-52 justify-between items-center text-xs mt-2">

@@ -21,12 +21,12 @@ export default class Pill extends Vue {}
 
 <style lang="scss" scoped>
 .phaltz-pill {
-  @apply bg-dark-black5;
+  @apply bg-theme-highlight;
   @apply text-xs;
   @apply px-4;
   @apply py-1;
   @apply rounded-full;
-  @apply text-dark-white;
+  @apply text-theme-title;
   @apply font-theme;
 }
 </style>

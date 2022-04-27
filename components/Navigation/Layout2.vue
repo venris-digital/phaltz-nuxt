@@ -82,11 +82,10 @@ interface NavigationItem {
   @apply flex-col;
   @apply items-center;
   @apply font-theme;
-  // @apply bg-dark-dark;
-  @apply bg-dark-black7;
+  @apply bg-theme-background;
 
   ::v-deep.v-input__slot {
-    @apply bg-dark-black7;
+    @apply bg-theme-background;
   }
 
   ::v-deep.v-text-field--outlined fieldset {
@@ -95,11 +94,16 @@ interface NavigationItem {
   }
 
   ::v-deep.theme--dark.v-sheet {
-    @apply bg-dark-black7;
+    @apply bg-theme-background;
   }
 
   ::v-deep a {
     @apply text-white;
+  }
+
+  ::v-deep p {
+    @apply text-sm;
+    @apply text-theme-text;
   }
 
   ::v-deep.v-tab--active {

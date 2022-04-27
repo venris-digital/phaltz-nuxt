@@ -98,15 +98,15 @@ export default class TopBar extends AbstractAuthAware {
   @apply py-3;
   @apply px-8;
   @apply border-b;
-  @apply border-dark-white;
+  @apply border-theme-title;
   @apply border-opacity-10;
-  @apply bg-dark-black6;
+  @apply bg-theme-foreground;
 
   .navigation-top-bar__logo {
     @apply font-bold;
     @apply text-base;
     @apply uppercase;
-    @apply text-copy-text;
+    @apply text-theme-text;
     @apply tracking-widest;
     @apply z-50;
   }
